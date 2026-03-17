@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "trf_gi:item/blue_ingot"
+    "model": "trf_gi:item/basic_staff"
   }
 }

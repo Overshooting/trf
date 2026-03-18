@@ -3,18 +3,22 @@ package com.gmail.aamelis.trf_gi.ModSpells;
 import com.gmail.aamelis.trf_gi.ModAttachments.PlayerComboManager;
 import com.gmail.aamelis.trf_gi.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf_gi.ModComboSystem.ComboBuffer;
+import com.gmail.aamelis.trf_gi.Network.ComboFeedbackPacket;
 import com.gmail.aamelis.trf_gi.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf_gi.Registries.SpellsInit;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class SpellCastingSystem {
 
     private static final Map<UUID, Long> lastCast = new HashMap<>();
+    private static final Map<UUID, ComboBuffer> buffers = new HashMap<>();
 
     public static void handleInput(ServerPlayer player, SpellInput input) {
 
@@ -22,27 +26,71 @@ public class SpellCastingSystem {
 
         buffer.addInput(input);
 
-        if (!buffer.isFull()) return;
+        if (!buffer.isFull()) {
+            sendComboUpdate(player, buffer, false, null);
+            return;
+        }
 
-        List<SpellInput> combo = buffer.getCombo();
+        SpellInput[] inputs = buffer.getInputs();
 
-        attemptCast(player, combo);
+        ISpell spell = SpellsInit.get(inputs[0], inputs[1], inputs[2]);
+
+        boolean success = attemptCast(player, spell);
+
+        sendComboUpdate(player, buffer, true, success);
 
         buffer.clear();
     }
 
-    private static void attemptCast(ServerPlayer player, List<SpellInput> combo) {
-        long now = System.currentTimeMillis();
-
-        if (now - lastCast.getOrDefault(player.getUUID(), 0L) < 200) return;
+    private static boolean attemptCast(ServerPlayer player, ISpell spell) {
+        boolean success = false;
 
         PlayerSpellData playerSpellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
 
-        for (ISpell spell : SpellsInit.getAllSpells()) {
-            if (spell.getCombo().equals(combo) && spell.getRequiredClass().equals(playerSpellData.getPlayerClass()) && playerSpellData.hasSpell(spell.getId())) {
+        if (spell != null && spell.getRequiredClass().equals(playerSpellData.getPlayerClass()) && playerSpellData.hasSpell(spell.getId())) {
+            long now = System.currentTimeMillis();
+
+            if (now - lastCast.getOrDefault(player.getUUID(), 0L) >= 200) {
+                lastCast.put(player.getUUID(), now);
                 spell.cast(player);
-                return;
+                success = true;
             }
+        }
+
+        return success;
+    }
+
+    private static void sendComboUpdate(ServerPlayer player, ComboBuffer buffer, boolean finished, Boolean success) {
+
+        ArrayList<Integer> inputs = new ArrayList<>();
+
+        for (int i = 0; i < buffer.getSize(); i++) {
+            inputs.add(buffer.getInputs()[i].ordinal());
+        }
+
+        PacketDistributor.sendToPlayer(player,
+                new ComboFeedbackPacket(inputs, finished, success != null && success)
+        );
+    }
+
+    private static void sendClearPacket(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player,
+                new ComboFeedbackPacket(new ArrayList<>(), false, false));
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+
+        ComboBuffer buffer = PlayerComboManager.getBuffer(player);
+
+        if (buffer == null || buffer.getSize() == 0) return;
+
+        long now = System.currentTimeMillis();
+
+        if (now - buffer.getLastInputTime() > 500) {
+            buffer.clear();
+            sendClearPacket(player);
         }
     }
 

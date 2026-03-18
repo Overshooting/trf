@@ -3,17 +3,21 @@ package com.gmail.aamelis.trf_gi.Registries;
 import com.gmail.aamelis.trf_gi.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf_gi.ModKeybinds.CastKeybinds;
 import com.gmail.aamelis.trf_gi.ModKeybinds.KeyInputHandler;
+import com.gmail.aamelis.trf_gi.ModRendering.SpellCastingUIRenderer;
 import com.gmail.aamelis.trf_gi.ModRendering.StaffProjectileRenderer;
+import com.gmail.aamelis.trf_gi.Network.ComboFeedbackPacket;
 import com.gmail.aamelis.trf_gi.Network.ModServerPayloadHandler;
 import com.gmail.aamelis.trf_gi.Network.SpellInputPacket;
 import com.gmail.aamelis.trf_gi.TRFGearAndItemsFinalRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handlers.ServerPayloadHandler;
@@ -39,8 +43,7 @@ public class ClientModEvents {
 
         playerData.setPlayerClass("default");
 
-        playerData.unlockSpell("fire");
-        playerData.unlockSpell("ice");
+        playerData.unlockSpell("test");
     }
 
     @SubscribeEvent
@@ -62,5 +65,16 @@ public class ClientModEvents {
                 SpellInputPacket.STREAM_CODEC,
                 ModServerPayloadHandler::handleSpellInput
         );
+
+        registrar.playToClient(
+                ComboFeedbackPacket.TYPE,
+                ComboFeedbackPacket.STREAM_CODEC,
+                ModServerPayloadHandler::handleComboFeedback
+        );
+    }
+
+    @SubscribeEvent
+    public static void onRender(RenderGuiEvent.Post event) {
+        SpellCastingUIRenderer.renderMessage(event);
     }
 }

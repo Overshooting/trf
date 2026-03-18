@@ -1,7 +1,17 @@
 package com.gmail.aamelis.trf_gi.ModSpells;
 
 public enum SpellInput {
-    C,
-    V,
-    B
+    C(0),
+    V(1),
+    B(2);
+
+    private final int index;
+
+    SpellInput(int index) {
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
 }

@@ -8,28 +8,43 @@ import java.util.List;
 
 public class ComboBuffer {
 
-    private final Deque<SpellInput> inputs = new ArrayDeque<>(3);
+    private final SpellInput[] inputs = new SpellInput[3];
+    private int size = 0;
+
+    private long lastInputTime = 0;
 
     public void addInput(SpellInput input) {
+        long now = System.currentTimeMillis();
 
-        if (inputs.size() == 3) {
-            inputs.removeFirst();
+        if (now - lastInputTime > 2000) {
+            clear();
         }
 
-        inputs.addLast(input);
+        lastInputTime = now;
 
+        if (size < 3) {
+            inputs[size++] = input;
+        }
     }
 
     public boolean isFull() {
-        return inputs.size() == 3;
+        return size == 3;
     }
 
-    public List<SpellInput> getCombo() {
-        return List.copyOf(inputs);
+    public SpellInput[] getInputs() {
+        return inputs;
     }
 
     public void clear() {
-        inputs.clear();
+        size = 0;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public long getLastInputTime() {
+        return lastInputTime;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf_gi.ModKeybinds;
 
 import com.gmail.aamelis.trf_gi.ModSpells.SpellInput;
-import com.gmail.aamelis.trf_gi.Network.NetworkHandler;
+import com.gmail.aamelis.trf_gi.Network.ModClientPayloadHandler;
 import net.minecraft.client.Minecraft;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 
@@ -26,7 +26,7 @@ public class KeyInputHandler {
     }
 
     private static void sendInput(SpellInput input) {
-        NetworkHandler.sendSpellInput(input);
+        ModClientPayloadHandler.sendSpellInput(input);
     }
 
 

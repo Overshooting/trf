@@ -1,36 +1,34 @@
 package com.gmail.aamelis.trf_gi.Registries;
 
-import com.gmail.aamelis.trf_gi.ModSpells.FireSpell;
+import com.gmail.aamelis.trf_gi.ModComboSystem.ComboUtils;
 import com.gmail.aamelis.trf_gi.ModSpells.ISpell;
-import com.gmail.aamelis.trf_gi.ModSpells.IceSpell;
+import com.gmail.aamelis.trf_gi.ModSpells.SpellInput;
+import com.gmail.aamelis.trf_gi.ModSpells.TestSpell;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class SpellsInit {
 
-    private static final Map<String, ISpell> SPELLS = new HashMap<>();
+    private static final ISpell[] SPELLS = new ISpell[27];
 
     public static void register(ISpell spell) {
-        SPELLS.put(spell.getId(), spell);
+        List<SpellInput> combo = spell.getCombo();
+
+        int index = ComboUtils.toIndex(combo.get(0), combo.get(1), combo.get(2));
+
+        if (SPELLS[index] != null) {
+            throw new IllegalStateException("Duplicate combo at index: " + index);
+        }
+
+        SPELLS[index] = spell;
     }
 
-    public static ISpell getById(String id) {
-        return SPELLS.get(id);
-    }
-
-    public static Collection<ISpell> getAllSpells() {
-        return SPELLS.values();
-    }
-
-    public static boolean exists(String id) {
-        return SPELLS.containsKey(id);
+    public static ISpell get(SpellInput a, SpellInput b, SpellInput c) {
+        return SPELLS[ComboUtils.toIndex(a, b, c)];
     }
 
     public static void register() {
-        register(new FireSpell());
-        register(new IceSpell());
+        register(new TestSpell());
     }
 
 }

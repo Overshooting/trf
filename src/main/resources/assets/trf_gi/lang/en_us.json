@@ -1,5 +1,11 @@
 {
   "item.trf_gi.basic_staff": "Basic Wizard Staff",
 
-  "creativetab.trf_gi.all_ingredients": "TRF: G&I Ingredients"
+  "creativetab.trf_gi.all_ingredients": "TRF: G&I Ingredients",
+
+  "key.category.trf_gi.spell_keys": "TRF Spell Casting",
+
+  "key.trf_gi.spell_c": "Primary Incantation",
+  "key.trf_gi.spell_b": "Secondary Incantation",
+  "key.trf_gi.spell_v": "Tertiary Incantation"
 }

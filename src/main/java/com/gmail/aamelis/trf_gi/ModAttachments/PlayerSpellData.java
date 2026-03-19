@@ -39,18 +39,9 @@ public class PlayerSpellData {
         unlockedSpells.add(spellId);
     }
 
-    public void revokeSpell(String spellId) {
-        unlockedSpells.remove(spellId);
-    }
-
     public boolean hasSpell(String spellId) {
         return unlockedSpells.contains(spellId);
     }
-
-    public Set<String> getUnlockedSpells() {
-        return unlockedSpells;
-    }
-
 
     public static final MapCodec<PlayerSpellData> CODEC =
             RecordCodecBuilder.mapCodec(instance ->

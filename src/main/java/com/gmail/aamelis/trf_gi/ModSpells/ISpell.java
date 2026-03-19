@@ -10,10 +10,9 @@ public interface ISpell {
 
     String getRequiredClass();
 
+    int getRequiredMana();
+
     void cast(ServerPlayer player);
 
     List<SpellInput> getCombo();
-
-
-
 }

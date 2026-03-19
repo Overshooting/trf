@@ -2,8 +2,8 @@ package com.gmail.aamelis.trf_gi.Registries;
 
 import com.gmail.aamelis.trf_gi.ModComboSystem.ComboUtils;
 import com.gmail.aamelis.trf_gi.ModSpells.ISpell;
+import com.gmail.aamelis.trf_gi.ModSpells.MageSpells.DispelSpell;
 import com.gmail.aamelis.trf_gi.ModSpells.SpellInput;
-import com.gmail.aamelis.trf_gi.ModSpells.TestSpell;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class SpellsInit {
     }
 
     public static void register() {
-        register(new TestSpell());
+        register(new DispelSpell());
     }
 
 }

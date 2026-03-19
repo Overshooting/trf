@@ -1,26 +1,26 @@
 package com.gmail.aamelis.trf_gi.Registries;
 
 import com.gmail.aamelis.trf_gi.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf_gi.ModCommands.SetMaxManaCommand;
 import com.gmail.aamelis.trf_gi.ModKeybinds.CastKeybinds;
 import com.gmail.aamelis.trf_gi.ModKeybinds.KeyInputHandler;
+import com.gmail.aamelis.trf_gi.ModRendering.ManaBarRenderer;
 import com.gmail.aamelis.trf_gi.ModRendering.SpellCastingUIRenderer;
 import com.gmail.aamelis.trf_gi.ModRendering.StaffProjectileRenderer;
 import com.gmail.aamelis.trf_gi.Network.ComboFeedbackPacket;
 import com.gmail.aamelis.trf_gi.Network.ModServerPayloadHandler;
 import com.gmail.aamelis.trf_gi.Network.SpellInputPacket;
 import com.gmail.aamelis.trf_gi.TRFGearAndItemsFinalRegistry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handlers.ServerPayloadHandler;
 
 @EventBusSubscriber(modid = TRFGearAndItemsFinalRegistry.MODID, value = Dist.CLIENT)
 public class ClientModEvents {
@@ -41,9 +41,9 @@ public class ClientModEvents {
 
         PlayerSpellData playerData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
 
-        playerData.setPlayerClass("default");
+        playerData.setPlayerClass("mage");
 
-        playerData.unlockSpell("test");
+        playerData.unlockSpell("dispel");
     }
 
     @SubscribeEvent
@@ -76,5 +76,6 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void onRender(RenderGuiEvent.Post event) {
         SpellCastingUIRenderer.renderMessage(event);
+        ManaBarRenderer.renderManaBar(event);
     }
 }

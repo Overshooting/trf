@@ -3,11 +3,8 @@ package com.gmail.aamelis.trf_gi.ModRendering;
 import com.gmail.aamelis.trf_gi.ModComboSystem.ClientComboState;
 import com.gmail.aamelis.trf_gi.ModSpells.SpellInput;
 import net.minecraft.client.Minecraft;
-import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraft.client.gui.Font;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
-
-import java.util.ArrayList;
 
 public class SpellCastingUIRenderer {
 
@@ -20,11 +17,11 @@ public class SpellCastingUIRenderer {
         var mc = Minecraft.getInstance();
 
         int x = mc.getWindow().getGuiScaledWidth() / 2;
-        int y = mc.getWindow().getGuiScaledHeight() - 60;
+        int y = mc.getWindow().getGuiScaledHeight() - 50;
 
         if (!ClientComboState.resultMessage.isEmpty()) {
             if (System.currentTimeMillis() - ClientComboState.resultTime < 400) {
-                int color = ClientComboState.resultMessage.equals("CAST SUCCESS") ? 0xFF00FF00 : 0xFFFF0000;
+                int color = !ClientComboState.resultMessage.equals("CAST FAILED") ? 0xFF00FF00 : 0xFFFF0000;
 
                 String result = ClientComboState.resultMessage;
                 int resultWidth = mc.font.width(result);

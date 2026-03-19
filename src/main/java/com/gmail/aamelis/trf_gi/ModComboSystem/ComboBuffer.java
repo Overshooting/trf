@@ -16,7 +16,7 @@ public class ComboBuffer {
     public void addInput(SpellInput input) {
         long now = System.currentTimeMillis();
 
-        if (now - lastInputTime > 2000) {
+        if (now - lastInputTime > 1000) {
             clear();
         }
 

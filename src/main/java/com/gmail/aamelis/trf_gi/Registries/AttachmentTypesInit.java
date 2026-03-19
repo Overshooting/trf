@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf_gi.Registries;
 
+import com.gmail.aamelis.trf_gi.ModAttachments.PlayerMana;
 import com.gmail.aamelis.trf_gi.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf_gi.TRFGearAndItemsFinalRegistry;
 import net.neoforged.bus.api.IEventBus;
@@ -19,6 +20,14 @@ public class AttachmentTypesInit {
                     () -> AttachmentType.builder(PlayerSpellData::new)
                             .serialize(PlayerSpellData.CODEC)
                             .copyOnDeath()
+                            .build());
+
+    public static final Supplier<AttachmentType<PlayerMana>> PLAYER_MANA =
+            ATTACHMENT_TYPES.register("player_mana",
+                    () -> AttachmentType.builder(PlayerMana::new)
+                            .serialize(PlayerMana.CODEC)
+                            .copyOnDeath()
+                            .sync(PlayerMana.STREAM_CODEC)
                             .build());
 
     public static void register(IEventBus modEventBus) {

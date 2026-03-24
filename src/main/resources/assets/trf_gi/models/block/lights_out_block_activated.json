@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "trf_gi:block/lights_out_block_activated"
+  }
+}

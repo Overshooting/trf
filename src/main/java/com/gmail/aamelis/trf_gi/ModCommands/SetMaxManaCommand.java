@@ -26,7 +26,7 @@ public class SetMaxManaCommand {
                                 for (ServerPlayer player : targets) {
                                     PlayerMana manaData = player.getData(AttachmentTypesInit.PLAYER_MANA.get());
 
-                                    manaData.setMaxMana(value);
+                                    manaData.setMaxMana(value, player);
                                 }
 
                                 if (targets.size() == 1) {

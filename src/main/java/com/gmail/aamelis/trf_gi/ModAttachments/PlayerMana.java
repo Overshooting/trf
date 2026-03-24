@@ -31,11 +31,14 @@ public class PlayerMana {
         this.lastUseTime = lastCastTime;
     }
 
-    public void setMaxMana(double maxMana) {
-        double oldMaxMana = this.maxMana;
-
+    public void setMaxMana(double maxMana, ServerPlayer player) {
         this.maxMana = maxMana;
-        currentMana += maxMana - oldMaxMana;
+
+        if (currentMana > maxMana) {
+            currentMana = maxMana;
+        }
+
+        setDirty(player);
     }
 
     public void setManaMultiplier(double newMultiplier) {

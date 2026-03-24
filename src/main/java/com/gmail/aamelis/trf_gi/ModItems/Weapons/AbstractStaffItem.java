@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
-public class AbstractStaffItem extends Item {
+public abstract class AbstractStaffItem extends Item {
 
     private static final int COOLDOWN_TICKS = 10;
     private float staffDamage;

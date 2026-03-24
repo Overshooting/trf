@@ -2,6 +2,7 @@ package com.gmail.aamelis.trf_gi;
 
 import com.gmail.aamelis.trf_gi.ModCommands.SetMaxManaCommand;
 import com.gmail.aamelis.trf_gi.Registries.*;
+import com.jcraft.jorbis.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,6 +22,7 @@ public class TRFGearAndItemsFinalRegistry {
         CreativeTabsInit.register(modEventBus);
         EntitiesInit.register(modEventBus);
         AttachmentTypesInit.register(modEventBus);
+        BlocksInit.register(modEventBus);
 
         SpellsInit.register();
 

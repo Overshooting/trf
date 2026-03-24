@@ -1,7 +1,10 @@
 {
   "item.trf_gi.basic_staff": "Basic Wizard Staff",
 
+  "block.trf_gi.lights_out_block": "Lights Out Block",
+
   "creativetab.trf_gi.all_ingredients": "TRF: G&I Ingredients",
+  "creativetab.trf_gi.all_blocks": "TRF: G&I Blocks",
 
   "key.category.trf_gi.spell_keys": "TRF Spell Casting",
 

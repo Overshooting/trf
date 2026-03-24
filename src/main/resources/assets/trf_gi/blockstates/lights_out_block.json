@@ -1,6 +1,6 @@
 {
   "variants": {
-    "activated=false": { "model": "trf_gi:block/lights_out_block_deactivated" },
-    "activated=true": { "model": "trf_gi:block/lights_out_block_activated" }
+    "activated=false": { "model": "trf:block/lights_out_block_deactivated" },
+    "activated=true": { "model": "trf:block/lights_out_block_activated" }
   }
 }

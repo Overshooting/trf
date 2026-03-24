@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "trf_gi:item/basic_staff"
+    "layer0": "trf:item/basic_staff"
   }
 }

@@ -1,1 +1,1 @@
-This mod is meant for use with the Terra Regis Frigoris (WIP) world download, and will eventually contain all necessary gear and items for the experience
+This mod is meant for use with the Terra Regis Frigoris (WIP) world download, and will eventually contain all necessary content

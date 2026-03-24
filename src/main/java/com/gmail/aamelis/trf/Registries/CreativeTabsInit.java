@@ -29,7 +29,7 @@ public class CreativeTabsInit {
             () -> CreativeModeTab.builder()
                     .withTabsBefore(ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "trf_all_weapons_tab"))
                     .icon(() -> new ItemStack(ItemsInit.LIGHTS_OUT_BLOCK_ITEM.get()))
-                    .title(Component.translatable("creativetab.trf_gi.all_blocks"))
+                    .title(Component.translatable("creativetab.trf.all_blocks"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ItemsInit.LIGHTS_OUT_BLOCK_ITEM);
 

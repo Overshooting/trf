@@ -49,9 +49,6 @@ public class LightsOutBlock extends Block {
         if (level.isClientSide()) {
             return;
         }
-
-        System.out.println("Running block check");
-
         level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
 
         int x = pos.getX();
@@ -66,7 +63,6 @@ public class LightsOutBlock extends Block {
                     boolean desiredState = !thisBlockState.getValue(ACTIVATED);
 
                     level.setBlock(new BlockPos(i, y, k), thisBlockState.setValue(ACTIVATED, desiredState), 3);
-                    System.out.println("Block at: " + i + ", " + y + ", " + k + " detected, set block state to: " + desiredState);
                 }
             }
         }

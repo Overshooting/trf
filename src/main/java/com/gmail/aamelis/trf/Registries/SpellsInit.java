@@ -3,6 +3,7 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModComboSystem.ComboUtils;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.MageSpells.DispelSpell;
+import com.gmail.aamelis.trf.ModSpells.MageSpells.ShadowSpell;
 import com.gmail.aamelis.trf.ModSpells.SpellInput;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class SpellsInit {
 
     public static void register() {
         register(new DispelSpell());
+        register(new ShadowSpell());
     }
 
 }

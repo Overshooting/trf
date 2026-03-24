@@ -40,6 +40,7 @@ public class ClientModEvents {
         playerData.setPlayerClass("mage");
 
         playerData.unlockSpell("dispel");
+        playerData.unlockSpell("shadow");
     }
 
     @SubscribeEvent

@@ -55,15 +55,15 @@ public class LightsOutBlock extends Block {
         int y = pos.getY();
         int z = pos.getZ();
 
-        for (int i = x - 1; i < x + 2; i++) {
-            for (int k = z - 1; k < z + 2; k ++) {
-                BlockState thisBlockState = level.getBlockState(new BlockPos(i, y, k));
+        BlockPos[] blocksToCheck = {new BlockPos(x - 1, y, z), pos, new BlockPos(x + 1, y, z), new BlockPos(x, y, z - 1), new BlockPos(x, y, z + 1)};
 
-                if (thisBlockState.getBlock() instanceof LightsOutBlock) {
-                    boolean desiredState = !thisBlockState.getValue(ACTIVATED);
+        for (BlockPos thisPos : blocksToCheck) {
+            BlockState thisState = level.getBlockState(thisPos);
 
-                    level.setBlock(new BlockPos(i, y, k), thisBlockState.setValue(ACTIVATED, desiredState), 3);
-                }
+            if (thisState.getBlock() instanceof LightsOutBlock) {
+                boolean desiredState = !thisState.getValue(ACTIVATED);
+
+                level.setBlock(thisPos, thisState.setValue(ACTIVATED, desiredState), 3);
             }
         }
 

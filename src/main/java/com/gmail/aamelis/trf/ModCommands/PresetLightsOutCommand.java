@@ -14,26 +14,32 @@ import net.minecraft.world.level.block.state.BlockState;
 public class PresetLightsOutCommand {
 
     public static final boolean[][] EASY_PRESET = {
-            {false, true, false},
-            {true, false, true},
-            {false, false, false}
+            {false, false, false},
+            {true, false, false},
+            {false, true, false}
     };
+    //000100010
+
     public static final boolean[][] MED_PRESET = {
-            {true, false, false, true, true},
-            {true, false, true, true, false},
-            {false, true, false, false, true},
-            {false, true, false, true, false},
-            {true, true, true, true, false}
+            {true, false, true, true, true},
+            {false, false, false, false, true},
+            {true, true, false, false, true},
+            {false, false, false, true, true},
+            {false, false, false, true, true}
     };
+    //1011100001110010001100011
+
     public static final boolean[][] HARD_PRESET = {
-            {true, false, false, true, false, true, false},
             {false, false, true, false, false, false, false},
-            {true, true, false, true, false, false, true},
-            {false, true, false, false, true, false, true},
-            {true, false, false, true, false, true, true},
-            {false, false, false, true, true, false, true},
-            {true, false, true, false, false, false, true}
+            {false, false, true, false, false, false, false},
+            {false, false, false, true, true, true, false},
+            {false, true, false, true, false, true, false},
+            {false, false, false, false, false, false, false},
+            {false, true, false, true, false, true, false},
+            {true, false, false, true, false, true, false},
+            {true, true, false, true, true, true, true}
     };
+    //00100000010000000111001010100000000010101010010101101111
 
     public static final LiteralArgumentBuilder<CommandSourceStack> LIGHTS_OUT_PRESET_COMMAND =
             Commands.literal("buildLightsOutPreset")

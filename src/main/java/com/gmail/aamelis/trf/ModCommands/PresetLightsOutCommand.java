@@ -13,6 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class PresetLightsOutCommand {
 
+    public static final String EASY_TYPE = "easy", MED_TYPE = "medium", HARD_TYPE = "hard";
+
     public static final boolean[][] EASY_PRESET = {
             {false, false, false},
             {true, false, false},
@@ -55,9 +57,9 @@ public class PresetLightsOutCommand {
                                                 boolean[][] preset;
 
                                                 switch (presetName.toLowerCase()) {
-                                                    case "easy" -> preset = EASY_PRESET;
-                                                    case "med" -> preset = MED_PRESET;
-                                                    case "hard" -> preset = HARD_PRESET;
+                                                    case EASY_TYPE -> preset = EASY_PRESET;
+                                                    case MED_TYPE -> preset = MED_PRESET;
+                                                    case HARD_TYPE -> preset = HARD_PRESET;
                                                     default -> {
                                                         context.getSource().sendFailure(Component.literal("Invalid preset"));
                                                         return 0;

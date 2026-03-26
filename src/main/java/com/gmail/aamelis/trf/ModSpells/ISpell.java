@@ -8,7 +8,7 @@ public interface ISpell {
 
     String getId();
 
-    String getRequiredClass();
+    short getRequiredClass();
 
     int getRequiredMana();
 

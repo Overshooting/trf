@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf;
 
 import com.gmail.aamelis.trf.ModCommands.PresetLightsOutCommand;
+import com.gmail.aamelis.trf.ModCommands.SetClassCommand;
 import com.gmail.aamelis.trf.ModCommands.SetMaxManaCommand;
 import com.gmail.aamelis.trf.Registries.*;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
@@ -30,6 +31,7 @@ public class TRFFinalRegistry {
     private void onRegisterCommands(RegisterCommandsEvent event) {
         event.getDispatcher().register(SetMaxManaCommand.SET_MAX_MANA_COMMAND);
         event.getDispatcher().register(PresetLightsOutCommand.LIGHTS_OUT_PRESET_COMMAND);
+        event.getDispatcher().register(SetClassCommand.SET_CLASS_COMMAND);
     }
 
 }

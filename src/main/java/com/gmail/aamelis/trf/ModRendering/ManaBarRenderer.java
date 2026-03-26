@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.ModRendering;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
+import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.client.Minecraft;
@@ -12,12 +13,6 @@ import net.neoforged.neoforge.client.event.RenderGuiEvent;
 
 public class ManaBarRenderer {
 
-    public static final ResourceLocation MANA_BAR_FULL =
-            ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bar/mana_full.png");
-
-    public static final ResourceLocation MANA_BAR_EMPTY =
-            ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bar/mana_empty.png");
-
     public static void renderManaBar(RenderGuiEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -25,18 +20,33 @@ public class ManaBarRenderer {
         if (player == null || !player.level().isClientSide()) return;
 
         PlayerMana manaData = player.getData(AttachmentTypesInit.PLAYER_MANA.get());
+        PlayerSpellData spellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
         GuiGraphics graphics = event.getGuiGraphics();
+
+        if (spellData.getPlayerClass() == 0) {
+            return;
+        }
 
         int x = mc.getWindow().getGuiScaledWidth() / 2 + 150;
         int y = mc.getWindow().getGuiScaledHeight() - 20;
         String msg = "Mana: " + manaData.getCurrentMana() + "/" + manaData.getMaxMana();
         int width = mc.font.width(msg);
-        int relativeMana = (int)(manaData.getCurrentMana() / (double)manaData.getMaxMana() * 64);
+        int relativeMana = (int) (manaData.getCurrentMana() / (double) manaData.getMaxMana() * 100);
+        String className = spellData.getPlayerClassString().toLowerCase();
 
-        graphics.drawString(mc.font, msg, x - width / 2, y - 7, 0xFFFFFFFF,true);
+        ResourceLocation realEmptyPath = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bars/" + className + "_mana_bar_empty.png");
+        ResourceLocation realFullPath = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bars/" + className + "_mana_bar_full.png");
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, MANA_BAR_EMPTY, x - 32, y + 3, 0, 0, 64, 16, 64, 16);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, MANA_BAR_FULL, x - 32, y + 3, 0, 0, relativeMana, 16, 64, 16);
+        graphics.drawString(mc.font, msg, x - width / 2, y - 10, 0xFFFFFFFF, true);
+
+        graphics.pose().pushMatrix();
+
+        graphics.pose().scale(1.0f, 0.75f);
+
+        graphics.blit(RenderPipelines.GUI_TEXTURED, realEmptyPath, x - 50, y + 40, 0, 0, 100, 64, 100, 64);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, realFullPath, x - 50, y + 40, 0, 0, relativeMana, 64, 100, 64);
+
+        graphics.pose().popMatrix();
     }
 
 }

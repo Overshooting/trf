@@ -30,11 +30,11 @@ public class SetMaxManaCommand {
                                 }
 
                                 if (targets.size() == 1) {
-                                    context.getSource().sendSuccess(() -> Component.literal("Set max mana to: " + value + " for " +
+                                    context.getSource().sendSuccess(() -> Component.literal("Set max mana to " + value + " for " +
                                             targets.iterator().next().getScoreboardName()), true);
                                 } else {
-                                    context.getSource().sendSuccess(() -> Component.literal("Set max mana to: " + value + " for " +
-                                            targets.size()), true);
+                                    context.getSource().sendSuccess(() -> Component.literal("Set max mana to " + value + " for " +
+                                            targets.size() + " targets"), true);
                                 }
 
                                 return targets.size();

@@ -1,7 +1,9 @@
 package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
+import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,8 +24,8 @@ public class DispelSpell implements ISpell {
     }
 
     @Override
-    public String getRequiredClass() {
-        return "mage";
+    public short getRequiredClass() {
+        return PlayerSpellData.MAGE;
     }
 
     @Override

@@ -46,7 +46,7 @@ public class SpellCastingSystem {
         PlayerSpellData playerSpellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
         PlayerMana playerManaData = player.getData(AttachmentTypesInit.PLAYER_MANA.get());
 
-        if (spell != null && spell.getRequiredClass().equals(playerSpellData.getPlayerClass()) && playerSpellData.hasSpell(spell.getId()) && playerManaData.getCurrentMana() >= spell.getRequiredMana()) {
+        if (spell != null && spell.getRequiredClass() == playerSpellData.getPlayerClass() && playerSpellData.hasSpell(spell.getId()) && playerManaData.getCurrentMana() >= spell.getRequiredMana()) {
             long now = System.currentTimeMillis();
 
             if (now - lastCast.getOrDefault(player.getUUID(), 0L) >= 200) {

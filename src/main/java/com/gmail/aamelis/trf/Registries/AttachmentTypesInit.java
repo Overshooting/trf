@@ -20,6 +20,7 @@ public class AttachmentTypesInit {
                     () -> AttachmentType.builder(PlayerSpellData::new)
                             .serialize(PlayerSpellData.CODEC)
                             .copyOnDeath()
+                            .sync(PlayerSpellData.STREAM_CODEC)
                             .build());
 
     public static final Supplier<AttachmentType<PlayerMana>> PLAYER_MANA =

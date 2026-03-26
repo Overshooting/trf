@@ -37,10 +37,8 @@ public class ClientModEvents {
 
         PlayerSpellData playerData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
 
-        playerData.setPlayerClass("mage");
-
-        playerData.unlockSpell("dispel");
-        playerData.unlockSpell("shadow");
+        playerData.unlockSpell("dispel", player);
+        playerData.unlockSpell("shadow", player);
     }
 
     @SubscribeEvent

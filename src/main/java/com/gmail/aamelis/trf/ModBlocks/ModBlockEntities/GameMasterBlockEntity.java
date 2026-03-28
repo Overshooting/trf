@@ -35,13 +35,26 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         game = NONE;
     }
 
-    private void setNewCorners(BlockPos pos1, BlockPos pos2) throws IllegalArgumentException {
+    public void setNewCorners(BlockPos pos1, BlockPos pos2) throws IllegalArgumentException {
         if (pos1.getY() != pos2.getY()) {
             throw new IllegalArgumentException("Y coordinates must be the same!");
         }
 
         corner1 = pos1;
         corner2 = pos2;
+
+        if (Math.abs(pos1.getX() - pos2.getX()) == 3 && Math.abs(pos1.getZ() - pos2.getZ()) == 3 ) {
+            setPreset(PresetLightsOutCommand.EASY_TYPE, getLevel());
+        } else if (Math.abs(pos1.getX() - pos2.getX()) == 5 && Math.abs(pos1.getZ() - pos2.getZ()) == 5) {
+            setPreset(PresetLightsOutCommand.MED_TYPE, getLevel());
+        } else if (Math.abs(pos1.getX() - pos2.getX()) == 7 && Math.abs(pos1.getZ() - pos2.getZ()) == 7) {
+            setPreset(PresetLightsOutCommand.HARD_TYPE, getLevel());
+        } else {
+            corner1 = null;
+            corner2 = null;
+
+            throw new IllegalArgumentException("Preset area must be a 3x3, 5x5, or 7x7 square!");
+        }
     }
 
     private void setPreset(String type, Level level) {

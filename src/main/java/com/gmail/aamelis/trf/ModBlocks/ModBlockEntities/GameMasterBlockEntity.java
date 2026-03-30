@@ -16,6 +16,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,6 +29,7 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
     private BlockPos corner1, corner2;
     private GameTypes game;
     private boolean started, solved;
+    private String lastMessage;
 
     public GameMasterBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntitiesInit.GAME_MASTER_BLOCK_ENTITY.get(), pos, blockState);
@@ -35,6 +37,7 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         game = GameTypes.NONE;
         started = false;
         solved = false;
+        lastMessage = "";
     }
 
     public boolean isStarted() {
@@ -49,7 +52,47 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         return game;
     }
 
-    public void startLightsOut() throws IllegalAccessException {
+    public void setGame(GameTypes game) {
+        this.game = game;
+        setChanged();
+        sync();
+    }
+
+    public String getMessage() {
+        return lastMessage;
+    }
+
+    public void setMessage(String message) {
+        this.lastMessage = message;
+        setChanged();
+        sync();
+    }
+
+    public void startGame() throws IllegalStateException {
+        switch (game) {
+            case GameTypes.NONE -> {
+                throw new IllegalStateException("Cannot start unselected game!");
+            }
+
+            case GameTypes.LIGHTS_OUT -> {
+                startLightsOut();
+            }
+        }
+    }
+
+    public void resetGame() throws IllegalStateException {
+        switch (game) {
+            case GameTypes.NONE -> {
+                throw new IllegalStateException("Cannot reset unselected game!");
+            }
+
+            case GameTypes.LIGHTS_OUT -> {
+                resetLightsOut();
+            }
+        }
+    }
+
+    public void startLightsOut() throws IllegalStateException {
         if (started) {
             return;
         }
@@ -224,6 +267,7 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void saveAdditional(ValueOutput output) {
         output.putString("gameType", game.name());
+        output.putString("message", lastMessage);
         output.putBoolean("solved", solved);
         output.putBoolean("started", started);
 
@@ -243,6 +287,7 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         super.loadAdditional(input);
 
         game = GameTypes.valueOf(input.getStringOr("gameType", "NONE"));
+        lastMessage = input.getStringOr("message", "");
         started = input.getBooleanOr("started", false);
         solved = input.getBooleanOr("solved", false);
 

@@ -4,7 +4,7 @@ import com.gmail.aamelis.trf.ModAttachments.PlayerComboManager;
 import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.ModComboSystem.ComboBuffer;
-import com.gmail.aamelis.trf.Network.ComboFeedbackPacket;
+import com.gmail.aamelis.trf.Network.Packets.ComboFeedbackPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.SpellsInit;
 import net.minecraft.server.level.ServerPlayer;

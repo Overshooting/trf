@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.Network;
+package com.gmail.aamelis.trf.Network.Packets;
 
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import io.netty.buffer.ByteBuf;

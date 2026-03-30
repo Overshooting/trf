@@ -31,6 +31,7 @@ public class CreativeTabsInit {
                     .icon(() -> new ItemStack(ItemsInit.LIGHTS_OUT_BLOCK_ITEM.get()))
                     .title(Component.translatable("creativetab.trf.all_blocks"))
                     .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ItemsInit.GAME_MASTER_BLOCK_ITEM);
                         output.accept(ItemsInit.LIGHTS_OUT_BLOCK_ITEM);
 
                     }).build());

@@ -2,6 +2,8 @@
   "item.trf.basic_staff": "Basic Wizard Staff",
 
   "block.trf.lights_out_block": "Lights Out Block",
+  "block.trf.game_master_block": "Game Master Block",
+  "block.trf.game_master_lights_out_block": "Game Master Block: Lights Out",
 
   "creativetab.trf.all_weapons": "TRF: G&I Weapons",
   "creativetab.trf.all_blocks": "TRF: G&I Blocks",

@@ -3,6 +3,8 @@ package com.gmail.aamelis.trf.Network;
 import com.gmail.aamelis.trf.ModComboSystem.ClientComboState;
 import com.gmail.aamelis.trf.ModSpells.SpellCastingSystem;
 import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.Network.Packets.ComboFeedbackPacket;
+import com.gmail.aamelis.trf.Network.Packets.SpellInputPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 

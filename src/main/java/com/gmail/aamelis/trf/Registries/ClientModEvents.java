@@ -6,9 +6,10 @@ import com.gmail.aamelis.trf.ModKeybinds.KeyInputHandler;
 import com.gmail.aamelis.trf.ModRendering.ManaBarRenderer;
 import com.gmail.aamelis.trf.ModRendering.SpellCastingUIRenderer;
 import com.gmail.aamelis.trf.ModRendering.StaffProjectileRenderer;
-import com.gmail.aamelis.trf.Network.ComboFeedbackPacket;
+import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
+import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
+import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.Network.ModServerPayloadHandler;
-import com.gmail.aamelis.trf.Network.SpellInputPacket;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.api.distmarker.Dist;
@@ -72,5 +73,10 @@ public class ClientModEvents {
     public static void onRender(RenderGuiEvent.Post event) {
         SpellCastingUIRenderer.renderMessage(event);
         ManaBarRenderer.renderManaBar(event);
+    }
+
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(MenuTypesInit.GAME_MASTER_BLOCK_MENU.get(), GameMasterBlockScreen::new);
     }
 }

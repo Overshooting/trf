@@ -17,6 +17,8 @@ public class ItemsInit {
 
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 
+    public static final DeferredItem<BlockItem> GAME_MASTER_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("game_master_block", BlocksInit.GAME_MASTER_BLOCK);
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

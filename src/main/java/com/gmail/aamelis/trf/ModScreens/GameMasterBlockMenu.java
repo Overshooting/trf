@@ -2,17 +2,14 @@ package com.gmail.aamelis.trf.ModScreens;
 
 import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameMasterBlockEntity;
 import com.gmail.aamelis.trf.Registries.MenuTypesInit;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 public class GameMasterBlockMenu extends AbstractContainerMenu {
 
@@ -24,7 +21,7 @@ public class GameMasterBlockMenu extends AbstractContainerMenu {
     }
 
     public GameMasterBlockMenu(int containerId, Inventory inventory, GameMasterBlockEntity gameMasterBlockEntity) {
-        super(MenuTypesInit.GAME_MASTER_BLOCK_MENU.get(), containerId);
+        super(MenuTypesInit.GAME_MASTER_BLOCK_MENU, containerId);
         this.blockEntity = gameMasterBlockEntity;
         level = inventory.player.level();
 

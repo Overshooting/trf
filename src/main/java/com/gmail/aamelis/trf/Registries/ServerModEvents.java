@@ -10,6 +10,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
+import java.util.Set;
+
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
 
@@ -46,6 +48,12 @@ public class ServerModEvents {
                 SetCornersPacket.TYPE,
                 SetCornersPacket.STREAM_CODEC,
                 GameMasterButtonHandler::handleSetCornersPacket
+        );
+
+        registrar.playToServer(
+                SetMessagePacket.TYPE,
+                SetMessagePacket.STREAM_CODEC,
+                GameMasterButtonHandler::handleSetMessagePacket
         );
 
         registrar.playToServer(

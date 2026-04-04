@@ -62,6 +62,18 @@ public class GameMasterButtonHandler {
         });
     }
 
+    public static void handleSetMessagePacket(SetMessagePacket packet, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            ServerPlayer player = (ServerPlayer)context.player();
+
+            BlockEntity blockEntity = player.level().getBlockEntity(packet.pos());
+
+            if (blockEntity instanceof GameMasterBlockEntity gameMasterBlockEntity) {
+                gameMasterBlockEntity.setMessage(packet.message());
+            }
+        });
+    }
+
     public static void handleOpenLightsOutMenu(OpenLightsOutMenuPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             ServerPlayer player = (ServerPlayer)context.player();
@@ -82,9 +94,10 @@ public class GameMasterButtonHandler {
 
             if (blockEntity instanceof GameMasterBlockEntity gameMasterBlockEntity) {
                 gameMasterBlockEntity.setGame(GameTypes.NONE);
-                System.out.println("Back Button Packet Received!");
             }
         });
     }
+
+
 
 }

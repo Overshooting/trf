@@ -38,6 +38,9 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         started = false;
         solved = false;
         lastMessage = "";
+
+        corner1 = new BlockPos(0, 0, 0);
+        corner2 = new BlockPos(3, 3, 3);
     }
 
     public boolean isStarted() {
@@ -66,6 +69,14 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         this.lastMessage = message;
         setChanged();
         sync();
+    }
+
+    public BlockPos[] getCorners() {
+        if (corner1 == null || corner2 == null) {
+            return null;
+        } else {
+            return  new BlockPos[]{corner1, corner2};
+        }
     }
 
     public void startGame() throws IllegalStateException {
@@ -237,25 +248,18 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
                 setChanged();
                 sync();
             }
+        } else {
+            if (solved) {
+                solved = false;
+                setChanged();
+                sync();
+            }
         }
     }
 
     private void sync() {
         if (level instanceof ServerLevel level) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    @Override
-    public Component getDisplayName() {
-        switch (game) {
-            case GameTypes.LIGHTS_OUT -> {
-                return Component.translatable("block.trf.game_master_block_lights_out");
-            }
-
-            default -> {
-                return Component.translatable("block.trf.game_master_block");
-            }
         }
     }
 
@@ -310,5 +314,10 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.literal("You Should Not Be Seeing This!");
     }
 }

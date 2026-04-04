@@ -5,9 +5,12 @@ import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameTypes;
 import com.gmail.aamelis.trf.Network.Packets.BackButtonPacket;
 import com.gmail.aamelis.trf.Network.Packets.OpenLightsOutMenuPacket;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,8 +26,13 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
 
     public GameMasterBlockScreen(GameMasterBlockMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+
         this.imageWidth = 176;
         this.imageHeight = 166;
+        this.titleLabelY = 45;
+        this.titleLabelX = 170;
+        this.inventoryLabelX = titleLabelX;
+        this.inventoryLabelY = titleLabelY + 50;
     }
 
     @Override
@@ -39,7 +47,7 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
                 ClientPacketDistributor.sendToServer(new OpenLightsOutMenuPacket(menu.getBlockEntity().getBlockPos()));
             }
         })
-                .bounds(centerX - 50, startY, 100, 20)
+                .bounds(centerX - 50, startY - 15, 100, 20)
                 .build();
 
         backButton = Button.builder(Component.literal("Home"), btn -> {
@@ -47,7 +55,7 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
                 ClientPacketDistributor.sendToServer(new BackButtonPacket(menu.getBlockEntity().getBlockPos()));
             }
         })
-                .bounds(centerX - 75, startY - 30, 50, 20)
+                .bounds(centerX + 30, startY - 35, 50, 20)
                 .build();
 
         addRenderableWidget(lightsOutButton);
@@ -55,8 +63,12 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    }
 
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight, 256, 256);
     }
 
     @Override
@@ -64,38 +76,54 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
         renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
+
+        this.renderCustomLabels(guiGraphics);
     }
 
-    @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        GameTypes game = menu.getBlockEntity().getGame();
+    private void renderCustomLabels(GuiGraphics guiGraphics) {
         GameMasterBlockEntity blockEntity = menu.getBlockEntity();
 
         if (blockEntity == null) return;
 
-        guiGraphics.drawString(font, title, leftPos + 8, topPos + 6, 0x404040, false);
+        GameTypes game = blockEntity.getGame();
+        BlockPos[] corners = blockEntity.getCorners();
 
         if (game == GameTypes.NONE) {
-            guiGraphics.drawString(font, "Select a Game:", leftPos + 8, topPos + 25, 0xFFFFFF, false);
+            guiGraphics.drawString(font, "Select a Game:", titleLabelX + 10,  titleLabelY, -12566464, false);
 
         } else if (game == GameTypes.LIGHTS_OUT) {
-            guiGraphics.drawString(font, "Lights Out Controls", leftPos + 8, topPos + 25, 0xFFFFFF, false);
+            guiGraphics.drawString(font, "Lights Out Controls", titleLabelX - 35, titleLabelY, -12566464, false);
+
+            String corner1String, corner2String;
+
+            if (corners != null) {
+                corner1String = corners[0].toString();
+                corner2String = corners[1].toString();
+            } else {
+                corner1String = "None";
+                corner2String = "None";
+            }
+
+            guiGraphics.drawString(font, "First Corner: " + corner1String, inventoryLabelX - 35, inventoryLabelY - 10, -12566464, false);
+            guiGraphics.drawString(font, "Second Corner: " + corner2String, inventoryLabelX - 35, inventoryLabelY, -12566464, false);
 
             guiGraphics.drawString(font,
                     "Started: " + blockEntity.isStarted(),
-                    leftPos + 8, topPos + 45, 0xAAAAAA, false);
+                    inventoryLabelX - 35, inventoryLabelY + 20, -12566464, false);
 
             guiGraphics.drawString(font,
                     "Solved: " + blockEntity.isSolved(),
-                    leftPos + 8, topPos + 60, 0xAAAAAA, false);
+                    inventoryLabelX - 35, inventoryLabelY + 30, -12566464, false);
 
             String message = blockEntity.getMessage();
             if (!message.isEmpty()) {
-                guiGraphics.drawString(font, message, leftPos + 8, topPos + imageHeight - 20, 0xFF5555, false);
+                guiGraphics.drawString(font, message, inventoryLabelX - 35, inventoryLabelY + 45, -12566464, false);
+            } else {
+                guiGraphics.drawString(font, "Placeholder", inventoryLabelX - 35, inventoryLabelY + 45, -12566464, false);
             }
         }
-
-
     }
 
     @Override

@@ -37,7 +37,7 @@ public class ManaBarRenderer {
         ResourceLocation realEmptyPath = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bars/" + className + "_mana_bar_empty.png");
         ResourceLocation realFullPath = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bars/" + className + "_mana_bar_full.png");
 
-        graphics.drawString(mc.font, msg, x - width / 2, y - 10, 0xFFFFFFFF, true);
+        graphics.drawString(mc.font, msg, x - width / 2, y - 15, 0xFFFFFFFF, true);
 
         graphics.pose().pushMatrix();
 

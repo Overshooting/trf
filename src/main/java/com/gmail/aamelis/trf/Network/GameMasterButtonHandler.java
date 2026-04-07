@@ -18,7 +18,6 @@ public class GameMasterButtonHandler {
            if (blockEntity instanceof GameMasterBlockEntity gameMasterBlockEntity) {
                try {
                    gameMasterBlockEntity.startGame();
-                   gameMasterBlockEntity.setMessage("Game Started");
                } catch (Exception e) {
                    gameMasterBlockEntity.setMessage(e.getMessage());
                }
@@ -35,9 +34,6 @@ public class GameMasterButtonHandler {
             if (blockEntity instanceof GameMasterBlockEntity gameMasterBlockEntity) {
                 try {
                     gameMasterBlockEntity.setNewCorners(packet.c1(), packet.c2());
-                    gameMasterBlockEntity.setMessage("Corners set from: " +
-                            packet.c1().getX() + ", " + packet.c1().getY() + ", " + packet.c1().getZ() +
-                            " to " + packet.c2().getX() + ", " + packet.c2().getY() + ", " + packet.c2().getZ());
                 } catch (Exception e) {
                     gameMasterBlockEntity.setMessage(e.getMessage());
                 }
@@ -54,7 +50,6 @@ public class GameMasterButtonHandler {
             if (blockEntity instanceof GameMasterBlockEntity gameMasterBlockEntity) {
                 try {
                     gameMasterBlockEntity.resetGame();
-                    gameMasterBlockEntity.setMessage("Reset game!");
                 } catch (Exception e) {
                     gameMasterBlockEntity.setMessage(e.getMessage());
                 }

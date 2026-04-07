@@ -26,7 +26,7 @@ public class LightsOutBlock extends Block {
 
     public LightsOutBlock(Properties p_49795_) {
         super(p_49795_);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVATED, false));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVATED, true));
     }
 
     @Override

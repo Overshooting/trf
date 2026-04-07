@@ -3,10 +3,7 @@ package com.gmail.aamelis.trf.ModScreens;
 import ca.weblite.objc.Client;
 import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameMasterBlockEntity;
 import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameTypes;
-import com.gmail.aamelis.trf.Network.Packets.BackButtonPacket;
-import com.gmail.aamelis.trf.Network.Packets.OpenLightsOutMenuPacket;
-import com.gmail.aamelis.trf.Network.Packets.SetCornersPacket;
-import com.gmail.aamelis.trf.Network.Packets.SetMessagePacket;
+import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -30,7 +27,7 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
     );
 
     private EditBox corner1X, corner1Y, corner1Z, corner2X, corner2Y, corner2Z;
-    private Button lightsOutButton, backButton, sendCornersButton;
+    private Button lightsOutButton, backButton, sendCornersButton, startButton, resetButton;
     private String message;
 
     public GameMasterBlockScreen(GameMasterBlockMenu menu, Inventory playerInventory, Component title) {
@@ -40,25 +37,31 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
 
         this.imageWidth = 176;
         this.imageHeight = 166;
-        this.titleLabelY = 45;
-        this.titleLabelX = 170;
-        this.inventoryLabelX = titleLabelX;
-        this.inventoryLabelY = titleLabelY + 50;
     }
 
     @Override
     protected void init() {
         super.init();
 
-        int centerX = leftPos + imageWidth / 2;
-        int startY = topPos + 40;
+        int left = leftPos;
+        int top = topPos;
+        int right = left + imageWidth;
+        int bottom = topPos + imageHeight;
+
+        int centerX = left + imageWidth / 2;
+
+        int fieldWidth = 30;
+
+        int inputStartX = left + 10;
+        int inputRow1Y = bottom - 50;
+        int inputRow2Y = bottom - 25;
 
         lightsOutButton = Button.builder(Component.literal("Lights Out"), btn -> {
             if (minecraft != null && minecraft.player != null) {
                 ClientPacketDistributor.sendToServer(new OpenLightsOutMenuPacket(menu.getBlockEntity().getBlockPos()));
             }
         })
-                .bounds(centerX - 50, startY - 15, 100, 20)
+                .bounds(centerX - 50, top + 30, 100, 20)
                 .build();
 
         backButton = Button.builder(Component.literal("Home"), btn -> {
@@ -66,49 +69,70 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
                 ClientPacketDistributor.sendToServer(new BackButtonPacket(menu.getBlockEntity().getBlockPos()));
             }
         })
-                .bounds(centerX + 30, startY - 35, 50, 20)
+                .bounds(right - 55, top + 5, 50, 20)
                 .build();
 
         sendCornersButton = Button.builder(Component.literal("Set Corners"), btn -> {
-            try {
-                int c1x = Integer.parseInt(corner1X.getValue());
-                int c1y = Integer.parseInt(corner1Y.getValue());
-                int c1z = Integer.parseInt(corner1Z.getValue());
+            if (minecraft != null && minecraft.player != null) {
+                try {
+                    int c1x = Integer.parseInt(corner1X.getValue());
+                    int c1y = Integer.parseInt(corner1Y.getValue());
+                    int c1z = Integer.parseInt(corner1Z.getValue());
 
-                int c2x = Integer.parseInt(corner2X.getValue());
-                int c2y = Integer.parseInt(corner2Y.getValue());
-                int c2z = Integer.parseInt(corner2Z.getValue());
+                    int c2x = Integer.parseInt(corner2X.getValue());
+                    int c2y = Integer.parseInt(corner2Y.getValue());
+                    int c2z = Integer.parseInt(corner2Z.getValue());
 
-                if (c1y != c2y) {
-                    ClientPacketDistributor.sendToServer(new SetMessagePacket(menu.getBlockEntity().getBlockPos(), "Y coordinates must be the same!"));
-                    return;
+                    if (c1y != c2y) {
+                        ClientPacketDistributor.sendToServer(new SetMessagePacket(menu.getBlockEntity().getBlockPos(), "Y coordinates must be the same!"));
+                        return;
+                    }
+
+                    BlockPos pos1 = new BlockPos(c1x, c1y, c1z);
+                    BlockPos pos2 = new BlockPos(c2x, c2y, c2z);
+
+                    ClientPacketDistributor.sendToServer(new SetMessagePacket(menu.getBlockEntity().getBlockPos(), "Corners set successfully!"));
+                    ClientPacketDistributor.sendToServer(new SetCornersPacket(menu.getBlockEntity().getBlockPos(), pos1, pos2));
+
+                    corner1X.setValue("");
+                    corner1Y.setValue("");
+                    corner1Z.setValue("");
+                    corner2X.setValue("");
+                    corner2Y.setValue("");
+                    corner2Z.setValue("");
+                } catch (NumberFormatException e) {
+                    ClientPacketDistributor.sendToServer(new SetMessagePacket(menu.getBlockEntity().getBlockPos(), "Invalid input: all fields must be numbers"));
                 }
-
-                BlockPos pos1 = new BlockPos(c1x, c1y, c1z);
-                BlockPos pos2 = new BlockPos(c2x, c2y, c2z);
-
-                ClientPacketDistributor.sendToServer(new SetCornersPacket(menu.getBlockEntity().getBlockPos(), pos1, pos2));
-
-                corner1X.setValue("");
-                corner1Y.setValue("");
-                corner1Z.setValue("");
-                corner2X.setValue("");
-                corner2Y.setValue("");
-                corner2Z.setValue("");
-            } catch (NumberFormatException e) {
-                ClientPacketDistributor.sendToServer(new SetMessagePacket(menu.getBlockEntity().getBlockPos(), "Invalid input: all fields must be numbers"));
             }
         })
-                .bounds(centerX + 20, startY + 70, 60, 20)
+                .bounds(centerX + 20, top + 80, 60, 20)
                 .build();
 
-        corner1X = new EditBox(font, centerX - 80, startY + 70, 30, 20, Component.literal("C1X"));
-        corner1Y = new EditBox(font, centerX - 50, startY + 70, 30, 20, Component.literal("C1Y"));
-        corner1Z = new EditBox(font, centerX - 20, startY + 70, 30, 20, Component.literal("C1Z"));
+        startButton = Button.builder(Component.literal("Start"), btn -> {
+            if (minecraft != null && minecraft.player != null) {
+                ClientPacketDistributor.sendToServer(new SetMessagePacket(menu.getBlockEntity().getBlockPos(), "Game Started!"));
+                ClientPacketDistributor.sendToServer(new StartGamePacket(menu.getBlockEntity().getBlockPos()));
+            }
+        })
+                .bounds(centerX + 20, top + 105, 60, 20)
+                .build();
 
-        corner2X = new EditBox(font, centerX - 80, startY + 95, 30, 20, Component.literal("C2X"));
-        corner2Y = new EditBox(font, centerX - 50, startY + 95, 30, 20, Component.literal("C2Y"));
-        corner2Z = new EditBox(font, centerX - 20, startY + 95, 30, 20, Component.literal("C2Z"));
+        resetButton = Button.builder(Component.literal("Reset"), btn -> {
+            if (minecraft != null && minecraft.player != null) {
+                ClientPacketDistributor.sendToServer(new SetMessagePacket(menu.getBlockEntity().getBlockPos(), "Game Reset!"));
+                ClientPacketDistributor.sendToServer(new ResetGamePacket(menu.getBlockEntity().getBlockPos()));
+            }
+        })
+                .bounds(centerX + 20, top + 130, 60, 20)
+                .build();
+
+        corner1X = new EditBox(font, inputStartX, inputRow1Y, fieldWidth, 20, Component.literal("C1X"));
+        corner1Y = new EditBox(font, inputStartX + fieldWidth, inputRow1Y, fieldWidth, 20, Component.literal("C1Y"));
+        corner1Z = new EditBox(font, inputStartX + fieldWidth * 2, inputRow1Y, fieldWidth, 20, Component.literal("C1Z"));
+
+        corner2X = new EditBox(font, inputStartX, inputRow2Y, fieldWidth, 20, Component.literal("C2X"));
+        corner2Y = new EditBox(font, inputStartX + fieldWidth, inputRow2Y, fieldWidth, 20, Component.literal("C2Y"));
+        corner2Z = new EditBox(font, inputStartX + fieldWidth * 2, inputRow2Y, fieldWidth, 20, Component.literal("C2Z"));
 
         addRenderableWidget(corner1X);
         addRenderableWidget(corner1Y);
@@ -119,6 +143,8 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
         addRenderableWidget(lightsOutButton);
         addRenderableWidget(backButton);
         addRenderableWidget(sendCornersButton);
+        addRenderableWidget(startButton);
+        addRenderableWidget(resetButton);
     }
 
     @Override
@@ -149,11 +175,16 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
         GameTypes game = blockEntity.getGame();
         BlockPos[] corners = blockEntity.getCorners();
 
+        int left = leftPos + 10;
+        int top = topPos + 10;
+        int right = left + imageWidth;
+        int bottom = topPos + imageHeight;
+
         if (game == GameTypes.NONE) {
-            guiGraphics.drawString(font, "Select a Game:", titleLabelX + 10,  titleLabelY, -12566464, false);
+            guiGraphics.drawString(font, "Select a Game:", left,  top, -12566464, false);
 
         } else if (game == GameTypes.LIGHTS_OUT) {
-            guiGraphics.drawString(font, "Lights Out Controls", titleLabelX - 35, titleLabelY, -12566464, false);
+            guiGraphics.drawString(font, "Lights Out Controls", left, top, -12566464, false);
 
             String corner1String, corner2String;
 
@@ -165,26 +196,26 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
                 corner2String = "None";
             }
 
-            guiGraphics.drawString(font, "First Corner: " + corner1String, inventoryLabelX - 35, inventoryLabelY - 30, -12566464, false);
-            guiGraphics.drawString(font, "Second Corner: " + corner2String, inventoryLabelX - 35, inventoryLabelY - 20, -12566464, false);
+            guiGraphics.drawString(font, "Corners: ", left, top + 15, -12566464, false);
+            guiGraphics.drawString(font, corner1String, left, top + 25, -12566464, false);
+            guiGraphics.drawString(font, corner2String, left, top + 35, -12566464, false);
 
             guiGraphics.drawString(font,
                     "Started: " + blockEntity.isStarted(),
-                    inventoryLabelX - 35, inventoryLabelY, -12566464, false);
+                    left, top + 45, -12566464, false);
 
             guiGraphics.drawString(font,
                     "Solved: " + blockEntity.isSolved(),
-                    inventoryLabelX - 35, inventoryLabelY + 10, -12566464, false);
+                    left, top + 55, -12566464, false);
 
             if (!message.isEmpty()) {
-                int maxWidth = 150;
+                int maxWidth = 100;
                 int lineHeight = 10;
-                int x = inventoryLabelX - 35;
-                int y = inventoryLabelY + 25;
+                int y = top + 70;
 
                 List<FormattedCharSequence> lines = font.split(Component.literal(message), maxWidth);
                 for (int i = 0; i < lines.size(); i++) {
-                    guiGraphics.drawString(font, lines.get(i), x, y + i * lineHeight, -12566464, false);
+                    guiGraphics.drawString(font, lines.get(i), left, y + i * lineHeight, -12566464, false);
                 }
             }
         }
@@ -210,14 +241,20 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
     }
 
     private void setUpLightsOutScreen(GameMasterBlockEntity blockEntity) {
-        this.lightsOutButton.active = false;
-        this.lightsOutButton.visible = false;
+        lightsOutButton.active = false;
+        lightsOutButton.visible = false;
 
         backButton.active = true;
         backButton.visible = true;
 
         sendCornersButton.active = true;
         sendCornersButton.visible = true;
+
+        startButton.active = true;
+        startButton.visible = true;
+
+        resetButton.active = true;
+        resetButton.visible = true;
 
         corner1X.active = true;
         corner1Y.active = true;
@@ -237,14 +274,20 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
     }
 
     private void setUpHomeScreen() {
-        this.lightsOutButton.active = true;
-        this.lightsOutButton.visible = true;
+        lightsOutButton.active = true;
+        lightsOutButton.visible = true;
 
         backButton.active = false;
         backButton.visible = false;
 
         sendCornersButton.active = false;
         sendCornersButton.visible = false;
+
+        startButton.active = false;
+        startButton.visible = false;
+
+        resetButton.active = false;
+        resetButton.visible = false;
 
         corner1X.active = false;
         corner1Y.active = false;

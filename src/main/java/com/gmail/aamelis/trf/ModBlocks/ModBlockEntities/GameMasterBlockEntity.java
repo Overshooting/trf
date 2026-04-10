@@ -3,7 +3,6 @@ package com.gmail.aamelis.trf.ModBlocks.ModBlockEntities;
 import com.gmail.aamelis.trf.ModBlocks.LightsOutBlock;
 import com.gmail.aamelis.trf.ModCommands.PresetLightsOutCommand;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockMenu;
-import com.gmail.aamelis.trf.Registries.AdvancementTriggersInit;
 import com.gmail.aamelis.trf.Registries.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -13,7 +12,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -71,10 +69,10 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public BlockPos[] getCorners() {
-        if (corner1 == null || corner2 == null) {
+        if (!validateCorners()) {
             return null;
         } else {
-            return  new BlockPos[]{corner1, corner2};
+            return new BlockPos[]{corner1, corner2};
         }
     }
 
@@ -99,53 +97,59 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
             return;
         }
 
-        if (corner1 == null || corner2 == null) {
-            throw new IllegalStateException("No corners set!");
+        if (!validateCorners()) {
+            throw new IllegalStateException("Illegal Corner Combination!");
         }
 
         started = true;
         solved = false;
+
+        setPreset(getLevel());
 
         setChanged();
         sync();
     }
 
     public void resetLightsOut() throws IllegalStateException {
-        if (corner1 == null || corner2 == null) {
-            throw new IllegalStateException("No corners set!");
+        if (!validateCorners()) {
+            throw new IllegalStateException("Illegal Corner Combination!");
         }
 
         setNewCorners(corner1, corner2);
         solved = false;
+        started = true;
 
+        syncRedstone();
         setChanged();
         sync();
     }
 
     public void setNewCorners(BlockPos pos1, BlockPos pos2) throws IllegalArgumentException {
+        solved = false;
+        started = false;
+
         if (pos1.getY() != pos2.getY()) {
             throw new IllegalArgumentException("Y coordinates must be the same!");
         }
 
+        System.out.println("New corners being set: " + pos1.getX() + ", " + pos1.getY() + ", " + pos1.getZ() + " : " + pos2.getX() + ", " + pos2.getY() + ", " + pos2.getZ());
+
         corner1 = pos1;
         corner2 = pos2;
 
-        if (Math.abs(pos1.getX() - pos2.getX()) == 3 && Math.abs(pos1.getZ() - pos2.getZ()) == 3 ) {
-            setPreset(PresetLightsOutCommand.EASY_TYPE, getLevel());
-        } else if (Math.abs(pos1.getX() - pos2.getX()) == 5 && Math.abs(pos1.getZ() - pos2.getZ()) == 5) {
-            setPreset(PresetLightsOutCommand.MED_TYPE, getLevel());
-        } else if (Math.abs(pos1.getX() - pos2.getX()) == 7 && Math.abs(pos1.getZ() - pos2.getZ()) == 7) {
-            setPreset(PresetLightsOutCommand.HARD_TYPE, getLevel());
-        } else {
-            corner1 = null;
-            corner2 = null;
-
-            throw new IllegalArgumentException("Preset area must be a 3x3, 5x5, or 7x7 square!");
+        try {
+            setPreset(getLevel());
+        } catch (IllegalStateException e) {
+            setMessage("Corners must form a 3x3, 5x5, or 7x7 square area!");
         }
+
+        syncRedstone();
+        sync();
+        setChanged();
     }
 
-    private void setPreset(String type, Level level) throws IllegalArgumentException {
-        boolean[][] preset = matchTypeOrThrow(type);
+    private void setPreset(Level level) throws IllegalArgumentException {
+        boolean[][] preset = parseTypeOrThrow();
 
         int y = corner1.getY();
 
@@ -158,16 +162,17 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         int depth = maxZ - minZ + 1;
 
         int presetHeight = preset.length;
-        int presetWidth = preset[0].length;
 
         for (int dz = 0; dz < depth; dz++) {
             for (int dx = 0; dx < width; dx++) {
-                if (dz >= presetHeight || dx >= presetWidth) continue;
+                if (dz >= presetHeight || dx >= presetHeight) continue;
 
                 BlockPos currentPos = new BlockPos(minX + dx, y, minZ + dz);
                 BlockState state = level.getBlockState(currentPos);
 
-                if (!(state.getBlock() instanceof LightsOutBlock)) throw new IllegalArgumentException("Non Lights Out Block detected in preset area!");
+                if (!(state.getBlock() instanceof LightsOutBlock)) {
+                    throw new IllegalArgumentException("Non Lights Out Block detected in preset area!");
+                }
 
                 boolean value = preset[dz][dx];
 
@@ -177,22 +182,35 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         }
     }
 
-    private boolean[][] matchTypeOrThrow(String type) throws IllegalArgumentException {
-        switch (type) {
-            case PresetLightsOutCommand.EASY_TYPE -> {
-                return PresetLightsOutCommand.EASY_PRESET;
-            }
-
-            case PresetLightsOutCommand.MED_TYPE -> {
-                return PresetLightsOutCommand.MED_PRESET;
-            }
-
-            case PresetLightsOutCommand.HARD_TYPE -> {
-                return PresetLightsOutCommand.HARD_PRESET;
-            }
-
-            default -> throw new IllegalArgumentException("Type does not match any presets");
+    private boolean[][] parseTypeOrThrow() throws IllegalStateException {
+        if (!validateCorners()) {
+            throw new IllegalStateException("Invalid corners set!");
         }
+
+        int difX = Math.abs(corner1.getX() - corner2.getX());
+        int difZ = Math.abs(corner1.getZ() - corner2.getZ());
+
+        if (difX != difZ) {
+            corner1 = null;
+            corner2 = null;
+            throw new IllegalStateException("Detected and reset illegal corner combination!");
+        } else if (difX == 2) {
+            return PresetLightsOutCommand.EASY_PRESET;
+        } else if (difX == 4) {
+            return PresetLightsOutCommand.MED_PRESET;
+        } else if (difX == 6) {
+            return PresetLightsOutCommand.HARD_PRESET;
+        } else {
+            corner1 = null;
+            corner2 = null;
+            throw new IllegalStateException("Detected and reset illegal corner combination!");
+        }
+    }
+
+    private boolean validateCorners() {
+        return corner1 != null && corner2 != null && corner1.getX() != Integer.MIN_VALUE && corner1.getY() != Integer.MIN_VALUE
+                && corner1.getZ() != Integer.MIN_VALUE && corner2.getX() != Integer.MIN_VALUE && corner2.getY() != Integer.MIN_VALUE
+                && corner2.getZ() != Integer.MIN_VALUE;
     }
 
     private boolean checkSolved() {
@@ -210,11 +228,11 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
                 BlockState state = level.getBlockState(new BlockPos(x, y, z));
 
                 if (!(state.getBlock() instanceof LightsOutBlock)) {
-                    corner1 = null;
-                    corner2 = null;
-
                     started = false;
                     solved = false;
+
+                    sync();
+                    setChanged();
 
                     return false;
                 }
@@ -236,12 +254,14 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
                 solved = true;
 
                 runAdvancementCheck();
+                syncRedstone();
                 setChanged();
                 sync();
             }
         } else {
             if (solved) {
                 solved = false;
+                syncRedstone();
                 setChanged();
                 sync();
             }
@@ -260,9 +280,16 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         }
     }
 
+    private void syncRedstone() {
+        if (level == null) return;
+
+        level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
+        level.updateNeighbourForOutputSignal(getBlockPos(), getBlockState().getBlock());
+    }
+
     private void sync() {
-        if (level instanceof ServerLevel level) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        if (level instanceof ServerLevel thisLevel) {
+            thisLevel.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 
@@ -278,13 +305,29 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         output.putBoolean("solved", solved);
         output.putBoolean("started", started);
 
+        int corner1X = Integer.MIN_VALUE,
+                corner1Y = corner1X,
+                corner1Z = corner1X,
+                corner2X = corner1X,
+                corner2Y = corner1X,
+                corner2Z = corner1X;
+
         if (corner1 != null && corner2 != null) {
-            output.putInt("cornerOneX", corner1.getX());
-            output.putInt("cornerOneZ", corner1.getZ());
-            output.putInt("cornerTwoX", corner2.getX());
-            output.putInt("cornerTwoZ", corner2.getZ());
-            output.putInt("y", corner1.getY());
+            corner1X = corner1.getX();
+            corner1Y = corner1.getY();
+            corner1Z = corner1.getZ();
+
+            corner2X = corner2.getX();
+            corner2Y = corner2.getY();
+            corner2Z = corner2.getZ();
         }
+
+        output.putInt("cornerOneX", corner1X);
+        output.putInt("cornerOneY", corner1Y);
+        output.putInt("cornerOneZ", corner1Z);
+        output.putInt("cornerTwoX", corner2X);
+        output.putInt("cornerTwoY", corner2Y);
+        output.putInt("cornerTwoZ", corner2Z);
 
         super.saveAdditional(output);
     }
@@ -298,15 +341,8 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         started = input.getBooleanOr("started", false);
         solved = input.getBooleanOr("solved", false);
 
-        int testPull = input.getIntOr("cornerOneX", Integer.MIN_VALUE);
-
-        if (testPull != Integer.MIN_VALUE) {
-            corner1 = new BlockPos(input.getInt("cornerOneX").get(), input.getInt("y").get(), input.getInt("cornerOneZ").get());
-            corner2 = new BlockPos(input.getInt("cornerTwoX").get(), input.getInt("y").get(), input.getInt("cornerTwoZ").get());
-        } else {
-            corner1 = null;
-            corner2 = null;
-        }
+        corner1 = new BlockPos(input.getIntOr("cornerOneX", Integer.MIN_VALUE), input.getIntOr("cornerOneY", Integer.MIN_VALUE), input.getIntOr("cornerOneZ", Integer.MIN_VALUE));
+        corner2 = new BlockPos(input.getIntOr("cornerTwoX", Integer.MIN_VALUE), input.getIntOr("cornerOneY", Integer.MIN_VALUE), input.getIntOr("cornerTwoZ", Integer.MIN_VALUE));
     }
 
     @Override

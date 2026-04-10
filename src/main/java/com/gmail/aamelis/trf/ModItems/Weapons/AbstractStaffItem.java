@@ -1,6 +1,9 @@
 package com.gmail.aamelis.trf.ModItems.Weapons;
 
+import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
 import com.gmail.aamelis.trf.ModEntities.StaffProjectile;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -47,10 +50,20 @@ public abstract class AbstractStaffItem extends Item {
     }
 
     private boolean canCast(Player player, ItemStack stack) {
-        return true;
+        PlayerMana manaData = player.getData(AttachmentTypesInit.PLAYER_MANA);
+
+        if (manaData.getCurrentMana() > 20) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void castSpell(Level level, Player player) {
+        PlayerMana manaData = player.getData(AttachmentTypesInit.PLAYER_MANA);
+
+        manaData.useMana((ServerPlayer) player, 20);
+
         StaffProjectile projectile = new StaffProjectile(level, player);
 
         projectile.setDamage(staffDamage);

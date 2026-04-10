@@ -1,0 +1,25 @@
+{
+  "parent": "trf:puzzles_root",
+  "display": {
+    "icon": {
+      "id": "trf:lights_out_block"
+    },
+    "title": {
+      "text": "Lights Out"
+    },
+    "description": {
+      "text": "Solve a Lights Out puzzle"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "lights_out_solved": {
+      "trigger": "trf:lights_out_solved"
+    }
+  },
+  "requirements": [
+    [
+      "lights_out_solved"
+    ]
+  ]
+}

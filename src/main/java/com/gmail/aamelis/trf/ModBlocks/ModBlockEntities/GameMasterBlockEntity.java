@@ -3,6 +3,7 @@ package com.gmail.aamelis.trf.ModBlocks.ModBlockEntities;
 import com.gmail.aamelis.trf.ModBlocks.LightsOutBlock;
 import com.gmail.aamelis.trf.ModCommands.PresetLightsOutCommand;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockMenu;
+import com.gmail.aamelis.trf.Registries.AdvancementTriggersInit;
 import com.gmail.aamelis.trf.Registries.BlockEntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -12,6 +13,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,9 +40,6 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         started = false;
         solved = false;
         lastMessage = "";
-
-        corner1 = new BlockPos(0, 0, 0);
-        corner2 = new BlockPos(3, 3, 3);
     }
 
     public boolean isStarted() {
@@ -81,25 +80,17 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
 
     public void startGame() throws IllegalStateException {
         switch (game) {
-            case GameTypes.NONE -> {
-                throw new IllegalStateException("Cannot start unselected game!");
-            }
+            case GameTypes.NONE -> throw new IllegalStateException("Cannot start unselected game!");
 
-            case GameTypes.LIGHTS_OUT -> {
-                startLightsOut();
-            }
+            case GameTypes.LIGHTS_OUT -> startLightsOut();
         }
     }
 
     public void resetGame() throws IllegalStateException {
         switch (game) {
-            case GameTypes.NONE -> {
-                throw new IllegalStateException("Cannot reset unselected game!");
-            }
+            case GameTypes.NONE -> throw new IllegalStateException("Cannot reset unselected game!");
 
-            case GameTypes.LIGHTS_OUT -> {
-                resetLightsOut();
-            }
+            case GameTypes.LIGHTS_OUT -> resetLightsOut();
         }
     }
 
@@ -200,9 +191,7 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
                 return PresetLightsOutCommand.HARD_PRESET;
             }
 
-            default -> {
-                throw new IllegalArgumentException("Type does not match any presets");
-            }
+            default -> throw new IllegalArgumentException("Type does not match any presets");
         }
     }
 
@@ -245,6 +234,8 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
         if (checkSolved()) {
             if (!solved) {
                 solved = true;
+
+                runAdvancementCheck();
                 setChanged();
                 sync();
             }
@@ -253,6 +244,18 @@ public class GameMasterBlockEntity extends BlockEntity implements MenuProvider {
                 solved = false;
                 setChanged();
                 sync();
+            }
+        }
+    }
+
+    private void runAdvancementCheck() {
+        switch (game) {
+            case LIGHTS_OUT ->  {
+                if (level != null && !level.isClientSide() && solved) {
+                    for (ServerPlayer player : ((ServerLevel) level).players()) {
+                        AdvancementTriggersInit.LIGHTS_OUT_SOLVED_TRIGGER.get().trigger(player);
+                    }
+                }
             }
         }
     }

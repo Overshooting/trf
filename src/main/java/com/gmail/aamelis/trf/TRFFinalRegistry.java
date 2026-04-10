@@ -24,6 +24,7 @@ public class TRFFinalRegistry {
         BlocksInit.register(modEventBus);
         MenuTypesInit.register(modEventBus);
         BlockEntitiesInit.register(modEventBus);
+        AdvancementTriggersInit.register(modEventBus);
 
         SpellsInit.register();
 

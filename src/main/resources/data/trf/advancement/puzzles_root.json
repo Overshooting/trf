@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "id": "trf:game_master_block"
+    },
+    "title": {
+      "text": "Puzzle Mastery"
+    },
+    "description": {
+      "text": "Begin solving puzzle challenges"
+    },
+    "background": "minecraft:block/stone.png",
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ]
+}

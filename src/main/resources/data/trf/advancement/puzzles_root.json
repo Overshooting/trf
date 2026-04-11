@@ -9,7 +9,7 @@
     "description": {
       "text": "Begin solving puzzle challenges"
     },
-    "background": "minecraft:block/stone.png",
+    "background": "minecraft:block/stone",
     "frame": "task",
     "show_toast": false,
     "announce_to_chat": false

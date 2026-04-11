@@ -14,7 +14,7 @@
   },
   "criteria": {
     "lights_out_solved": {
-      "trigger": "trf:lights_out_solved"
+      "trigger": "trf:lights_out_solved_trigger"
     }
   },
   "requirements": [

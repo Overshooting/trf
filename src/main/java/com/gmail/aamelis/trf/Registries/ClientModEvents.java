@@ -1,20 +1,22 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
 import com.gmail.aamelis.trf.ModKeybinds.CastKeybinds;
 import com.gmail.aamelis.trf.ModKeybinds.KeyInputHandler;
-import com.gmail.aamelis.trf.ModRendering.ManaBarRenderer;
-import com.gmail.aamelis.trf.ModRendering.SpellCastingUIRenderer;
-import com.gmail.aamelis.trf.ModRendering.StaffProjectileRenderer;
+import com.gmail.aamelis.trf.ModUIRendering.ManaBarRenderer;
+import com.gmail.aamelis.trf.ModUIRendering.SpellCastingUIRenderer;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.StaffProjectileRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
-import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.Network.ModServerPayloadHandler;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -27,6 +29,11 @@ public class ClientModEvents {
         event.registerEntityRenderer(
                 EntitiesInit.STAFF_PROJECTILE.get(),
                 StaffProjectileRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                EntitiesInit.STARTER_TOWN_FLAVOR_ENTITY.get(),
+                NPCRenderer::new
         );
     }
 
@@ -78,5 +85,10 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(MenuTypesInit.GAME_MASTER_BLOCK_MENU.get(), GameMasterBlockScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        EntityRenderers.register(EntitiesInit.STARTER_TOWN_FLAVOR_ENTITY.get(), NPCRenderer::new);
     }
 }

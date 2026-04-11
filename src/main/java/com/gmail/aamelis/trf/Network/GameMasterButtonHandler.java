@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf.Network;
 
 import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameMasterBlockEntity;
-import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameTypes;
+import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameType;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -76,7 +76,7 @@ public class GameMasterButtonHandler {
             BlockEntity blockEntity = player.level().getBlockEntity(packet.pos());
 
             if (blockEntity instanceof GameMasterBlockEntity gameMasterBlockEntity) {
-                gameMasterBlockEntity.setGame(GameTypes.LIGHTS_OUT);
+                gameMasterBlockEntity.setGame(GameType.LIGHTS_OUT);
             }
         });
     }
@@ -88,7 +88,7 @@ public class GameMasterButtonHandler {
             BlockEntity blockEntity = player.level().getBlockEntity(packet.pos());
 
             if (blockEntity instanceof GameMasterBlockEntity gameMasterBlockEntity) {
-                gameMasterBlockEntity.setGame(GameTypes.NONE);
+                gameMasterBlockEntity.setGame(GameType.NONE);
             }
         });
     }

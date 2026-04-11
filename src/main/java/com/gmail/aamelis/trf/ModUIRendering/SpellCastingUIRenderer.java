@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModRendering;
+package com.gmail.aamelis.trf.ModUIRendering;
 
 import com.gmail.aamelis.trf.ModComboSystem.ClientComboState;
 import com.gmail.aamelis.trf.ModSpells.SpellInput;

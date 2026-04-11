@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModEntities;
+package com.gmail.aamelis.trf.ModEntities.Projectiles;
 
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.ParticleTypes;

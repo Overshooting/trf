@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf.ModItems.Weapons;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
-import com.gmail.aamelis.trf.ModEntities.StaffProjectile;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;

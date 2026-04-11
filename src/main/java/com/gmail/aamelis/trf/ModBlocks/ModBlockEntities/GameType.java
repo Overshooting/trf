@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModBlocks.ModBlockEntities;
 
-public enum GameTypes {
+public enum GameType {
     NONE,
     LIGHTS_OUT
 }

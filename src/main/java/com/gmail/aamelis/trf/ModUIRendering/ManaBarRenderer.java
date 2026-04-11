@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModRendering;
+package com.gmail.aamelis.trf.ModUIRendering;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;

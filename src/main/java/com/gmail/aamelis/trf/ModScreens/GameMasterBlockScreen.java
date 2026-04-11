@@ -1,11 +1,9 @@
 package com.gmail.aamelis.trf.ModScreens;
 
-import ca.weblite.objc.Client;
 import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameMasterBlockEntity;
-import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameTypes;
+import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameType;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -172,7 +170,7 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
 
         if (blockEntity == null) return;
 
-        GameTypes game = blockEntity.getGame();
+        GameType game = blockEntity.getGame();
         BlockPos[] corners = blockEntity.getCorners();
 
         int left = leftPos + 10;
@@ -180,10 +178,10 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
         int right = left + imageWidth;
         int bottom = topPos + imageHeight;
 
-        if (game == GameTypes.NONE) {
+        if (game == GameType.NONE) {
             guiGraphics.drawString(font, "Select a Game:", left,  top, -12566464, false);
 
-        } else if (game == GameTypes.LIGHTS_OUT) {
+        } else if (game == GameType.LIGHTS_OUT) {
             guiGraphics.drawString(font, "Lights Out Controls", left, top, -12566464, false);
 
             String corner1String, corner2String;

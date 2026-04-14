@@ -16,7 +16,7 @@ public class FlavorTextByArea {
         ArrayList<String> texts = TEXTS.get(area);
 
         if (texts == null) {
-            return "They are watching...";
+            return (Math.random() * 5) > 2 ? "我が刀は研ぎ澄まされ、心に微塵の迷いなし。" : "They are watching...";
         }
 
         int  index = (int) (Math.random() * texts.size());

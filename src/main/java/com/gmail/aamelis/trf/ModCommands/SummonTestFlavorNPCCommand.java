@@ -20,52 +20,35 @@ public class SummonTestFlavorNPCCommand {
     public static final LiteralArgumentBuilder<CommandSourceStack> SUMMON_TEST_FLAVOR_NPC_COMMAND =
             Commands.literal("summonTestFlavorNPC")
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
-                        .then(Commands.argument("amount", IntegerArgumentType.integer(1))
-                                .then(Commands.argument("name", StringArgumentType.word())
-                                        .suggests((context, builder) ->
-                                                SharedSuggestionProvider.suggest(NPCName.getValidNames(), builder))
-                                        .then(Commands.argument("location", StringArgumentType.string())
-                                                .suggests((context, builder) ->
-                                                        SharedSuggestionProvider.suggest(NPCArea.getValidReadableNames(), builder))
-                                                .executes(context -> {
-                                                    NPCArea location;
-                                                    NPCName name;
-                                                    int amount = IntegerArgumentType.getInteger(context, "amount");
+                    .then(Commands.argument("name", StringArgumentType.word())
+                                    .suggests((context, builder) ->
+                                            SharedSuggestionProvider.suggest(NPCName.getValidNames(), builder))
+                                    .then(Commands.argument("location", StringArgumentType.string())
+                                            .suggests((context, builder) ->
+                                                    SharedSuggestionProvider.suggest(NPCArea.getValidReadableNames(), builder))
+                                            .executes(context -> {
+                                                NPCName name = NPCName.matchNameOrDefault(StringArgumentType.getString(context, "name"), NPCName.DEFAULT);
+                                                NPCArea location = NPCArea.matchReadableNameOrDefault(StringArgumentType.getString(context, "location"), NPCArea.DEFAULT);
 
-                                                    name = NPCName.matchNameOrDefault(StringArgumentType.getString(context, "name"), NPCName.DEFAULT);
+                                                ServerLevel level = context.getSource().getLevel();
+                                                Entity commandEntity = context.getSource().getEntity();
 
-                                                    switch (StringArgumentType.getString(context, "location")) {
-                                                        case ("starter_town") -> location = NPCArea.STARTER_TOWN;
-                                                        case ("colonial_town") -> location = NPCArea.COLONIAL_TOWN;
+                                                if (commandEntity == null) {
+                                                    context.getSource().sendFailure(Component.literal("Command source was null!"));
+                                                    return 0;
+                                                }
 
-                                                        default -> {
-                                                            context.getSource().sendFailure(Component.literal("Invalid location name!"));
-                                                            return 0;
-                                                        }
-                                                    }
+                                                if (!level.isClientSide()) {
+                                                    FlavorNPCEntity thisEntity = NPCConstructionHandler.buildFlavorNPC(location, name, level);
+                                                    thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
 
-                                                    ServerLevel level = context.getSource().getLevel();
-                                                    Entity commandEntity = context.getSource().getEntity();
+                                                    level.addFreshEntity(thisEntity);
+                                                }
 
-                                                    if (commandEntity == null) {
-                                                        context.getSource().sendFailure(Component.literal("Command source was null!"));
-                                                        return 0;
-                                                    }
-
-                                                    if (!level.isClientSide()) {
-                                                        for (int i = 0; i < amount; i++) {
-                                                            FlavorNPCEntity thisEntity = NPCConstructionHandler.buildFlavorNPC(location, name, level);
-                                                            thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
-
-                                                            level.addFreshEntity(thisEntity);
-                                                        }
-                                                    }
-
-                                                    context.getSource().sendSuccess(() -> Component.literal("Added " + amount + " flavor NPC" + (amount > 1 ? "s" : "") + " named " + name.getName() + " at the location of " + context.getSource().getEntity().getName().getString()), true);
-                                                    return amount;
-                                                })
-                                        )
-                                )
+                                                context.getSource().sendSuccess(() -> Component.literal("Added a flavor NPC" + " named " + name.getName() + " at the location of " + context.getSource().getEntity().getName().getString()), true);
+                                                return 1;
+                                            })
+                                    )
                         );
 
 }

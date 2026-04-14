@@ -32,7 +32,7 @@ public class ClientModEvents {
         );
 
         event.registerEntityRenderer(
-                EntitiesInit.STARTER_TOWN_FLAVOR_ENTITY.get(),
+                EntitiesInit.FLAVOR_NPC_ENTITY.get(),
                 NPCRenderer::new
         );
     }
@@ -89,6 +89,6 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        EntityRenderers.register(EntitiesInit.STARTER_TOWN_FLAVOR_ENTITY.get(), NPCRenderer::new);
+        EntityRenderers.register(EntitiesInit.FLAVOR_NPC_ENTITY.get(), NPCRenderer::new);
     }
 }

@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.StarterTown.StarterTownFlavorEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;
@@ -31,16 +31,16 @@ public class EntitiesInit {
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "staff_projectile")
                             )));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<StarterTownFlavorEntity>> STARTER_TOWN_FLAVOR_ENTITY =
-            ENTITIES.register("starter_town_flavor_entity", () ->
+    public static final DeferredHolder<EntityType<?>, EntityType<FlavorNPCEntity>> FLAVOR_NPC_ENTITY =
+            ENTITIES.register("flavor_npc_entity", () ->
                     EntityType.Builder.of(
-                            StarterTownFlavorEntity::new,
+                            FlavorNPCEntity::new,
                             MobCategory.MISC
                     )
                             .sized(1.0f, 1.0f)
                             .build(ResourceKey.create(
                             Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "starter_town_flavor")
+                            ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "flavor_npc_entity")
                     )));
 
     public static void register(IEventBus modEventBus) {

@@ -1,12 +1,11 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.AbstractFlavorEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.AbstractNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -14,8 +13,6 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-
-import java.util.Set;
 
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
@@ -76,7 +73,7 @@ public class ServerModEvents {
 
     @SubscribeEvent
     public static void onAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(EntitiesInit.STARTER_TOWN_FLAVOR_ENTITY.get(), AbstractFlavorEntity.createMobAttributes().build());
+        event.put(EntitiesInit.FLAVOR_NPC_ENTITY.get(), AbstractNPCEntity.createMobAttributes().build());
     }
 
     @SubscribeEvent

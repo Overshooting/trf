@@ -5,7 +5,6 @@ import com.gmail.aamelis.trf.ModCommands.SetClassCommand;
 import com.gmail.aamelis.trf.ModCommands.SetMaxManaCommand;
 import com.gmail.aamelis.trf.ModCommands.SummonTestFlavorNPCCommand;
 import com.gmail.aamelis.trf.Registries.*;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;

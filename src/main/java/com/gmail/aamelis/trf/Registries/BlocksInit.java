@@ -2,11 +2,7 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModBlocks.GameMasterBlock;
 import com.gmail.aamelis.trf.ModBlocks.LightsOutBlock;
-import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameMasterBlockEntity;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;

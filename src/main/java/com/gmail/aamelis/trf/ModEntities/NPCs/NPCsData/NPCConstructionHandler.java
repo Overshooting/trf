@@ -1,6 +1,5 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.AbstractNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.world.level.Level;

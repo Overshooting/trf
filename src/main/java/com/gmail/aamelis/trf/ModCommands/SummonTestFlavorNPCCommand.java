@@ -4,7 +4,6 @@ import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCArea;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCConstructionHandler;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;

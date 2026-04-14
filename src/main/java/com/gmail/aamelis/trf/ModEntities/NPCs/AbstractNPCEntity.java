@@ -1,16 +1,10 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.FlavorTextByArea;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCArea;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.Mob;

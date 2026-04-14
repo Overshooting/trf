@@ -1,10 +1,8 @@
 package com.gmail.aamelis.trf.Registries;
 
-
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockMenu;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;

@@ -1,7 +1,6 @@
 package com.gmail.aamelis.trf.Network.Packets;
 
 import com.gmail.aamelis.trf.TRFFinalRegistry;
-import it.unimi.dsi.fastutil.objects.ObjectArrayPriorityQueue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

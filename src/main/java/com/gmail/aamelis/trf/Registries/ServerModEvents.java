@@ -74,6 +74,8 @@ public class ServerModEvents {
     @SubscribeEvent
     public static void onAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(EntitiesInit.FLAVOR_NPC_ENTITY.get(), AbstractNPCEntity.createMobAttributes().build());
+        event.put(EntitiesInit.STEP_QUEST_NPC_ENTITY.get(), AbstractNPCEntity.createMobAttributes().build());
+        event.put(EntitiesInit.TUTORIAL_STEP_QUEST_NPC_ENTITY.get(), AbstractNPCEntity.createMobAttributes().build());
     }
 
     @SubscribeEvent

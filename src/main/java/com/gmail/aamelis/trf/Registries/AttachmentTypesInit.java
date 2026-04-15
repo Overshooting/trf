@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
+import com.gmail.aamelis.trf.ModAttachments.PlayerQuestData;
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.neoforged.bus.api.IEventBus;
@@ -29,6 +30,14 @@ public class AttachmentTypesInit {
                             .serialize(PlayerMana.CODEC)
                             .copyOnDeath()
                             .sync(PlayerMana.STREAM_CODEC)
+                            .build());
+
+    public static final Supplier<AttachmentType<PlayerQuestData>> PLAYER_QUEST_DATA =
+            ATTACHMENT_TYPES.register("player_quest_data",
+                    () -> AttachmentType.builder(() -> new PlayerQuestData())
+                            .serialize(PlayerQuestData.CODEC)
+                            .copyOnDeath()
+                            .sync(PlayerQuestData.STREAM_CODEC)
                             .build());
 
     public static void register(IEventBus modEventBus) {

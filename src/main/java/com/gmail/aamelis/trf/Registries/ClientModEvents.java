@@ -35,6 +35,16 @@ public class ClientModEvents {
                 EntitiesInit.FLAVOR_NPC_ENTITY.get(),
                 NPCRenderer::new
         );
+
+        event.registerEntityRenderer(
+                EntitiesInit.STEP_QUEST_NPC_ENTITY.get(),
+                NPCRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                EntitiesInit.TUTORIAL_STEP_QUEST_NPC_ENTITY.get(),
+                NPCRenderer::new
+        );
     }
 
     @SubscribeEvent
@@ -90,5 +100,7 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(EntitiesInit.FLAVOR_NPC_ENTITY.get(), NPCRenderer::new);
+        EntityRenderers.register(EntitiesInit.STEP_QUEST_NPC_ENTITY.get(), NPCRenderer::new);
+        EntityRenderers.register(EntitiesInit.TUTORIAL_STEP_QUEST_NPC_ENTITY.get(), NPCRenderer::new);
     }
 }

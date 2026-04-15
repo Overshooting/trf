@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs.Rendering;
 
 import com.gmail.aamelis.trf.ModEntities.NPCs.AbstractNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -30,8 +31,10 @@ public class NPCRenderer extends MobRenderer<AbstractNPCEntity, NPCRenderState, 
     public void extractRenderState(AbstractNPCEntity p_362733_, NPCRenderState p_360515_, float p_361157_) {
         super.extractRenderState(p_362733_, p_360515_, p_361157_);
 
-        if (p_362733_.getNPCName() != null) {
-            p_360515_.textureName = p_362733_.getEntityData().get(AbstractNPCEntity.DATA_TEXTURE);
+        if (p_362733_ instanceof FlavorNPCEntity flavorNPCEntity && flavorNPCEntity.getNPCName() != null) {
+            p_360515_.textureName = p_362733_.getEntityData().get(FlavorNPCEntity.DATA_TEXTURE);
+        } else {
+            p_360515_.textureName = p_362733_.getName().getString().toLowerCase();
         }
     }
 }

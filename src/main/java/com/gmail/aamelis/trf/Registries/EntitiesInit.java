@@ -1,6 +1,8 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.StepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.TutorialStepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;
@@ -42,6 +44,30 @@ public class EntitiesInit {
                             Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "flavor_npc_entity")
                     )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<StepQuestNPCEntity>> STEP_QUEST_NPC_ENTITY =
+            ENTITIES.register("step_quest_npc_entity", () ->
+                    EntityType.Builder.of(
+                                    StepQuestNPCEntity::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 1.0f)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "step_quest_npc_entity")
+                            )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<TutorialStepQuestNPCEntity>> TUTORIAL_STEP_QUEST_NPC_ENTITY =
+            ENTITIES.register("tutorial_step_quest_npc_entity", () ->
+                    EntityType.Builder.of(
+                                    TutorialStepQuestNPCEntity::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 1.0f)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "tutorial_step_quest_npc_entity")
+                            )));
 
     public static void register(IEventBus modEventBus) {
         ENTITIES.register(modEventBus);

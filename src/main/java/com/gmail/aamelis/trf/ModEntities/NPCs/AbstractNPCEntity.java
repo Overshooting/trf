@@ -1,6 +1,5 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCArea;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -25,27 +25,12 @@ public class AbstractNPCEntity extends Mob {
     public static final EntityDataAccessor<String> DATA_NAME =
             SynchedEntityData.defineId(AbstractNPCEntity.class, EntityDataSerializers.STRING);
 
-    public static final EntityDataAccessor<String> DATA_LOCATION =
-            SynchedEntityData.defineId(AbstractNPCEntity.class, EntityDataSerializers.STRING);
-
-
-    private NPCArea location;
     private NPCName name;
 
     public AbstractNPCEntity(EntityType<? extends Mob> p_20966_, Level p_20967_) {
         super(p_20966_, p_20967_);
 
         name = NPCName.DEFAULT;
-        location = NPCArea.DEFAULT;
-    }
-
-    public static AttributeSupplier.Builder createMobAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, Integer.MAX_VALUE)
-                .add(Attributes.MOVEMENT_SPEED, 0.0D)
-                .add(Attributes.FOLLOW_RANGE, 8.0D)
-                .add(Attributes.WAYPOINT_RECEIVE_RANGE, 8.0D)
-                .add(Attributes.WAYPOINT_TRANSMIT_RANGE, 64.0D);
     }
 
     public void setName(NPCName name) {
@@ -61,12 +46,13 @@ public class AbstractNPCEntity extends Mob {
         return name;
     }
 
-    public void setLocation(NPCArea location) {
-        this.location = location;
-    }
-
-    public NPCArea getLocation() {
-        return location;
+    public static AttributeSupplier.Builder createMobAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, Integer.MAX_VALUE)
+                .add(Attributes.MOVEMENT_SPEED, 0.0D)
+                .add(Attributes.FOLLOW_RANGE, 8.0D)
+                .add(Attributes.WAYPOINT_RECEIVE_RANGE, 8.0D)
+                .add(Attributes.WAYPOINT_TRANSMIT_RANGE, 64.0D);
     }
 
     @Override
@@ -105,14 +91,12 @@ public class AbstractNPCEntity extends Mob {
 
         p_326499_.define(DATA_TEXTURE, "null");
         p_326499_.define(DATA_NAME, NPCName.DEFAULT.getName());
-        p_326499_.define(DATA_LOCATION, NPCArea.DEFAULT.getReadableName());
     }
 
     @Override
     public void addAdditionalSaveData(ValueOutput p_421640_) {
         super.addAdditionalSaveData(p_421640_);
         p_421640_.putString("npc_name", name.getName());
-        p_421640_.putString("npc_area", location.getReadableName());
     }
 
     @Override
@@ -120,18 +104,27 @@ public class AbstractNPCEntity extends Mob {
         super.readAdditionalSaveData(p_422339_);
 
         NPCName loadedName = NPCName.matchNameOrDefault(p_422339_.getStringOr("npc_name", "null"), NPCName.DEFAULT);
-        NPCArea loadedArea = NPCArea.matchReadableNameOrDefault(p_422339_.getStringOr("npc_area", "null"), NPCArea.DEFAULT);
 
         this.name = loadedName;
-        this.location = loadedArea;
 
         this.entityData.set(DATA_NAME, loadedName.getName());
         this.entityData.set(DATA_TEXTURE, loadedName.getResourceLocationName());
-        this.entityData.set(DATA_LOCATION, loadedArea.getReadableName());
     }
 
     @Override
     public boolean isAttackable() {
         return false;
     }
+
+    @Override
+    public boolean fireImmune() {
+        return true;
+    }
+
+    @Override
+    public boolean ignoreExplosion(Explosion explosion) {
+        return true;
+    }
+
+
 }

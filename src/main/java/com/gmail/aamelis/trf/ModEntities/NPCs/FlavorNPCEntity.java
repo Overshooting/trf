@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,9 +41,9 @@ public class FlavorNPCEntity extends AbstractNPCEntity {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!level().isClientSide()) {
-            player.playSound(SoundEvents.VILLAGER_AMBIENT, 1.0f, 1.0f);
-            player.displayClientMessage(Component.literal(getNPCName().getName() + ": " + getText()).withStyle(ChatFormatting.GOLD), false);
+        if (!level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.playSound(SoundEvents.VILLAGER_AMBIENT, 1.0f, 1.0f);
+            serverPlayer.sendSystemMessage(Component.literal(getNPCName().getName() + ": " + getText()).withStyle(ChatFormatting.GOLD), false);
         }
 
         return InteractionResult.SUCCESS;

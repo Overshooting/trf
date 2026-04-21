@@ -1,15 +1,21 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerQuestData;
-import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
+import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestStep;
+import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestLine;
+import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestStage;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
-import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
+import com.gmail.aamelis.trf.Registries.QuestsInit;
+import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -18,102 +24,103 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.checkerframework.checker.units.qual.C;
 
 public class StepQuestNPCEntity extends AbstractNPCEntity {
 
-    private QuestStep[] questTree;
-    private boolean talking;
+    private static final EntityDataAccessor<String> DATA_QUEST =
+            SynchedEntityData.defineId(StepQuestNPCEntity.class, EntityDataSerializers.STRING);
+
+    public ResourceLocation questId;
 
     public StepQuestNPCEntity(EntityType<? extends Mob> p_20966_, Level p_20967_) {
         super(p_20966_, p_20967_);
-
-        questTree = new QuestStep[0];
     }
 
-    public void setNameAndQuests(NPCName name, QuestStep[] questTree) {
-        this.setName(name);
+    @Override
+    public void setName(NPCName name) {
+        super.setName(name);
 
-        this.questTree = questTree;
+        this.questId = QuestsInit.NPC_TO_QUEST.get(name);
+
+        if (!level().isClientSide()) {
+            this.entityData.set(DATA_QUEST, questId.toString());
+        }
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (talking || questTree.length  == 0) {
-            return InteractionResult.FAIL;
-        } else {
-            talking = true;
-        }
-
-        PlayerQuestData questData = player.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
-
-        int stage = 1;
-
-        if (questData.hasQuest(getNPCName())) {
-            for (int i = 1; i < questTree.length; i++) {
-                if (questData.hasQuest(getNPCName(), questTree[i])) {
-                    stage = i;
-                }
-            }
-        }
-
-        if (questData.doingQuest(getNPCName(), questTree[stage])) {
-            player.displayClientMessage(Component.literal(getNPCName().getName() + ": " + questTree[0].getStageDialog()).withStyle(ChatFormatting.BOLD), false);
+        if (!(player instanceof ServerPlayer serverPlayer)) {
             return InteractionResult.SUCCESS;
-        } else if (questData.questFinished(getNPCName(), questTree[stage])) {
-            if (stage + 1 == questTree.length - 1) {
-                questData.finishNPCQuest(getNPCName());
-            } else {
-                stage++;
-                questData.updateNPCQuest(getNPCName(), questTree[stage]);
+        }
+
+        PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+
+        QuestLine questLine = QuestsInit.QUESTS.get(questId);
+        QuestProgress progress = data.getOrCreate(questId);
+
+        int stageIndex = progress.getStage();
+
+        int delay = 0;
+
+        if (stageIndex >= questLine.stages().size()) {
+
+            for (String line : questLine.stages().getLast().dialog().split("\n")) {
+                String text = getNPCName().getName() + ": " + line;
+
+                DialogScheduler.schedule(serverPlayer, text, delay);
+
+                delay += 40;
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        QuestStage stage = questLine.stages().get(stageIndex);
+
+        boolean complete = true;
+        for (var obj : stage.objectives()) {
+            if (!obj.isComplete(serverPlayer, progress)) {
+                complete = false;
+                break;
             }
         }
 
-        String thisDialogue = questTree[stage].getStageDialog();
+        for (String line : stage.dialog().split("\n")) {
+            String text = getNPCName().getName() + ": " + line;
 
-        while (thisDialogue.indexOf("\n") > 0) {
-            player.displayClientMessage(Component.literal(getNPCName().getName() + ": " + thisDialogue.substring(0, thisDialogue.indexOf("\n"))).withStyle(ChatFormatting.BOLD), false);
-            thisDialogue = thisDialogue.substring(thisDialogue.indexOf("\n") + 1);
+            DialogScheduler.schedule(serverPlayer, text, delay);
 
-            try {
-                wait(2000);
-            } catch (InterruptedException e) {
-                System.out.println("Exception caused!");
-            }
+            delay += 40;
         }
 
-        talking = false;
+        if (complete) {
+            progress.advanceStage();
+        }
+
         return InteractionResult.SUCCESS;
     }
 
-    public void displayWrongClassText(Player player) {
-        player.displayClientMessage(Component.literal(getNPCName().getName() + ": " + questTree[0]).withStyle(ChatFormatting.BOLD), false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder p_326499_) {
+        super.defineSynchedData(p_326499_);
+        p_326499_.define(DATA_QUEST, "");
     }
 
     @Override
     public void addAdditionalSaveData(ValueOutput p_421640_) {
         super.addAdditionalSaveData(p_421640_);
 
-        ValueOutput.ValueOutputList listOutput = p_421640_.childrenList("quest_tree");
-
-        for (QuestStep step : questTree) {
-            step.serialize(listOutput.addChild());
-        }
+        p_421640_.putString("quest_id", questId.toString());
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput p_422339_) {
         super.readAdditionalSaveData(p_422339_);
 
-        ValueInput.ValueInputList listInput = p_422339_.childrenListOrEmpty("quest_tree");
-
-        questTree = new QuestStep[listInput.stream().toArray().length];
-
-        for (int i = 0; i < questTree.length; i++) {
-            QuestStep step = new QuestStep();
-
-            step.deserialize(listInput.iterator().next());
-            questTree[i] = step;
+        var readResult = ResourceLocation.read(p_422339_.getStringOr("quest_id", ""));
+        if (readResult.isSuccess()) {
+            questId = readResult.getOrThrow();
+        } else {
+            questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "");
         }
     }
 }

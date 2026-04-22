@@ -4,6 +4,7 @@ import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
 import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestLine;
+import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestProgressChecker;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestStage;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
@@ -40,7 +41,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
     public void setName(NPCName name) {
         super.setName(name);
 
-        this.questId = QuestsInit.NPC_TO_QUEST.get(name);
+        this.questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, getNPCName().name().toLowerCase());
 
         if (!level().isClientSide()) {
             this.entityData.set(DATA_QUEST, questId.toString());
@@ -55,7 +56,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
 
         PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
 
-        QuestLine questLine = QuestsInit.QUESTS.get(questId);
+        QuestLine questLine = QuestsInit.getQuest(questId);
         QuestProgress progress = data.getOrCreate(questId);
 
         int stageIndex = progress.getStage();
@@ -63,7 +64,6 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
         int delay = 0;
 
         if (stageIndex >= questLine.stages().size()) {
-
             for (String line : questLine.stages().getLast().dialog().split("\n")) {
                 String text = getNPCName().getName() + ": " + line;
 
@@ -84,16 +84,19 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
             }
         }
 
+        if (complete) {
+            QuestProgressChecker.checkCompletion(serverPlayer, questId, questLine, progress);
+            data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+            progress = data.getOrCreate(questId);
+            stage = questLine.stages().get(progress.getStage());
+        }
+
         for (String line : stage.dialog().split("\n")) {
             String text = getNPCName().getName() + ": " + line;
 
             DialogScheduler.schedule(serverPlayer, text, delay);
 
             delay += 40;
-        }
-
-        if (complete) {
-            progress.advanceStage();
         }
 
         return InteractionResult.SUCCESS;

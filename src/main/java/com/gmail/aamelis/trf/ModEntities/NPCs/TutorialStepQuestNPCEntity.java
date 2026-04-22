@@ -36,7 +36,7 @@ public class TutorialStepQuestNPCEntity extends StepQuestNPCEntity {
         }
 
         PlayerSpellData spellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
-        QuestLine questLine = QuestsInit.QUESTS.get(questId);
+        QuestLine questLine = QuestsInit.getQuest(questId);
 
         if (spellData.getPlayerClass() != requiredClass) {
             int delay = 0;

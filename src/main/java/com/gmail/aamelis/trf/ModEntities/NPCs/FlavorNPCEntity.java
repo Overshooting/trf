@@ -1,13 +1,14 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.FlavorTextByArea;
+import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.DataLoaders.FlavorTextLoader;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCArea;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
+import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+
+import java.util.List;
 
 public class FlavorNPCEntity extends AbstractNPCEntity {
 
@@ -50,7 +53,15 @@ public class FlavorNPCEntity extends AbstractNPCEntity {
     }
 
     public String getText() {
-        return FlavorTextByArea.getRandomText(getLocation());
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, location.getReadableName());
+
+        List<String> texts = FlavorTextLoader.TEXTS.get(id);
+
+        if (texts == null || texts.isEmpty()) {
+            return (random.nextInt(5)) > 2 ? "我が刀は研ぎ澄まされ、心に微塵の迷いなし。" : "They are watching...";
+        }
+
+        return texts.get(random.nextInt(texts.size()));
     }
 
     @Override

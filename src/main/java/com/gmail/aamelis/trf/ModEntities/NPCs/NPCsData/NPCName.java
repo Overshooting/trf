@@ -59,6 +59,16 @@ public enum NPCName {
         return validTutorialNames;
     }
 
+    public static NPCName matchNameFromString(String lowercase) {
+        for (NPCName name : NPCName.values()) {
+            if (name.getName().toLowerCase().equals(lowercase)) {
+                return name;
+            }
+        }
+
+        return null;
+    }
+
     public static final Codec<NPCName> CODEC = Codec.STRING.xmap(
             name -> NPCName.matchNameOrDefault(name, NPCName.DEFAULT),
             NPCName::getName

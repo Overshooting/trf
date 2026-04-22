@@ -3,17 +3,24 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
 import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
 import com.gmail.aamelis.trf.ModEntities.NPCs.AbstractNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.DataLoaders.QuestDataLoader;
+import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestLine;
+import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestProgressChecker;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
@@ -96,52 +103,25 @@ public class ServerModEvents {
     public static void livingDeathEvent(LivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
 
-        var killedType = event.getEntity().getType();
+        EntityType<?> type = event.getEntity().getType();
 
-        PlayerQuestData data = player.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
-
-        for (var entry : data.getAll().entrySet()) {
-            var questId = entry.getKey();
-            var progress = entry.getValue();
-
-            var questLine = QuestsInit.QUESTS.get(questId);
-            if (questLine == null) continue;
-
-            int stageIndex = progress.getStage();
-            if (stageIndex >= questLine.stages().size()) continue;
-
-            var stage = questLine.stages().get(stageIndex);
-
-            for (var obj : stage.objectives()) {
-                obj.onKill(player, progress, killedType);
-            }
-        }
+        QuestsInit.forEachActiveObjective(player, (obj, progress) ->
+                obj.onKill(player, progress, type));
     }
 
     @SubscribeEvent
     public static void itemPickupEvent(ItemEntityPickupEvent.Post event) {
         if (!(event.getPlayer() instanceof ServerPlayer player)) return;
 
-        var stack = event.getItemEntity().getItem();
+        ItemStack stack = event.getItemEntity().getItem();
 
-        PlayerQuestData data = player.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+        QuestsInit.forEachActiveObjective(player, (obj, progress) ->
+                obj.onItemPickup(player, progress, stack));
+    }
 
-        for (var entry : data.getAll().entrySet()) {
-            var questId = entry.getKey();
-            var progress = entry.getValue();
-
-            var questLine = QuestsInit.QUESTS.get(questId);
-            if (questLine == null) continue;
-
-            int stageIndex = progress.getStage();
-            if (stageIndex >= questLine.stages().size()) continue;
-
-            var stage = questLine.stages().get(stageIndex);
-
-            for (var obj : stage.objectives()) {
-                obj.onItemPickup(player, progress, stack);
-            }
-        }
+    @SubscribeEvent
+    public static void onAddReloadListener(AddServerReloadListenersEvent event) {
+        event.addListener(ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "quest_loader"), new QuestDataLoader());
     }
 
 }

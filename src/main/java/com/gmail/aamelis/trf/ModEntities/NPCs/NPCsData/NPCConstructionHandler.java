@@ -5,6 +5,7 @@ import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.StepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.TutorialStepQuestNPCEntity;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
+import net.minecraft.client.tutorial.Tutorial;
 import net.minecraft.world.level.Level;
 
 public class NPCConstructionHandler {

@@ -29,6 +29,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
+import java.util.UUID;
+
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
 

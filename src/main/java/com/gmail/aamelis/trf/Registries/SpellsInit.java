@@ -2,10 +2,10 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModComboSystem.ComboUtils;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
-import com.gmail.aamelis.trf.ModSpells.MageSpells.DispelSpell;
-import com.gmail.aamelis.trf.ModSpells.MageSpells.ShadowSpell;
+import com.gmail.aamelis.trf.ModSpells.MageSpells.*;
 import com.gmail.aamelis.trf.ModSpells.SpellInput;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class SpellsInit {
@@ -26,6 +26,17 @@ public class SpellsInit {
 
     public static ISpell get(SpellInput a, SpellInput b, SpellInput c) {
         return SPELLS[ComboUtils.toIndex(a, b, c)];
+    }
+
+    @Nullable
+    public static ISpell get(String id) {
+        for (ISpell i : SPELLS) {
+            if (i != null && i.getId().equals(id)) {
+                return i;
+            }
+        }
+
+        return null;
     }
 
     public static void register() {

@@ -2,6 +2,7 @@ package com.gmail.aamelis.trf.Network.Packets;
 
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -14,7 +15,7 @@ public record ComboFeedbackPacket(ArrayList<Integer> inputs, boolean finished, b
     public static final Type<ComboFeedbackPacket> TYPE =
             new Type<>(ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "combo_feedback"));
 
-    public static final StreamCodec<ByteBuf, ComboFeedbackPacket> STREAM_CODEC =
+    public static final StreamCodec<FriendlyByteBuf, ComboFeedbackPacket> STREAM_CODEC =
             StreamCodec.composite(
                     ByteBufCodecs.collection(ArrayList::new, ByteBufCodecs.VAR_INT),
                     ComboFeedbackPacket::inputs,

@@ -8,6 +8,7 @@ import com.gmail.aamelis.trf.ModUIRendering.ManaBarRenderer;
 import com.gmail.aamelis.trf.ModUIRendering.SpellCastingUIRenderer;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.StaffProjectileRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
+import com.gmail.aamelis.trf.Network.ModClientPayloadHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.Network.ModServerPayloadHandler;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
@@ -56,7 +57,7 @@ public class ClientModEvents {
         PlayerSpellData playerData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
 
         playerData.unlockSpell("dispel", player);
-        playerData.unlockSpell("shadow", player);
+        playerData.unlockSpell("shadow_step", player);
     }
 
     @SubscribeEvent
@@ -83,6 +84,18 @@ public class ClientModEvents {
                 ComboFeedbackPacket.TYPE,
                 ComboFeedbackPacket.STREAM_CODEC,
                 ModServerPayloadHandler::handleComboFeedback
+        );
+
+        registrar.playToClient(
+                CooldownSyncPacket.TYPE,
+                CooldownSyncPacket.STREAM_CODEC,
+                ModServerPayloadHandler::handleCooldownSync
+        );
+
+        registrar.playToClient(
+                SpellAnimationPacket.TYPE,
+                SpellAnimationPacket.STREAM_CODEC,
+                ModServerPayloadHandler::handleAnimation
         );
     }
 

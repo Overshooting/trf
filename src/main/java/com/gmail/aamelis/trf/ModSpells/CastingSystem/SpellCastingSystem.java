@@ -1,10 +1,13 @@
-package com.gmail.aamelis.trf.ModSpells;
+package com.gmail.aamelis.trf.ModSpells.CastingSystem;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerComboManager;
 import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.ModComboSystem.ComboBuffer;
+import com.gmail.aamelis.trf.ModSpells.ISpell;
+import com.gmail.aamelis.trf.ModSpells.SpellInput;
 import com.gmail.aamelis.trf.Network.Packets.ComboFeedbackPacket;
+import com.gmail.aamelis.trf.Network.Packets.CooldownSyncPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.SpellsInit;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +19,7 @@ import java.util.*;
 
 public class SpellCastingSystem {
 
-    private static final Map<UUID, Long> lastCast = new HashMap<>();
+    private static final Map<UUID, Map<String, Long>> spellCooldowns = new HashMap<>();
 
     public static void handleInput(ServerPlayer player, SpellInput input) {
 
@@ -46,18 +49,48 @@ public class SpellCastingSystem {
         PlayerSpellData playerSpellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
         PlayerMana playerManaData = player.getData(AttachmentTypesInit.PLAYER_MANA.get());
 
-        if (spell != null && spell.getRequiredClass() == playerSpellData.getPlayerClass() && playerSpellData.hasSpell(spell.getId()) && playerManaData.getCurrentMana() >= spell.getRequiredMana()) {
-            long now = System.currentTimeMillis();
-
-            if (now - lastCast.getOrDefault(player.getUUID(), 0L) >= 200) {
-                lastCast.put(player.getUUID(), now);
-                playerManaData.useMana(player, spell.getRequiredMana());
-                spell.cast(player);
-                success = true;
-            }
+        if (spell != null && spell.getRequiredClass() == playerSpellData.getPlayerClass() && playerSpellData.hasSpell(spell.getId()) && playerManaData.getCurrentMana() >= spell.getRequiredMana() && !isOnCooldown(player, spell)) {
+            playerManaData.useMana(player, spell.getRequiredMana());
+            spell.cast(player);
+            setCooldown(player, spell);
+            success = true;
         }
 
         return success;
+    }
+
+    private static boolean isOnCooldown(ServerPlayer player, ISpell spell) {
+        UUID id = player.getUUID();
+
+        if (!spellCooldowns.containsKey(id)) return false;
+
+        long endTime = spellCooldowns.get(id).getOrDefault(spell.getId(), 0L);
+
+        return System.currentTimeMillis() < endTime;
+    }
+
+    private static void setCooldown(ServerPlayer player, ISpell spell) {
+        UUID id = player.getUUID();
+
+        spellCooldowns.computeIfAbsent(id, k -> new HashMap<>()).put(spell.getId(), System.currentTimeMillis() + spell.getCooldown());
+
+        sendCooldowns(player);
+    }
+
+    public static void sendCooldowns(ServerPlayer player) {
+        UUID id = player.getUUID();
+
+        Map<String, Long> map = spellCooldowns.getOrDefault(id, Collections.emptyMap());
+
+        ArrayList<String> ids = new ArrayList<>();
+        ArrayList<Long> times = new ArrayList<>();
+
+        for (var entry : map.entrySet()) {
+            ids.add(entry.getKey());
+            times.add(entry.getValue());
+        }
+
+        PacketDistributor.sendToPlayer(player, new CooldownSyncPacket(ids, times));
     }
 
     private static void sendComboUpdate(ServerPlayer player, ComboBuffer buffer, boolean finished, Boolean success) {
@@ -91,6 +124,18 @@ public class SpellCastingSystem {
         if (now - buffer.getLastInputTime() > 500) {
             buffer.clear();
             sendClearPacket(player);
+        }
+
+        UUID id = player.getUUID();
+
+        if (spellCooldowns.containsKey(id)) {
+            Map<String, Long> cooldowns = spellCooldowns.get(id);
+
+            cooldowns.entrySet().removeIf(entry -> now - entry.getValue() > 60000);
+
+            if (cooldowns.isEmpty()) {
+                spellCooldowns.remove(id);
+            }
         }
     }
 

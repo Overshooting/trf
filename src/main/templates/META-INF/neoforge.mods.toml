@@ -73,6 +73,13 @@ Example mod description.
     # Side this dependency is applied on - BOTH, CLIENT, or SERVER
     side="BOTH"
 
+[[dependencies.${mod_id}]]
+    modId = "player_animation_library"
+    type = "required"
+    versionRange = "[1.1.3,)"
+    ordering = "NONE"
+    side = "CLIENT"
+
 # Here's another dependency
 [[dependencies.${mod_id}]]
     modId="minecraft"

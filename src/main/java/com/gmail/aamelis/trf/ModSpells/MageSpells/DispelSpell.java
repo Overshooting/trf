@@ -4,14 +4,19 @@ import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestTriggerSystem;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
+import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +29,11 @@ public class DispelSpell implements ISpell {
     }
 
     @Override
+    public String getDisplayName() {
+        return "Dispel";
+    }
+
+    @Override
     public short getRequiredClass() {
         return PlayerSpellData.MAGE;
     }
@@ -31,6 +41,11 @@ public class DispelSpell implements ISpell {
     @Override
     public int getRequiredMana() {
         return 50;
+    }
+
+    @Override
+    public long getCooldown() {
+        return 10000;
     }
 
     @Override
@@ -50,7 +65,14 @@ public class DispelSpell implements ISpell {
             effectsRemoved++;
         }
 
-        Level level = player.level();
+        ServerLevel level = player.level();
+
+        ResourceLocation animId = animationId();
+
+        SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId.toString());
+
+        PacketDistributor.sendToPlayer(player, packet);
+        PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.0f);
 
@@ -65,5 +87,20 @@ public class DispelSpell implements ISpell {
                 SpellInput.C,
                 SpellInput.C
         );
+    }
+
+    @Override
+    public ResourceLocation getEmptyPath() {
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/dispel_empty.png");
+    }
+
+    @Override
+    public ResourceLocation getFullPath() {
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/dispel_full.png");
+    }
+
+    @Override
+    public ResourceLocation animationId() {
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_dispel");
     }
 }

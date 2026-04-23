@@ -1,50 +1,52 @@
 package com.gmail.aamelis.trf.ModUIRendering;
 
 import com.gmail.aamelis.trf.ModComboSystem.ClientComboState;
+import com.gmail.aamelis.trf.ModSpells.CastingSystem.ClientCooldownState;
+import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.Registries.SpellsInit;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
+
+import java.util.Map;
 
 public class SpellCastingUIRenderer {
 
     public static void renderMessage(RenderGuiEvent.Post event) {
-        if (System.currentTimeMillis() - ClientComboState.lastUpdateTime > 1000) {
-            return;
-        }
-
         var gui = event.getGuiGraphics();
         var mc = Minecraft.getInstance();
+        if (System.currentTimeMillis() - ClientComboState.lastUpdateTime < 1000) {
+            int x = mc.getWindow().getGuiScaledWidth() / 2;
+            int y = mc.getWindow().getGuiScaledHeight() - 50;
+            int color = 0xFFFFFFFF;
 
-        int x = mc.getWindow().getGuiScaledWidth() / 2;
-        int y = mc.getWindow().getGuiScaledHeight() - 50;
-
-        if (!ClientComboState.resultMessage.isEmpty()) {
-            if (System.currentTimeMillis() - ClientComboState.resultTime < 400) {
-                int color = !ClientComboState.resultMessage.equals("CAST FAILED") ? 0xFF00FF00 : 0xFFFF0000;
-
-                String result = ClientComboState.resultMessage;
-                int resultWidth = mc.font.width(result);
-
-                gui.drawString(mc.font, result, x - resultWidth / 2, y, color, true);
-                ClientComboState.currentInputs.clear();
-                return;
+            if (ClientComboState.resultState != ClientComboState.NOT_FINISHED) {
+                if (System.currentTimeMillis() - ClientComboState.resultTime < 1000) {
+                    if (ClientComboState.resultState == ClientComboState.SUCCESS) {
+                        color = 0xFF00FF00;
+                    } else if (ClientComboState.resultState == ClientComboState.FAILURE) {
+                        color = 0xFFFF0000;
+                    }
+                }
             }
+
+            if (ClientComboState.currentInputs.isEmpty()) return;
+
+            StringBuilder message = new StringBuilder();
+
+            for (SpellInput input : ClientComboState.currentInputs) {
+                message.append("- ").append(input.name()).append(" ");
+            }
+
+            message.append("-");
+
+            String msg = message.toString();
+            int width = mc.font.width(msg);
+
+            gui.drawString(mc.font, msg, x - width / 2, y, color, true);
         }
 
-        if (ClientComboState.currentInputs.isEmpty()) return;
-
-        StringBuilder message = new StringBuilder();
-
-        for (SpellInput input : ClientComboState.currentInputs) {
-            message.append("- ").append(input.name()).append(" ");
-        }
-
-        message.append("-");
-
-        String msg = message.toString();
-        int width = mc.font.width(msg);
-
-        gui.drawString(mc.font, msg, x - width / 2, y, 0xFFFFFFFF, true);
     }
 
 }

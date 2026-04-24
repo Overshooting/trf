@@ -4,7 +4,7 @@ import com.gmail.aamelis.trf.ModCommands.PresetLightsOutCommand;
 import com.gmail.aamelis.trf.ModCommands.SetClassCommand;
 import com.gmail.aamelis.trf.ModCommands.SetMaxManaCommand;
 import com.gmail.aamelis.trf.ModCommands.SummonNPCCommands;
-import com.gmail.aamelis.trf.ModSpells.CastingSystem.SpellAnimations;
+import com.gmail.aamelis.trf.ModCastingSystem.SpellAnimations;
 import com.gmail.aamelis.trf.Registries.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;

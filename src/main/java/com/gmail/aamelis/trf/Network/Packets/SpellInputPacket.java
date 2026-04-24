@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.Network.Packets;
 
-import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

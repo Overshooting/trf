@@ -1,9 +1,9 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModComboSystem.ComboUtils;
+import com.gmail.aamelis.trf.ModCastingSystem.Combo.ComboUtils;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.MageSpells.*;
-import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 
 import javax.annotation.Nullable;
 import java.util.List;

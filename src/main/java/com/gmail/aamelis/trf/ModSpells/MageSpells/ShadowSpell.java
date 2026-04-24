@@ -2,7 +2,7 @@ package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
-import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -42,7 +41,7 @@ public class ShadowSpell implements ISpell {
 
     @Override
     public long getCooldown() {
-        return 20000;
+        return 7000;
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.gmail.aamelis.trf.ModUIRendering;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
-import com.gmail.aamelis.trf.ModSpells.CastingSystem.ClientCooldownState;
+import com.gmail.aamelis.trf.ModCastingSystem.ClientCooldownState;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.SpellsInit;
@@ -53,10 +53,10 @@ public class ManaBarRenderer {
         graphics.blit(RenderPipelines.GUI_TEXTURED, realFullPath, x - 50, y + 40, 0, 0, relativeMana, 64, 100, 64);
 
         graphics.pose().popMatrix();
-        renderCooldowns(graphics, mc, x, manaTextY);
+        renderCooldowns(graphics, x, manaTextY);
     }
 
-    private static void renderCooldowns(GuiGraphics gui, Minecraft mc, int baseX, int manaTextY) {
+    private static void renderCooldowns(GuiGraphics gui, int baseX, int manaTextY) {
         if (ClientCooldownState.cooldowns.isEmpty()) return;
 
         int startY = manaTextY - 20;

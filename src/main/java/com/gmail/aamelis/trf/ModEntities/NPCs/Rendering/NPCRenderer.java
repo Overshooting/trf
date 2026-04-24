@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs.Rendering;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.AbstractNPCEntity;
-import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.AbstractNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

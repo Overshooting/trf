@@ -1,12 +1,8 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
-import com.gmail.aamelis.trf.ModEntities.NPCs.AbstractNPCEntity;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.DataLoaders.QuestDataLoader;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestLine;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestProgressChecker;
-import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.Dialog.DialogScheduler;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.AbstractNPCEntity;
+import com.gmail.aamelis.trf.ModNPCs.DataLoaders.QuestDataLoader;
+import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
@@ -14,8 +10,6 @@ import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -26,10 +20,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-
-import java.util.UUID;
 
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {

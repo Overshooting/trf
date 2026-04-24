@@ -2,11 +2,11 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
 import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.DataLoaders.QuestDataLoader;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.Objectives.QuestObjective;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestLine;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestStage;
+import com.gmail.aamelis.trf.ModNPCs.DataLoaders.QuestDataLoader;
+import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
+import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.QuestObjective;
+import com.gmail.aamelis.trf.ModNPCs.Quests.QuestLine;
+import com.gmail.aamelis.trf.ModNPCs.Quests.QuestStage;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

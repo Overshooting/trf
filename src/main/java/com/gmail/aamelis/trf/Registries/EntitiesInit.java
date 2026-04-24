@@ -1,8 +1,8 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
-import com.gmail.aamelis.trf.ModEntities.NPCs.StepQuestNPCEntity;
-import com.gmail.aamelis.trf.ModEntities.NPCs.TutorialStepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;

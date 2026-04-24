@@ -1,15 +1,9 @@
 package com.gmail.aamelis.trf.ModUIRendering;
 
-import com.gmail.aamelis.trf.ModComboSystem.ClientComboState;
-import com.gmail.aamelis.trf.ModSpells.CastingSystem.ClientCooldownState;
-import com.gmail.aamelis.trf.ModSpells.ISpell;
-import com.gmail.aamelis.trf.ModSpells.SpellInput;
-import com.gmail.aamelis.trf.Registries.SpellsInit;
+import com.gmail.aamelis.trf.ModCastingSystem.Combo.ClientComboState;
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
-
-import java.util.Map;
 
 public class SpellCastingUIRenderer {
 

@@ -1,11 +1,11 @@
 package com.gmail.aamelis.trf.ModCommands;
 
-import com.gmail.aamelis.trf.ModEntities.NPCs.FlavorNPCEntity;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCArea;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCConstructionHandler;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.NPCName;
-import com.gmail.aamelis.trf.ModEntities.NPCs.StepQuestNPCEntity;
-import com.gmail.aamelis.trf.ModEntities.NPCs.TutorialStepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
+import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCArea;
+import com.gmail.aamelis.trf.ModNPCs.NPCConstructionHandler;
+import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;

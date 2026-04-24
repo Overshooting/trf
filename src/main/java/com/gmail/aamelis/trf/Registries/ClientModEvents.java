@@ -2,15 +2,14 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
-import com.gmail.aamelis.trf.ModKeybinds.CastKeybinds;
-import com.gmail.aamelis.trf.ModKeybinds.KeyInputHandler;
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.CastKeybinds;
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.KeyInputHandler;
 import com.gmail.aamelis.trf.ModUIRendering.ManaBarRenderer;
 import com.gmail.aamelis.trf.ModUIRendering.SpellCastingUIRenderer;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.StaffProjectileRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
-import com.gmail.aamelis.trf.Network.ModClientPayloadHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
-import com.gmail.aamelis.trf.Network.ModServerPayloadHandler;
+import com.gmail.aamelis.trf.Network.ModPayloadHandler;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.server.level.ServerPlayer;
@@ -77,25 +76,25 @@ public class ClientModEvents {
         registrar.playToServer(
                 SpellInputPacket.TYPE,
                 SpellInputPacket.STREAM_CODEC,
-                ModServerPayloadHandler::handleSpellInput
+                ModPayloadHandler::handleSpellInput
         );
 
         registrar.playToClient(
                 ComboFeedbackPacket.TYPE,
                 ComboFeedbackPacket.STREAM_CODEC,
-                ModServerPayloadHandler::handleComboFeedback
+                ModPayloadHandler::handleComboFeedback
         );
 
         registrar.playToClient(
                 CooldownSyncPacket.TYPE,
                 CooldownSyncPacket.STREAM_CODEC,
-                ModServerPayloadHandler::handleCooldownSync
+                ModPayloadHandler::handleCooldownSync
         );
 
         registrar.playToClient(
                 SpellAnimationPacket.TYPE,
                 SpellAnimationPacket.STREAM_CODEC,
-                ModServerPayloadHandler::handleAnimation
+                ModPayloadHandler::handleAnimation
         );
     }
 

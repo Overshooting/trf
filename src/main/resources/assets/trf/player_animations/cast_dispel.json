@@ -1,0 +1,19 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.player.cast_dispel": {
+      "loop": false,
+      "animation_length": 1.25,
+      "bones": {
+        "right_arm": {
+          "rotation": {
+            "0.0": [0, 0, 0],
+            "0.15": [-180, 0, 0],
+            "1.0": [-180, 0, 0],
+            "1.25": [0, 0, 0]
+          }
+        }
+      }
+    }
+  }
+}

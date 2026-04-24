@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.ModSpells;
 
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 

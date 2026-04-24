@@ -1,12 +1,12 @@
 package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
 import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
-import com.gmail.aamelis.trf.ModEntities.NPCs.NPCsData.Quests.QuestTriggerSystem;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
-import com.gmail.aamelis.trf.ModSpells.SpellInput;
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +15,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class DispelSpell implements ISpell {
 
     @Override
     public long getCooldown() {
-        return 10000;
+        return 1000;
     }
 
     @Override
@@ -75,6 +74,8 @@ public class DispelSpell implements ISpell {
         PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.0f);
+
+        level.sendParticles(ParticleTypes.GLOW_SQUID_INK, player.getX(), player.getBlockY(), player.getZ(), 50, 0.8, 0.8, 0.8, 0.5);
 
         player.sendSystemMessage(Component.literal(effectsRemoved + " harmful effects removed by Dispel!").withStyle(
                 effectsRemoved > 0 ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY));

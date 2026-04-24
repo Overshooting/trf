@@ -1,5 +1,5 @@
 package com.gmail.aamelis.trf;
-//balls
+
 import com.gmail.aamelis.trf.ModCommands.PresetLightsOutCommand;
 import com.gmail.aamelis.trf.ModCommands.SetClassCommand;
 import com.gmail.aamelis.trf.ModCommands.SetMaxManaCommand;

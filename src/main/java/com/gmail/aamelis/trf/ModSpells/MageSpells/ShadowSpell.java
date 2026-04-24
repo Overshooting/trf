@@ -65,8 +65,6 @@ public class ShadowSpell implements ISpell {
         }
 
         player.teleportTo(target.x, target.y, target.z);
-
-        player.sendSystemMessage(Component.literal("Shadow cast successfully!"));
     }
 
     @Override

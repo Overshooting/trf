@@ -15,6 +15,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
@@ -44,11 +47,35 @@ public class DispelSpell implements ISpell {
 
     @Override
     public long getCooldown() {
-        return 1000;
+        return 50000;
     }
 
     @Override
     public void cast(ServerPlayer player) {
+        ServerLevel level = player.level();
+
+        List<Player> nearbyPlayers = level.getNearbyPlayers(TargetingConditions.DEFAULT, player, AABB.ofSize(player.getPosition(0.0f), 5.0, 5.0, 5.0));
+        int playersAffected = 1 + nearbyPlayers.size();
+
+        ResourceLocation animId = animationId();
+
+        SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId.toString());
+
+        PacketDistributor.sendToPlayer(player, packet);
+        PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
+
+        int effectsRemoved = 0;
+        for (Player thisPlayer : nearbyPlayers) {
+            effectsRemoved += applyEffect((ServerPlayer) thisPlayer, level);
+        }
+
+        effectsRemoved += applyEffect(player, level);
+
+        player.sendSystemMessage(Component.literal(effectsRemoved + " harmful effect" + (effectsRemoved == 1 ? "" : "s") + " removed from " + playersAffected + " player" +
+                (playersAffected == 1 ? "" : "s") + " by Dispel!").withStyle(effectsRemoved > 0 ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY));
+    }
+
+    public int applyEffect(ServerPlayer player, ServerLevel level) {
         Collection<MobEffectInstance> activeEffects = player.getActiveEffects();
         ArrayList<MobEffectInstance> effectsToRemove = new ArrayList<>();
         int effectsRemoved = 0;
@@ -64,21 +91,11 @@ public class DispelSpell implements ISpell {
             effectsRemoved++;
         }
 
-        ServerLevel level = player.level();
-
-        ResourceLocation animId = animationId();
-
-        SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId.toString());
-
-        PacketDistributor.sendToPlayer(player, packet);
-        PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
-
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.0f);
 
         level.sendParticles(ParticleTypes.GLOW_SQUID_INK, player.getX(), player.getBlockY(), player.getZ(), 50, 0.8, 0.8, 0.8, 0.5);
 
-        player.sendSystemMessage(Component.literal(effectsRemoved + " harmful effects removed by Dispel!").withStyle(
-                effectsRemoved > 0 ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY));
+        return effectsRemoved;
     }
 
     @Override

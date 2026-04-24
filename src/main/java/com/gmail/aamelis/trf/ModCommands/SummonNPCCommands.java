@@ -70,10 +70,15 @@ public class SummonNPCCommands {
                                         }
 
                                         if (!level.isClientSide()) {
-                                            StepQuestNPCEntity thisEntity = NPCConstructionHandler.buildStepQuestNPC(name, level);
-                                            thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
+                                            try {
+                                                StepQuestNPCEntity thisEntity = NPCConstructionHandler.buildStepQuestNPC(name, level);
+                                                thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
 
-                                            level.addFreshEntity(thisEntity);
+                                                level.addFreshEntity(thisEntity);
+                                            } catch (IllegalStateException e) {
+                                                context.getSource().sendFailure(Component.literal("No npc with name " + name + " found!"));
+                                                return 0;
+                                            }
                                         }
 
                                         context.getSource().sendSuccess(() -> Component.literal("Added " + name.getName() + " at the location of " + context.getSource().getEntity().getName().getString()), true);
@@ -99,10 +104,15 @@ public class SummonNPCCommands {
                                         }
 
                                         if (!level.isClientSide()) {
-                                            TutorialStepQuestNPCEntity thisEntity = NPCConstructionHandler.buildTutorialStepQuestNPC(name, level);
-                                            thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
+                                            try {
+                                                TutorialStepQuestNPCEntity thisEntity = NPCConstructionHandler.buildTutorialStepQuestNPC(name, level);
+                                                thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
 
-                                            level.addFreshEntity(thisEntity);
+                                                level.addFreshEntity(thisEntity);
+                                            } catch (IllegalStateException e) {
+                                                context.getSource().sendFailure(Component.literal("No npc with name " + name + " found!"));
+                                                return 0;
+                                            }
                                         }
 
                                         context.getSource().sendSuccess(() -> Component.literal("Added " + name.getName() + " at the location of " + context.getSource().getEntity().getName().getString()), true);

@@ -6,11 +6,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
+import java.util.List;
 
 public class SetClassCommand {
 
@@ -19,20 +21,11 @@ public class SetClassCommand {
                     .requires(stack -> stack.hasPermission(2))
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.argument("class", StringArgumentType.word())
+                                    .suggests((context, builder) ->
+                                            SharedSuggestionProvider.suggest(PlayerSpellData.getAllClassStrings(), builder))
                                     .executes(context -> {
                                         String className = StringArgumentType.getString(context, "class");
-                                        short classNumber = 0;
-
-                                        switch (className.toLowerCase()) {
-                                            case "warrior" -> classNumber = 1;
-                                            case "mage" -> classNumber = 2;
-                                            case "archer" -> classNumber = 3;
-                                            case "cleric" -> classNumber = 4;
-                                            default -> {
-                                                context.getSource().sendFailure(Component.literal("Invalid class name. Valid class names are: warrior, mage, archer, and cleric."));
-                                                return 0;
-                                            }
-                                        }
+                                        short classNumber = getClassNumber(className);
 
                                         Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
 
@@ -52,6 +45,18 @@ public class SetClassCommand {
 
                                         return targets.size();
                                     })));
+
+    private static short getClassNumber(String className) {
+        short classNumber = PlayerSpellData.EMPTY;
+
+        switch (className.toLowerCase()) {
+            case "warrior" -> classNumber = PlayerSpellData.WARRIOR;
+            case "mage" -> classNumber = PlayerSpellData.MAGE;
+            case "archer" -> classNumber = PlayerSpellData.ARCHER;
+            case "cleric" -> classNumber = PlayerSpellData.CLERIC;
+        }
+        return classNumber;
+    }
 
 
 }

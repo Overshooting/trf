@@ -5,11 +5,14 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.List;
 
 public class PresetLightsOutCommand {
 
@@ -49,6 +52,8 @@ public class PresetLightsOutCommand {
                     .then(Commands.argument("pos1", BlockPosArgument.blockPos())
                             .then(Commands.argument("pos2", BlockPosArgument.blockPos())
                                     .then(Commands.argument("preset", StringArgumentType.word())
+                                            .suggests((context, builder) ->
+                                                    SharedSuggestionProvider.suggest(List.of(EASY_TYPE, MED_TYPE, HARD_TYPE), builder))
                                             .executes(context -> {
                                                 BlockPos pos1 = BlockPosArgument.getLoadedBlockPos(context, "pos1");
                                                 BlockPos pos2 = BlockPosArgument.getLoadedBlockPos(context, "pos2");

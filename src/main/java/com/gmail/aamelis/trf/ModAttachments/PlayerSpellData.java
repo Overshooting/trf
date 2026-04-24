@@ -80,6 +80,10 @@ public class PlayerSpellData {
         player.setData(AttachmentTypesInit.PLAYER_SPELL_DATA, new PlayerSpellData(playerClass, unlockedSpells));
     }
 
+    public static List<String> getAllClassStrings() {
+        return List.of("Default", "Warrior", "Mage", "Archer", "Cleric");
+    }
+
     public static final MapCodec<PlayerSpellData> CODEC =
             RecordCodecBuilder.mapCodec(instance ->
                     instance.group(

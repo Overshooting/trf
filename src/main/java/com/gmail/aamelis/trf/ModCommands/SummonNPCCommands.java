@@ -70,12 +70,12 @@ public class SummonNPCCommands {
                                         }
 
                                         if (!level.isClientSide()) {
-                                            try {
+                                            if (NPCName.getValidQuestNames().contains(name.getName())) {
                                                 StepQuestNPCEntity thisEntity = NPCConstructionHandler.buildStepQuestNPC(name, level);
                                                 thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
 
                                                 level.addFreshEntity(thisEntity);
-                                            } catch (IllegalStateException e) {
+                                            } else {
                                                 context.getSource().sendFailure(Component.literal("No npc with name " + name + " found!"));
                                                 return 0;
                                             }
@@ -104,12 +104,12 @@ public class SummonNPCCommands {
                                         }
 
                                         if (!level.isClientSide()) {
-                                            try {
+                                            if (NPCName.getValidTutorialNames().contains(name.getName())) {
                                                 TutorialStepQuestNPCEntity thisEntity = NPCConstructionHandler.buildTutorialStepQuestNPC(name, level);
                                                 thisEntity.setPos(commandEntity.getX(), commandEntity.getY(), commandEntity.getZ());
 
                                                 level.addFreshEntity(thisEntity);
-                                            } catch (IllegalStateException e) {
+                                            } else {
                                                 context.getSource().sendFailure(Component.literal("No npc with name " + name + " found!"));
                                                 return 0;
                                             }

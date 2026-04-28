@@ -1,5 +1,7 @@
 {
   "item.trf.basic_staff": "Basic Wizard Staff",
+  "item.trf.dispel_scroll": "Scroll: Dispel",
+  "item.trf.shadow_step_scroll": "Scroll: Shadow Step",
 
   "block.trf.lights_out_block": "Lights Out Block",
   "block.trf.game_master_block": "Game Master Block",
@@ -7,6 +9,7 @@
 
   "creativetab.trf.all_weapons": "TRF: G&I Weapons",
   "creativetab.trf.all_blocks": "TRF: G&I Blocks",
+  "creativetab.trf.all_scrolls": "TRF: G&I Scrolls",
 
   "key.category.trf.spell_keys": "TRF Spell Casting",
 

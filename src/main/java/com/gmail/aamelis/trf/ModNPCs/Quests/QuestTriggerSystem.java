@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModNPCs.Quests;
 
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.QuestsInit;
 import net.minecraft.server.level.ServerPlayer;

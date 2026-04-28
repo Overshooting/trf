@@ -1,9 +1,6 @@
 package com.gmail.aamelis.trf;
 
-import com.gmail.aamelis.trf.ModCommands.PresetLightsOutCommand;
-import com.gmail.aamelis.trf.ModCommands.SetClassCommand;
-import com.gmail.aamelis.trf.ModCommands.SetMaxManaCommand;
-import com.gmail.aamelis.trf.ModCommands.SummonNPCCommands;
+import com.gmail.aamelis.trf.ModCommands.*;
 import com.gmail.aamelis.trf.ModCastingSystem.SpellAnimations;
 import com.gmail.aamelis.trf.Registries.*;
 import net.neoforged.bus.api.IEventBus;
@@ -41,6 +38,8 @@ public class TRFFinalRegistry {
         event.getDispatcher().register(SummonNPCCommands.SUMMON_FLAVOR_NPC_COMMAND);
         event.getDispatcher().register(SummonNPCCommands.SUMMON_STEP_QUEST_NPC_COMMAND);
         event.getDispatcher().register(SummonNPCCommands.SUMMON_TUTORIAL_STEP_QUEST_NPC_COMMAND);
+        event.getDispatcher().register(SpellCommands.GIVE_SPELL_COMMAND);
+        event.getDispatcher().register(SpellCommands.REVOKE_SPELL_COMMAND);
     }
 
     private void onClientSetup(FMLClientSetupEvent event) {

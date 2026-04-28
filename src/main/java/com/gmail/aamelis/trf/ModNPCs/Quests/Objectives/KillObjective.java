@@ -1,9 +1,11 @@
 package com.gmail.aamelis.trf.ModNPCs.Quests.Objectives;
 
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
+import com.gmail.aamelis.trf.Registries.QuestsInit;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 public class KillObjective implements QuestObjective{
 
@@ -25,5 +27,14 @@ public class KillObjective implements QuestObjective{
         if (type == target) {
             progress.incrementKill(target);
         }
+    }
+
+    public static void livingDeathEvent(LivingDeathEvent event) {
+        if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
+
+        EntityType<?> type = event.getEntity().getType();
+
+        QuestsInit.forEachActiveObjective(player, (obj, progress) ->
+                obj.onKill(player, progress, type));
     }
 }

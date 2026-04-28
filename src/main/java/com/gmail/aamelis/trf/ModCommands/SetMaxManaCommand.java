@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModCommands;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

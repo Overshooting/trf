@@ -36,6 +36,17 @@ public class CreativeTabsInit {
 
                     }).build());
 
+    public static final Supplier<CreativeModeTab> ALL_SCROLLS_TAB = CREATIVE_MODE_TABS.register("trf_all_scrolls_tab",
+            () -> CreativeModeTab.builder()
+                    .withTabsBefore(ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "trf_all_weapons_tab"))
+                    .icon(() -> new ItemStack(ItemsInit.DISPEL_SCROLL_ITEM.get()))
+                    .title(Component.translatable("creativetab.trf.all_scrolls"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ItemsInit.DISPEL_SCROLL_ITEM);
+                        output.accept(ItemsInit.SHADOW_STEP_SCROLL_ITEM);
+
+                    }).build());
+
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);
     }

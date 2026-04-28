@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf.ModUIRendering;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
-import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModCastingSystem.ClientCooldownState;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;

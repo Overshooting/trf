@@ -2,6 +2,7 @@ package com.gmail.aamelis.trf.ModNPCs.Dialog;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.*;
 

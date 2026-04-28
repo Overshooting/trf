@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs.Types;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModNPCs.Quests.QuestLine;
 import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;

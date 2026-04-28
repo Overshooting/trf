@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.QuestDataLoader;
 import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.QuestObjective;

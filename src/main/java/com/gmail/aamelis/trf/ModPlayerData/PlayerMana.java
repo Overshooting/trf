@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModAttachments;
+package com.gmail.aamelis.trf.ModPlayerData;
 
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.mojang.serialization.Codec;
@@ -7,6 +7,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public class PlayerMana {
 

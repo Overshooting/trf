@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.CastKeybinds;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.KeyInputHandler;
@@ -26,37 +26,7 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(
-                EntitiesInit.STAFF_PROJECTILE.get(),
-                StaffProjectileRenderer::new
-        );
-
-        event.registerEntityRenderer(
-                EntitiesInit.FLAVOR_NPC_ENTITY.get(),
-                NPCRenderer::new
-        );
-
-        event.registerEntityRenderer(
-                EntitiesInit.STEP_QUEST_NPC_ENTITY.get(),
-                NPCRenderer::new
-        );
-
-        event.registerEntityRenderer(
-                EntitiesInit.TUTORIAL_STEP_QUEST_NPC_ENTITY.get(),
-                NPCRenderer::new
-        );
-    }
-
-    @SubscribeEvent
-    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
-        }
-
-        PlayerSpellData playerData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
-
-        playerData.unlockSpell("dispel", player);
-        playerData.unlockSpell("shadow_step", player);
+        RenderersInit.registerRenderers(event);
     }
 
     @SubscribeEvent
@@ -70,35 +40,6 @@ public class ClientModEvents {
     }
 
     @SubscribeEvent
-    public static void register(RegisterPayloadHandlersEvent event) {
-        final var registrar = event.registrar("1");
-
-        registrar.playToServer(
-                SpellInputPacket.TYPE,
-                SpellInputPacket.STREAM_CODEC,
-                ModPayloadHandler::handleSpellInput
-        );
-
-        registrar.playToClient(
-                ComboFeedbackPacket.TYPE,
-                ComboFeedbackPacket.STREAM_CODEC,
-                ModPayloadHandler::handleComboFeedback
-        );
-
-        registrar.playToClient(
-                CooldownSyncPacket.TYPE,
-                CooldownSyncPacket.STREAM_CODEC,
-                ModPayloadHandler::handleCooldownSync
-        );
-
-        registrar.playToClient(
-                SpellAnimationPacket.TYPE,
-                SpellAnimationPacket.STREAM_CODEC,
-                ModPayloadHandler::handleAnimation
-        );
-    }
-
-    @SubscribeEvent
     public static void onRender(RenderGuiEvent.Post event) {
         SpellCastingUIRenderer.renderMessage(event);
         ManaBarRenderer.renderManaBar(event);
@@ -106,13 +47,6 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(MenuTypesInit.GAME_MASTER_BLOCK_MENU.get(), GameMasterBlockScreen::new);
-    }
-
-    @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        EntityRenderers.register(EntitiesInit.FLAVOR_NPC_ENTITY.get(), NPCRenderer::new);
-        EntityRenderers.register(EntitiesInit.STEP_QUEST_NPC_ENTITY.get(), NPCRenderer::new);
-        EntityRenderers.register(EntitiesInit.TUTORIAL_STEP_QUEST_NPC_ENTITY.get(), NPCRenderer::new);
+        RenderersInit.registerScreens(event);
     }
 }

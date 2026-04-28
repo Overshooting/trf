@@ -1,8 +1,8 @@
 package com.gmail.aamelis.trf.ModCastingSystem;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerComboManager;
-import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
-import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerComboManager;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModCastingSystem.Combo.ComboBuffer;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
@@ -33,8 +33,9 @@ public class SpellCastingSystem {
         }
 
         SpellInput[] inputs = buffer.getInputs();
+        PlayerSpellData spellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
 
-        ISpell spell = SpellsInit.get(inputs[0], inputs[1], inputs[2]);
+        ISpell spell = SpellsInit.get(spellData.getPlayerClass(), inputs[0], inputs[1], inputs[2]);
 
         boolean success = attemptCast(player, spell);
 
@@ -49,7 +50,10 @@ public class SpellCastingSystem {
         PlayerSpellData playerSpellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
         PlayerMana playerManaData = player.getData(AttachmentTypesInit.PLAYER_MANA.get());
 
-        if (spell != null && spell.getRequiredClass() == playerSpellData.getPlayerClass() && playerSpellData.hasSpell(spell.getId()) && playerManaData.getCurrentMana() >= spell.getRequiredMana() && !isOnCooldown(player, spell)) {
+        if (spell != null &&
+                playerSpellData.hasSpell(spell.getId()) &&
+                playerManaData.getCurrentMana() >= spell.getRequiredMana() &&
+                !isOnCooldown(player, spell)) {
             playerManaData.useMana(player, spell.getRequiredMana());
             spell.cast(player);
             setCooldown(player, spell);
@@ -111,7 +115,6 @@ public class SpellCastingSystem {
                 new ComboFeedbackPacket(new ArrayList<>(), false, false));
     }
 
-    @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 

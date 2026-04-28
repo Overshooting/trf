@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModNPCs;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCArea;
 import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;

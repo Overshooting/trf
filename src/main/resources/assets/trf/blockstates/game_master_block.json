@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "trf:block/game_master_block" },
+    "facing=south": { "model": "trf:block/game_master_block", "y": 180 },
+    "facing=west":  { "model": "trf:block/game_master_block", "y": 270 },
+    "facing=east":  { "model": "trf:block/game_master_block", "y": 90 }
+  }
+}

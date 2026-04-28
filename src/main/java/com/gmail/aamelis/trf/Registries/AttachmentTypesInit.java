@@ -1,8 +1,8 @@
 package com.gmail.aamelis.trf.Registries;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.PlayerQuestData;
-import com.gmail.aamelis.trf.ModAttachments.PlayerSpellData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;

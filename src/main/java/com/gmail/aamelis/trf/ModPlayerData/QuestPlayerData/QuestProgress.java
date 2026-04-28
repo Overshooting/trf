@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModAttachments.QuestAttachments;
+package com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

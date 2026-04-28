@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModNPCs.Quests.Objectives;
 
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 

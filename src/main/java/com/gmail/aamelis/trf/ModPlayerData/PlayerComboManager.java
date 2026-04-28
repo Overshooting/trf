@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModAttachments;
+package com.gmail.aamelis.trf.ModPlayerData;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Combo.ComboBuffer;
 import net.minecraft.server.level.ServerPlayer;

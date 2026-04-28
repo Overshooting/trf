@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModAttachments;
+package com.gmail.aamelis.trf.ModPlayerData;
 
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.mojang.serialization.Codec;
@@ -74,6 +74,13 @@ public class PlayerSpellData {
 
     public Collection<String> getUnlockedSpells() {
         return unlockedSpells;
+    }
+
+    public boolean revokeSpell(String spellId, ServerPlayer player) {
+        boolean revoked = unlockedSpells.remove(spellId);
+
+        setDirty(player);
+        return revoked;
     }
 
     private void setDirty(ServerPlayer player) {

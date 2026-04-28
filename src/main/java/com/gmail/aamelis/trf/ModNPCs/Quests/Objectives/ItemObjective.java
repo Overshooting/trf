@@ -1,10 +1,12 @@
 package com.gmail.aamelis.trf.ModNPCs.Quests.Objectives;
 
-import com.gmail.aamelis.trf.ModAttachments.QuestAttachments.QuestProgress;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
+import com.gmail.aamelis.trf.Registries.QuestsInit;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 
 public class ItemObjective implements QuestObjective{
     private final Item item;
@@ -25,5 +27,14 @@ public class ItemObjective implements QuestObjective{
         if (stack.getItem() == item) {
             progress.incrementItem(stack);
         }
+    }
+
+    public static void itemPickupEvent(ItemEntityPickupEvent.Post event) {
+        if (!(event.getPlayer() instanceof ServerPlayer player)) return;
+
+        ItemStack stack = event.getItemEntity().getItem();
+
+        QuestsInit.forEachActiveObjective(player, (obj, progress) ->
+                obj.onItemPickup(player, progress, stack));
     }
 }

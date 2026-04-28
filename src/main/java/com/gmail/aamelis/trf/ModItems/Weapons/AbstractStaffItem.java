@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModItems.Weapons;
 
-import com.gmail.aamelis.trf.ModAttachments.PlayerMana;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public abstract class AbstractStaffItem extends Item {
 
     private static final int COOLDOWN_TICKS = 10;
-    private float staffDamage;
+    private final float staffDamage;
 
     public static final Supplier<Properties> STAFF_PROPERTIES = () ->
             new Item.Properties().stacksTo(1);

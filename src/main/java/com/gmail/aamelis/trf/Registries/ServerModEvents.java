@@ -1,9 +1,13 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModCastingSystem.SpellCastingSystem;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.AbstractNPCEntity;
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.QuestDataLoader;
 import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
+import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
+import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
+import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
 import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
@@ -21,6 +25,7 @@ import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
@@ -29,92 +34,49 @@ public class ServerModEvents {
     public static void playerTickEvent(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         player.getData(AttachmentTypesInit.PLAYER_MANA.get()).runManaTick(player);
+
         DialogScheduler.tick();
+
+        HungerOverride.overrideHunger(event);
+
+        SpellCastingSystem.onPlayerTick(event);
+    }
+
+    @SubscribeEvent
+    public static void onAttributeCreation(EntityAttributeCreationEvent event) {
+        AttributesInit.register(event);
     }
 
     @SubscribeEvent
     public static void playerRespawnEvent(PlayerEvent.PlayerRespawnEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-
         player.getData(AttachmentTypesInit.PLAYER_MANA.get()).fillMana(player);
     }
 
     @SubscribeEvent
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
-        final var registrar = event.registrar("1");
-
-        registrar.playToServer(
-                StartGamePacket.TYPE,
-                StartGamePacket.STREAM_CODEC,
-                GameMasterButtonHandler::handleStartGamePacket
-        );
-
-        registrar.playToServer(
-                ResetGamePacket.TYPE,
-                ResetGamePacket.STREAM_CODEC,
-                GameMasterButtonHandler::handleResetGamePacket
-        );
-
-        registrar.playToServer(
-                SetCornersPacket.TYPE,
-                SetCornersPacket.STREAM_CODEC,
-                GameMasterButtonHandler::handleSetCornersPacket
-        );
-
-        registrar.playToServer(
-                SetMessagePacket.TYPE,
-                SetMessagePacket.STREAM_CODEC,
-                GameMasterButtonHandler::handleSetMessagePacket
-        );
-
-        registrar.playToServer(
-                OpenLightsOutMenuPacket.TYPE,
-                OpenLightsOutMenuPacket.STREAM_CODEC,
-                GameMasterButtonHandler::handleOpenLightsOutMenu
-        );
-
-        registrar.playToServer(
-                BackButtonPacket.TYPE,
-                BackButtonPacket.STREAM_CODEC,
-                GameMasterButtonHandler::handleBackButtonPacket
-        );
-    }
-
-    @SubscribeEvent
-    public static void onAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(EntitiesInit.FLAVOR_NPC_ENTITY.get(), AbstractNPCEntity.createMobAttributes().build());
-        event.put(EntitiesInit.STEP_QUEST_NPC_ENTITY.get(), AbstractNPCEntity.createMobAttributes().build());
-        event.put(EntitiesInit.TUTORIAL_STEP_QUEST_NPC_ENTITY.get(), AbstractNPCEntity.createMobAttributes().build());
+        PayloadRegistrar registrar = event.registrar("1");
+        PacketsInit.register(registrar);
     }
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(NPCModel.LAYER_LOCATION, NPCModel::createBodyLayer);
+        RenderersInit.registerLayers(event);
     }
 
     @SubscribeEvent
     public static void livingDeathEvent(LivingDeathEvent event) {
-        if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
-
-        EntityType<?> type = event.getEntity().getType();
-
-        QuestsInit.forEachActiveObjective(player, (obj, progress) ->
-                obj.onKill(player, progress, type));
+        KillObjective.livingDeathEvent(event);
     }
 
     @SubscribeEvent
     public static void itemPickupEvent(ItemEntityPickupEvent.Post event) {
-        if (!(event.getPlayer() instanceof ServerPlayer player)) return;
-
-        ItemStack stack = event.getItemEntity().getItem();
-
-        QuestsInit.forEachActiveObjective(player, (obj, progress) ->
-                obj.onItemPickup(player, progress, stack));
+        ItemObjective.itemPickupEvent(event);
     }
 
     @SubscribeEvent
     public static void onAddReloadListener(AddServerReloadListenersEvent event) {
-        event.addListener(ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "quest_loader"), new QuestDataLoader());
+        DataLoadersInit.register(event);
     }
 
 }

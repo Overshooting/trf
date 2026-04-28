@@ -24,7 +24,7 @@ public class QuestsInit {
             throw new IllegalArgumentException("Illegal npc questline requested!");
         }
 
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, name.getName().toLowerCase());
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, name.getResourceLocationName());
 
         QuestLine quest = QuestDataLoader.LOADED_QUESTS.getOrDefault(id, null);
 

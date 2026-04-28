@@ -13,7 +13,8 @@ public enum NPCName {
     DEFAULT("null", FLAVOR_TYPE),
     WILLIAM("William", FLAVOR_TYPE),
     ALEX("Alex", FLAVOR_TYPE),
-    HEAD_GENERAL("Head General", TUTORIAL_TYPE);
+    HEAD_GENERAL("Head General", TUTORIAL_TYPE),
+    AZALEA_MURDERER("Azalea, the Murderer", STEP_QUEST_TYPE);
 
     private final String name;
     private final byte type;
@@ -50,7 +51,7 @@ public enum NPCName {
     }
 
     public String getResourceLocationName() {
-        return name.toLowerCase().replace(" ", "_");
+        return name.toLowerCase().replaceAll("[ ,]+", "_");
     }
 
     public static NPCName matchNameOrDefault(String nameCheck, NPCName defaultName) {

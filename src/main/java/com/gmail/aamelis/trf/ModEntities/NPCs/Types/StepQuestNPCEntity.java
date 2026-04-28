@@ -39,7 +39,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
     public void setName(NPCName name) {
         super.setName(name);
 
-        this.questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, getNPCName().name().toLowerCase());
+        this.questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, getNPCName().getResourceLocationName());
 
         if (!level().isClientSide()) {
             this.entityData.set(DATA_QUEST, questId.toString());

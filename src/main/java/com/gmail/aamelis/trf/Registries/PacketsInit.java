@@ -3,7 +3,7 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
 import com.gmail.aamelis.trf.Network.ModPayloadHandler;
 import com.gmail.aamelis.trf.Network.Packets.*;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import com.gmail.aamelis.trf.Network.SpellCastingHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public class PacketsInit {
@@ -67,6 +67,12 @@ public class PacketsInit {
                 SpellAnimationPacket.TYPE,
                 SpellAnimationPacket.STREAM_CODEC,
                 ModPayloadHandler::handleAnimation
+        );
+
+        registrar.playToClient(
+                LightningBeamPacket.TYPE,
+                LightningBeamPacket.STREAM_CODEC,
+                SpellCastingHandler::handleLightningBeam
         );
     }
 

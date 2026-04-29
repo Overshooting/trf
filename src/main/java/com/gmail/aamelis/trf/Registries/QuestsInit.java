@@ -17,24 +17,6 @@ import java.util.function.BiConsumer;
 
 public class QuestsInit {
 
-    public static final Map<NPCName, ResourceLocation> NPC_TO_QUEST = new HashMap<>();
-
-    public static QuestLine getQuest(NPCName name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Illegal npc questline requested!");
-        }
-
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, name.getResourceLocationName());
-
-        QuestLine quest = QuestDataLoader.LOADED_QUESTS.getOrDefault(id, null);
-
-        if (quest == null) {
-            throw new IllegalStateException("Missing quest JSON for NPC: " + name.getName() + " (" + id + ")");
-        }
-
-        return quest;
-    }
-
     public static QuestLine getQuest(ResourceLocation id) {
         QuestLine quest = QuestDataLoader.LOADED_QUESTS.get(id);
 

@@ -4,10 +4,12 @@ import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
@@ -79,7 +81,8 @@ public class PlayerMana {
         if (System.currentTimeMillis() - lastUseTime < 1500) return;
 
         if (Math.abs(currentMana - maxMana) >= 0.1) {
-            currentMana = Math.clamp(currentMana + (maxMana * manaMultiplier), 0, maxMana);
+            double thisManaMultiplier = checkMultiplier(player);
+            currentMana = Math.clamp(currentMana + (maxMana * thisManaMultiplier), 0, maxMana);
 
             setDirty(player);
         } else if (currentMana > maxMana) {
@@ -99,6 +102,43 @@ public class PlayerMana {
 
             setDirty(player);
         }
+    }
+
+    private double checkMultiplier(ServerPlayer player) {
+        if (player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass() != PlayerSpellData.MAGE) return manaMultiplier;
+
+        double thisManaMultiplier = manaMultiplier;
+        Vec3 currentPos = player.position();
+        CompoundTag data = player.getPersistentData();
+        Vec3 lastPos = new Vec3(
+                data.getDoubleOr("last_x", currentPos.x),
+                data.getDoubleOr("last_y", currentPos.y),
+                data.getDoubleOr("last_z", currentPos.z));
+
+        int stillTicks = data.getIntOr("still_ticks", 0);
+        double distSqr = currentPos.distanceToSqr(lastPos);
+        boolean isStill = distSqr < 1.0E-4 &&
+                !player.isFallFlying() &&
+                player.onGround() &&
+                player.zza == 0.0f &&
+                player.xxa == 0.0f;
+
+        if (isStill) {
+            stillTicks++;
+        } else {
+            stillTicks = 0;
+        }
+
+        if (stillTicks > 8) {
+            thisManaMultiplier *= 2;
+        }
+
+        data.putDouble("last_x", currentPos.x);
+        data.putDouble("last_y", currentPos.y);
+        data.putDouble("last_z", currentPos.z);
+        data.putInt("still_ticks", stillTicks);
+
+        return thisManaMultiplier;
     }
 
     private void setDirty(ServerPlayer player) {

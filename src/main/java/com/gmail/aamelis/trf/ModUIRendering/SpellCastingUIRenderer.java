@@ -30,7 +30,8 @@ public class SpellCastingUIRenderer {
             StringBuilder message = new StringBuilder();
 
             for (SpellInput input : ClientComboState.currentInputs) {
-                message.append("- ").append(input.name()).append(" ");
+                String nameSymbol = parseSymbol(input.name());
+                message.append("- ").append(nameSymbol).append(" ");
             }
 
             message.append("-");
@@ -41,6 +42,15 @@ public class SpellCastingUIRenderer {
             gui.drawString(mc.font, msg, x - width / 2, y, color, true);
         }
 
+    }
+
+    private static String parseSymbol(String str) {
+        return switch (str) {
+            case "C" -> "ᓵ";
+            case "V" -> "⍊";
+            case "B" -> "ʖ";
+            default -> throw new IllegalStateException("Illegal instance of SpellInput with name " + str + " detected!");
+        };
     }
 
 }

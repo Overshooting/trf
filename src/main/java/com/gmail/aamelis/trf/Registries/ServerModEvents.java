@@ -1,23 +1,17 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModCastingSystem.SpellCastingSystem;
-import com.gmail.aamelis.trf.ModEntities.NPCs.Types.AbstractNPCEntity;
-import com.gmail.aamelis.trf.ModNPCs.DataLoaders.QuestDataLoader;
 import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
-import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
 import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
-import com.gmail.aamelis.trf.Network.GameMasterButtonHandler;
-import com.gmail.aamelis.trf.Network.Packets.*;
+import com.gmail.aamelis.trf.ModSpellRendering.LightningBeam.LightningBeamRenderer;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -40,6 +34,11 @@ public class ServerModEvents {
         HungerOverride.overrideHunger(event);
 
         SpellCastingSystem.onPlayerTick(event);
+    }
+
+    @SubscribeEvent
+    public static void renderLevel(RenderLevelStageEvent.AfterTranslucentBlocks event) {
+        //LightningBeamRenderer.render(event.getPoseStack(), event. event.getPartialTick());
     }
 
     @SubscribeEvent

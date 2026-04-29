@@ -1,9 +1,9 @@
 package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.LightningBeamProjectile;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
-import com.gmail.aamelis.trf.Network.Packets.LightningBeamPacket;
 import com.gmail.aamelis.trf.Registries.EffectsInit;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -43,61 +43,48 @@ public class LightningBeamSpell implements ISpell {
 
     @Override
     public long getCooldown() {
-        return 20000;
+        return 2000;
     }
 
     @Override
     public void cast(ServerPlayer player) {
         ServerLevel level = player.level();
 
-        Vec3 start = player.getEyePosition();
+        for (int i = 0; i < 3; i++) {
+            int delay = i * 5;
+
+            level.getServer().addTickable(new Runnable() {
+                int ticks = delay;
+
+                @Override
+                public void run() {
+                    if (ticks-- > 0) {
+                        level.getServer().addTickable(this);
+                        return;
+                    }
+
+                    spawnBeam(player);
+                }
+            });
+        }
+    }
+
+    private void spawnBeam(ServerPlayer player) {
+        ServerLevel level = player.level();
+
+        LightningBeamProjectile proj = new LightningBeamProjectile(level, player);
+
         Vec3 look = player.getLookAngle();
 
-        double maxDistance = 10.0;
-        Vec3 end = start.add(look.scale(maxDistance));
-
-        HitResult hit = level.clip(new ClipContext(
-                start,
-                end,
-                ClipContext.Block.COLLIDER,
-                ClipContext.Fluid.NONE,
-                player
-        ));
-
-        if (hit.getType() != HitResult.Type.MISS) {
-            end = hit.getLocation();
-        }
-
-        Vec3 impact = end;
-
-        AABB box = new AABB(start, end).inflate(0.75);
-
-        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, box, e -> e instanceof Monster && e.isAlive());
-
-        for (LivingEntity entity : targets) {
-            Vec3 beamVec = end.subtract(start);
-            Vec3 toEntity = entity.position().subtract(start);
-
-            double t = toEntity.dot(beamVec) / beamVec.lengthSqr();
-            t = Math.clamp(t, 0.0, 1.0);
-
-            Vec3 closest = start.add(beamVec.scale(t));
-
-            if (closest.distanceToSqr(entity.position()) < 1.5) {
-                entity.hurt(player.damageSources().magic(), 6.0f);
-
-                entity.addEffect(new MobEffectInstance(
-                        EffectsInit.SHOCKED_EFFECT,
-                        100,
-                        0
-                ));
-            }
-        }
-
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(
-                player,
-                new LightningBeamPacket(start, end, impact)
+        proj.shoot(
+                look.x(),
+                look.y(),
+                look.z(),
+                4.0f,
+                0.0f
         );
+
+        level.addFreshEntity(proj);
     }
 
     @Override

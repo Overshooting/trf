@@ -44,6 +44,7 @@ public class CreativeTabsInit {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ItemsInit.DISPEL_SCROLL_ITEM);
                         output.accept(ItemsInit.SHADOW_STEP_SCROLL_ITEM);
+                        output.accept(ItemsInit.LIGHTNING_BEAM_SCROLL_ITEM);
 
                     }).build());
 

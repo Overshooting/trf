@@ -5,7 +5,6 @@ import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
 import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
-import com.gmail.aamelis.trf.ModSpellRendering.LightningBeam.LightningBeamRenderer;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,11 +33,6 @@ public class ServerModEvents {
         HungerOverride.overrideHunger(event);
 
         SpellCastingSystem.onPlayerTick(event);
-    }
-
-    @SubscribeEvent
-    public static void renderLevel(RenderLevelStageEvent.AfterTranslucentBlocks event) {
-        //LightningBeamRenderer.render(event.getPoseStack(), event. event.getPartialTick());
     }
 
     @SubscribeEvent

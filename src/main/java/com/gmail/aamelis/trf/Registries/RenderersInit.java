@@ -2,6 +2,7 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.LightningBeamProjectileRenderer;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.StaffProjectileRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -15,6 +16,11 @@ public class RenderersInit {
         event.registerEntityRenderer(
                 EntitiesInit.STAFF_PROJECTILE.get(),
                 StaffProjectileRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                EntitiesInit.LIGHTNING_BEAM_PROJECTILE.get(),
+                LightningBeamProjectileRenderer::new
         );
 
         event.registerEntityRenderer(

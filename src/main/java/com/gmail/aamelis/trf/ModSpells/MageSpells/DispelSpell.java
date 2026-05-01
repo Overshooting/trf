@@ -51,6 +51,16 @@ public class DispelSpell implements ISpell {
     }
 
     @Override
+    public int multiCastTicks() {
+        return 0;
+    }
+
+    @Override
+    public int repetitions() {
+        return 0;
+    }
+
+    @Override
     public void cast(ServerPlayer player) {
         ServerLevel level = player.level();
 
@@ -73,6 +83,11 @@ public class DispelSpell implements ISpell {
 
         player.sendSystemMessage(Component.literal(effectsRemoved + " harmful effect" + (effectsRemoved == 1 ? "" : "s") + " removed from " + playersAffected + " player" +
                 (playersAffected == 1 ? "" : "s") + " by Dispel!").withStyle(effectsRemoved > 0 ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY));
+    }
+
+    @Override
+    public void repeatedCast(ServerPlayer player, int iteration) {
+
     }
 
     public int applyEffect(ServerPlayer player, ServerLevel level) {

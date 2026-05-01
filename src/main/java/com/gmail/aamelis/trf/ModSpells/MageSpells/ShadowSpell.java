@@ -44,6 +44,16 @@ public class ShadowSpell implements ISpell {
     }
 
     @Override
+    public int multiCastTicks() {
+        return 0;
+    }
+
+    @Override
+    public int repetitions() {
+        return 0;
+    }
+
+    @Override
     public void cast(ServerPlayer player) {
         player.level().playSound(null, player.blockPosition(), SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.PLAYERS, 60.0f, 0.8f);
         player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 15, 255));
@@ -64,6 +74,11 @@ public class ShadowSpell implements ISpell {
         }
 
         player.teleportTo(target.x, target.y, target.z);
+    }
+
+    @Override
+    public void repeatedCast(ServerPlayer player, int iteration) {
+
     }
 
     @Override

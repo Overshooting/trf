@@ -18,7 +18,13 @@ public interface ISpell {
 
     long getCooldown();
 
+    int multiCastTicks();
+
+    int repetitions();
+
     void cast(ServerPlayer player);
+
+    void repeatedCast(ServerPlayer player, int iteration);
 
     List<SpellInput> getCombo();
 

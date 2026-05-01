@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModCastingSystem.MultiStepSpells.MultiCastManager;
 import com.gmail.aamelis.trf.ModCastingSystem.SpellCastingSystem;
 import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
@@ -17,11 +18,17 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
+
+    @SubscribeEvent
+    public static void onServerTick(ServerTickEvent.Post event) {
+        MultiCastManager.tick();
+    }
 
     @SubscribeEvent
     public static void playerTickEvent(PlayerTickEvent.Post event) {

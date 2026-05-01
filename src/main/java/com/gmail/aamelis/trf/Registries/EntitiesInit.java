@@ -3,8 +3,6 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.LightningBeamProjectile;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.LightningBeamProjectileRenderer;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;
@@ -27,26 +25,12 @@ public class EntitiesInit {
                             StaffProjectile::new,
                             MobCategory.MISC
                     )
-                            .sized(0.75f, 0.75f)
+                            .sized(1.0f, 1.0f)
                             .clientTrackingRange(4)
                             .updateInterval(10)
                             .build(ResourceKey.create(
                                     Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "staff_projectile")
-                            )));
-
-    public static final DeferredHolder<EntityType<?>, EntityType<LightningBeamProjectile>> LIGHTNING_BEAM_PROJECTILE =
-            ENTITIES.register("lightning_beam_projectile", () ->
-                    EntityType.Builder.<LightningBeamProjectile>of(
-                                    LightningBeamProjectile::new,
-                                    MobCategory.MISC
-                            )
-                            .sized(0.75f, 0.75f)
-                            .clientTrackingRange(4)
-                            .updateInterval(10)
-                            .build(ResourceKey.create(
-                                    Registries.ENTITY_TYPE,
-                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "lightning_beam_projectile")
                             )));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FlavorNPCEntity>> FLAVOR_NPC_ENTITY =

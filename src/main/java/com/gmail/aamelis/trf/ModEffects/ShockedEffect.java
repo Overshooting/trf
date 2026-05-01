@@ -15,14 +15,14 @@ public class ShockedEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
-        entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 1, 255));
-        entity.hurt(entity.damageSources().generic(), 0.25f);
+        entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 8, 255));
+        entity.hurt(entity.damageSources().generic(), 0.1f);
 
         return super.applyEffectTick(level, entity, amplifier);
     }
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return duration % 5 == 0;
+        return duration % 30 == 0;
     }
 }

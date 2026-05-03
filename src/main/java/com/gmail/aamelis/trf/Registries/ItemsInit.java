@@ -6,12 +6,17 @@ import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.LightningBeamScroll;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.ShadowStepScroll;
 import com.gmail.aamelis.trf.ModItems.Weapons.AbstractStaffItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.BasicStaffItem;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ItemsInit {
 

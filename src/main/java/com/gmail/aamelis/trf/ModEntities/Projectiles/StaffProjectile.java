@@ -66,7 +66,7 @@ public class StaffProjectile extends ThrowableProjectile {
                     getX(),
                     getY(),
                     getZ(),
-                    20,
+                    10,
                     0.2,0.2,0.2,
                     0.05
             );

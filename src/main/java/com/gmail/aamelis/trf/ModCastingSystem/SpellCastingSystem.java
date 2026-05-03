@@ -9,17 +9,22 @@ import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.Network.Packets.ComboFeedbackPacket;
 import com.gmail.aamelis.trf.Network.Packets.CooldownSyncPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
+import com.gmail.aamelis.trf.Registries.ItemsInit;
 import com.gmail.aamelis.trf.Registries.SpellsInit;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.*;
 
 public class SpellCastingSystem {
 
     private static final Map<UUID, Map<String, Long>> spellCooldowns = new HashMap<>();
+    private static final Map<Short, List<Item>> CLASS_ITEMS = new HashMap<>();
 
     public static void handleInput(ServerPlayer player, SpellInput input) {
 
@@ -37,7 +42,10 @@ public class SpellCastingSystem {
 
         ISpell spell = SpellsInit.get(spellData.getPlayerClass(), inputs[0], inputs[1], inputs[2]);
 
-        boolean success = attemptCast(player, spell);
+        boolean success = false;
+        if (spell != null) {
+            success = attemptCast(player, spell);
+        }
 
         sendComboUpdate(player, buffer, true, success);
 
@@ -49,11 +57,10 @@ public class SpellCastingSystem {
 
         PlayerSpellData playerSpellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
         PlayerMana playerManaData = player.getData(AttachmentTypesInit.PLAYER_MANA.get());
+        ItemStack heldItem = player.getMainHandItem();
+        List<Item> validClassItems = CLASS_ITEMS.getOrDefault(spell.getRequiredClass(), Collections.emptyList());
 
-        if (spell != null &&
-                playerSpellData.hasSpell(spell.getId()) &&
-                playerManaData.getCurrentMana() >= spell.getRequiredMana() &&
-                !isOnCooldown(player, spell)) {
+        if (playerSpellData.hasSpell(spell.getId()) && playerManaData.getCurrentMana() >= spell.getRequiredMana() && !isOnCooldown(player, spell) && validClassItems.contains(heldItem.getItem().asItem())) {
             playerManaData.useMana(player, spell.getRequiredMana());
             spell.cast(player);
             setCooldown(player, spell);
@@ -140,6 +147,15 @@ public class SpellCastingSystem {
                 spellCooldowns.remove(id);
             }
         }
+    }
+
+    public static void populateClassItems() {
+        CLASS_ITEMS.put(
+                PlayerSpellData.MAGE,
+                List.of(
+                        ItemsInit.BASIC_STAFF_ITEM.get()
+                )
+        );
     }
 
 }

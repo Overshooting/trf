@@ -17,6 +17,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -77,6 +78,11 @@ public class ServerModEvents {
     @SubscribeEvent
     public static void onAddReloadListener(AddServerReloadListenersEvent event) {
         DataLoadersInit.register(event);
+    }
+
+    @SubscribeEvent
+    public static void onServerStartedEvent(ServerStartedEvent event) {
+        SpellCastingSystem.populateClassItems();
     }
 
 }

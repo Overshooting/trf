@@ -11,6 +11,8 @@ public class DialogScheduler {
     private static final Map<ServerPlayer, List<ScheduledMessage>> QUEUE = new HashMap<>();
 
     public static void schedule(ServerPlayer player, String text, int delay) {
+        if (QUEUE.containsKey(player)) return;
+
         QUEUE.computeIfAbsent(player, p -> new ArrayList<>())
                 .add(new ScheduledMessage(text, delay));
     }

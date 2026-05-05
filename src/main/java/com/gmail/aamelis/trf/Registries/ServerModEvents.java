@@ -43,11 +43,6 @@ public class ServerModEvents {
     }
 
     @SubscribeEvent
-    public static void prePlayerTickEvent(PlayerTickEvent.Pre event) {
-        if (!(event.getEntity() instanceof ServerPlayer)) return;
-    }
-
-    @SubscribeEvent
     public static void onAttributeCreation(EntityAttributeCreationEvent event) {
         AttributesInit.register(event);
     }

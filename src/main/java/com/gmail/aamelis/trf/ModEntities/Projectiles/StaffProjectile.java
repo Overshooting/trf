@@ -107,8 +107,7 @@ public class StaffProjectile extends ThrowableProjectile {
 
         Block block = level().getBlockState(result.getBlockPos()).getBlock();
 
-        if (block != Blocks.SHORT_GRASS && block != Blocks.TALL_GRASS && block != Blocks.TALL_DRY_GRASS && block != Blocks.SHORT_DRY_GRASS &&
-                block != Blocks.SNOW && block != Blocks.SEAGRASS) {
+        if (ProjectileUtils.validateBlock(block)) {
             burstParticles();
             discard();
         }

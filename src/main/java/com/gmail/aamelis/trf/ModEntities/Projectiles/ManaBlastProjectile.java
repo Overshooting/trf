@@ -76,7 +76,6 @@ public class ManaBlastProjectile extends ThrowableProjectile {
         if (target instanceof LivingEntity living && !(target instanceof ServerPlayer)) {
             living.hurt(damageSources().indirectMagic(this, owner), 8.0f);
 
-            burstParticles();
             runHitResult(result.getLocation(), living);
         }
 
@@ -86,12 +85,9 @@ public class ManaBlastProjectile extends ThrowableProjectile {
     private void runHitResult(Vec3 location, @Nullable LivingEntity firstTarget) {
         if (!(level() instanceof ServerLevel level)) return;
 
-        double radius = 3.0;
+        double radius = 8.0;
 
-        AABB box = new AABB(
-                location.x() - radius, location.y() - radius, location.z() - radius,
-                location.x() - radius, location.y() - radius, location.z() - radius
-        );
+        AABB box = new AABB(location, location).inflate(radius);
 
         Entity owner = getOwner();
 
@@ -104,6 +100,9 @@ public class ManaBlastProjectile extends ThrowableProjectile {
 
         for (LivingEntity target : targets) {
             if (target.position().distanceToSqr(location) > radius * radius) continue;
+
+            double distSqr = target.position().distanceToSqr(location);
+            if (distSqr > radius * radius) return;
 
             Vec3 start = location;
             Vec3 end = target.getEyePosition();
@@ -118,15 +117,21 @@ public class ManaBlastProjectile extends ThrowableProjectile {
 
             BlockHitResult result = level.clip(context);
 
-            if (result.getType() != HitResult.Type.MISS) {
+            double blockHitMultiplier = 1.0;
+
+            if (result.getType() == HitResult.Type.BLOCK) {
+                Block block = level.getBlockState(result.getBlockPos()).getBlock();
+
+                if (!ProjectileUtils.validateBlock(block)) break;
+
                 double hitDist = result.getLocation().distanceToSqr(start);
                 double targetDist = end.distanceToSqr(start);
 
-                if (hitDist < targetDist) continue;
+                if (hitDist + 1e-4 < targetDist) blockHitMultiplier = 0.2;
             }
 
             double dist = Math.sqrt(target.position().distanceToSqr(location));
-            float damage = Math.max(1.0f, (float)(8.0 * (1.0 - dist / radius)));
+            float damage = Math.max(1.0f, (float)(8.0 * (1.0 - dist / radius) * blockHitMultiplier));
 
             Vec3 knockback = target.position().subtract(location).normalize().scale(0.5);
 
@@ -141,10 +146,8 @@ public class ManaBlastProjectile extends ThrowableProjectile {
 
         Block block = level().getBlockState(result.getBlockPos()).getBlock();
 
-        if (block != Blocks.SHORT_GRASS && block != Blocks.TALL_GRASS && block != Blocks.TALL_DRY_GRASS && block != Blocks.SHORT_DRY_GRASS &&
-                block != Blocks.SNOW && block != Blocks.SEAGRASS) {
+        if (ProjectileUtils.validateBlock(block)) {
             runHitResult(result.getLocation(), null);
-            burstParticles();
             discard();
         }
     }
@@ -153,27 +156,13 @@ public class ManaBlastProjectile extends ThrowableProjectile {
         if (!(level() instanceof ServerLevel level)) return;
 
         level.sendParticles(
-                ParticleTypes.FALLING_WATER,
+                ParticleTypes.SONIC_BOOM,
                 getX(),
                 getY(),
                 getZ(),
                 6,
                 random.nextGaussian() * 0.1, random.nextGaussian() * 0.1, random.nextGaussian() * 0.1,
                 0.01
-        );
-    }
-
-    private void burstParticles() {
-        if (!(level() instanceof ServerLevel level)) return;
-
-        level.sendParticles(
-                ParticleTypes.RAIN,
-                getX(),
-                getY(),
-                getZ(),
-                40,
-                0.6,0.6,0.6,
-                0.3
         );
     }
 }

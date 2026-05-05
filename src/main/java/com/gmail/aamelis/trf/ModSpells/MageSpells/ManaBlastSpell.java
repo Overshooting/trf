@@ -9,6 +9,8 @@ import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -53,6 +55,11 @@ public class ManaBlastSpell implements ISpell {
     @Override
     public void cast(ServerPlayer player) {
         ServerLevel level = player.level();
+
+        Vec3 horizontal = new Vec3(player.getLookAngle().x(), 0, player.getLookAngle().z()).normalize();
+
+        player.setDeltaMovement(player.getDeltaMovement().add(horizontal.scale(0.5)));
+        player.hasImpulse = true;
 
         ManaBlastProjectile proj = new ManaBlastProjectile(level, player);
 

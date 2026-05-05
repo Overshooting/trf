@@ -2,7 +2,7 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.StaffProjectileRenderer;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.ParticleProjectileRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -12,7 +12,12 @@ public class RenderersInit {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(
                 EntitiesInit.STAFF_PROJECTILE.get(),
-                StaffProjectileRenderer::new
+                ParticleProjectileRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                EntitiesInit.MANA_BLAST_PROJECTILE.get(),
+                ParticleProjectileRenderer::new
         );
 
         event.registerEntityRenderer(

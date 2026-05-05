@@ -49,6 +49,7 @@ public class SpellsInit {
         register(new DispelSpell());
         register(new ShadowSpell());
         register(new LightningBeamSpell());
+        register(new ManaBlastSpell());
     }
 
     public static List<String> getAllSpellNames() {

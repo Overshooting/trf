@@ -1,13 +1,13 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering;
 
-import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 
-public class StaffProjectileRenderer extends EntityRenderer<StaffProjectile, EntityRenderState> {
+public class ParticleProjectileRenderer extends EntityRenderer<ThrowableProjectile, EntityRenderState> {
 
-    public StaffProjectileRenderer(EntityRendererProvider.Context context) {
+    public ParticleProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 

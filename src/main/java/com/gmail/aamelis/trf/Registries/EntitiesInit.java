@@ -3,6 +3,7 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.ManaBlastProjectile;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;
@@ -31,6 +32,20 @@ public class EntitiesInit {
                             .build(ResourceKey.create(
                                     Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "staff_projectile")
+                            )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ManaBlastProjectile>> MANA_BLAST_PROJECTILE =
+            ENTITIES.register("mana_blast_projectile", () ->
+                    EntityType.Builder.<ManaBlastProjectile>of(
+                                    ManaBlastProjectile::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 1.0f)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "mana_blast_projectile")
                             )));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FlavorNPCEntity>> FLAVOR_NPC_ENTITY =

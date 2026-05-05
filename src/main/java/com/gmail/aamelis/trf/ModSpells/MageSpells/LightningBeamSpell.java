@@ -2,8 +2,10 @@ package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.ModCastingSystem.MultiStepSpells.MultiCastManager;
+import com.gmail.aamelis.trf.ModCastingSystem.SpellAnimations;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
+import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
 import com.gmail.aamelis.trf.Registries.EffectsInit;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.BlockPos;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +69,15 @@ public class LightningBeamSpell implements ISpell {
 
     @Override
     public void cast(ServerPlayer player) {
+        ServerLevel level = player.level();
+
+        ResourceLocation animId = animationId();
+
+        SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId.toString());
+
+        PacketDistributor.sendToPlayer(player, packet);
+        PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
+
         MultiCastManager.start(player, this);
     }
 

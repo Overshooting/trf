@@ -64,7 +64,12 @@ public class DispelSpell implements ISpell {
     public void cast(ServerPlayer player) {
         ServerLevel level = player.level();
 
-        List<Player> nearbyPlayers = level.getNearbyPlayers(TargetingConditions.DEFAULT, player, AABB.ofSize(player.getPosition(0.0f), 5.0, 5.0, 5.0));
+        double radius = 4.0;
+        AABB box = player.getBoundingBox().inflate(radius);
+
+        List<ServerPlayer> nearbyPlayers = level.getEntitiesOfClass(ServerPlayer.class, box, p ->
+                p != player && p.distanceToSqr(player) <= radius * radius);
+
         int playersAffected = 1 + nearbyPlayers.size();
 
         ResourceLocation animId = animationId();
@@ -75,8 +80,8 @@ public class DispelSpell implements ISpell {
         PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
 
         int effectsRemoved = 0;
-        for (Player thisPlayer : nearbyPlayers) {
-            effectsRemoved += applyEffect((ServerPlayer) thisPlayer, level);
+        for (ServerPlayer thisPlayer : nearbyPlayers) {
+            effectsRemoved += applyEffect(thisPlayer, level);
         }
 
         effectsRemoved += applyEffect(player, level);

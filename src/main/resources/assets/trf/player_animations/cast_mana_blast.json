@@ -1,0 +1,19 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.player.cast_mana_blast": {
+      "loop": false,
+      "animation_length": 0.8,
+      "bones": {
+        "right_arm": {
+          "rotation": {
+            "0.0": [0, 0, 0],
+            "0.1": [-100, 0, 0],
+            "0.6": [-100, 0, 0],
+            "0.8": [0, 0, 0]
+          }
+        }
+      }
+    }
+  }
+}

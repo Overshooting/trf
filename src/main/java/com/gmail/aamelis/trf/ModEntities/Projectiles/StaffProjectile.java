@@ -34,7 +34,7 @@ public class StaffProjectile extends ThrowableProjectile {
     public void tick() {
         super.tick();
 
-        if (level().isClientSide()) {
+        if (!level().isClientSide()) {
             spawnParticles();
         }
 
@@ -44,33 +44,31 @@ public class StaffProjectile extends ThrowableProjectile {
     }
 
     private void spawnParticles() {
-        for (int i = 0; i < 2; i++) {
-            level().addParticle(
-                    ParticleTypes.SOUL,
-                    getX(),
-                    getY(),
-                    getZ(),
-                    random.nextGaussian() * 0.1,
-                    random.nextGaussian() * 0.1,
-                    random.nextGaussian() * 0.1
-            );
-        }
+        if (!(level() instanceof ServerLevel level)) return;
+
+        level.sendParticles(
+                ParticleTypes.SOUL,
+                getX(),
+                getY(),
+                getZ(),
+                6,
+                random.nextGaussian() * 0.1, random.nextGaussian() * 0.1, random.nextGaussian() * 0.1,
+                0.05
+        );
     }
 
     private void burstParticles() {
-        if (!(level() instanceof ServerLevel)) return;
+        if (!(level() instanceof ServerLevel level)) return;
 
-        for (int i = 0; i < 20; i++) {
-            ((ServerLevel) level()).sendParticles(
-                    ParticleTypes.SOUL_FIRE_FLAME,
-                    getX(),
-                    getY(),
-                    getZ(),
-                    20,
-                    0.2,0.2,0.2,
-                    0.05
-            );
-        }
+        level.sendParticles(
+                ParticleTypes.SOUL_FIRE_FLAME,
+                getX(),
+                getY(),
+                getZ(),
+                40,
+                0.5,0.5,0.5,
+                0.3
+        );
     }
 
     @Override
@@ -95,12 +93,9 @@ public class StaffProjectile extends ThrowableProjectile {
         }
 
         if (target instanceof LivingEntity living) {
-
-            DamageSource source = damageSources().indirectMagic(this, owner);
-
             burstParticles();
 
-            living.hurt(source, damage);
+            living.hurt(damageSources().indirectMagic(this, owner), damage);
         }
 
         discard();

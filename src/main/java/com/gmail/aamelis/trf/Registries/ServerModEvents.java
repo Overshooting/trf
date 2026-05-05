@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -40,6 +39,11 @@ public class ServerModEvents {
         HungerOverride.overrideHunger(event);
 
         SpellCastingSystem.onPlayerTick(event);
+    }
+
+    @SubscribeEvent
+    public static void prePlayerTickEvent(PlayerTickEvent.Pre event) {
+        if (!(event.getEntity() instanceof ServerPlayer)) return;
     }
 
     @SubscribeEvent

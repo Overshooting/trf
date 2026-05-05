@@ -28,32 +28,34 @@ public class ManaBarRenderer {
         PlayerSpellData spellData = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA.get());
         GuiGraphics graphics = event.getGuiGraphics();
 
-        if (spellData.getPlayerClass() == 0) {
+        if (spellData.getPlayerClass() == PlayerSpellData.EMPTY) {
             return;
         }
 
-        int x = mc.getWindow().getGuiScaledWidth() / 2 + 150;
-        int y = mc.getWindow().getGuiScaledHeight() - 20;
+        int screenWidth = mc.getWindow().getGuiScaledWidth();
+        int screenHeight = mc.getWindow().getGuiScaledHeight();
+        int margin = 10;
+        int barWidth = 100;
+        int barHeight = 64;
+        int x = screenWidth - barWidth - margin;
+        int y = screenHeight - barHeight - margin + 17;
         String msg = "Mana: " + manaData.getCurrentMana() + "/" + manaData.getMaxMana();
-        int width = mc.font.width(msg);
+        int textWidth = mc.font.width(msg);
+        int textX = x + barWidth / 2 - textWidth / 2;
+        int textY = y + 18;
         int relativeMana = (int) (manaData.getCurrentMana() / (double) manaData.getMaxMana() * 100);
-        String className = spellData.getPlayerClassString().toLowerCase();
 
+        String className = spellData.getPlayerClassString().toLowerCase();
         ResourceLocation realEmptyPath = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bars/" + className + "_mana_bar_empty.png");
         ResourceLocation realFullPath = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/mana_bars/" + className + "_mana_bar_full.png");
 
-        int manaTextY = y - 15;
-        graphics.drawString(mc.font, msg, x - width / 2, manaTextY, 0xFFFFFFFF, true);
+        graphics.drawString(mc.font, msg, textX, textY, 0xFFFFFFFF, true);
 
-        graphics.pose().pushMatrix();
 
-        graphics.pose().scale(1.0f, 0.75f);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, realEmptyPath, x, y, 0, 0, barWidth, barHeight, barWidth, barHeight);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, realFullPath, x, y, 0, 0, relativeMana, barHeight, barWidth, barHeight);
 
-        graphics.blit(RenderPipelines.GUI_TEXTURED, realEmptyPath, x - 50, y + 40, 0, 0, 100, 64, 100, 64);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, realFullPath, x - 50, y + 40, 0, 0, relativeMana, 64, 100, 64);
-
-        graphics.pose().popMatrix();
-        renderCooldowns(graphics, x, manaTextY);
+        renderCooldowns(graphics, x, textY);
     }
 
     private static void renderCooldowns(GuiGraphics gui, int baseX, int manaTextY) {
@@ -86,7 +88,7 @@ public class ManaBarRenderer {
             int row = index / iconsPerRow;
 
             int totalRowWidth = iconsPerRow * (iconSize + spacing) - spacing;
-            int startX = baseX - totalRowWidth / 2;
+            int startX = baseX - totalRowWidth / 2 + 40;
 
             int x = startX + col * (iconSize + spacing);
             int y = startY - row * (iconSize + spacing);

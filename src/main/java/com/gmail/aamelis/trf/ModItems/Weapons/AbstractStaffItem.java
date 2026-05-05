@@ -39,7 +39,7 @@ public abstract class AbstractStaffItem extends Item {
         }
 
         if (!level.isClientSide()) {
-            castSpell(level, player);
+            shootProjectile(level, player);
         }
 
         player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);
@@ -59,7 +59,7 @@ public abstract class AbstractStaffItem extends Item {
         }
     }
 
-    private void castSpell(Level level, Player player) {
+    private void shootProjectile(Level level, Player player) {
         PlayerMana manaData = player.getData(AttachmentTypesInit.PLAYER_MANA);
 
         manaData.useMana((ServerPlayer) player, 20);

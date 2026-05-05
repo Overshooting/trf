@@ -1,0 +1,19 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.player.cast_lightning_beam": {
+      "loop": false,
+      "animation_length": 1.2,
+      "bones": {
+        "right_arm": {
+          "rotation": {
+            "0.0": [-110, -20, 0],
+            "0.4": [-110, 130, 0],
+            "0.8": [-110, -20, 0],
+            "1.2": [-110, 130, 0]
+          }
+        }
+      }
+    }
+  }
+}

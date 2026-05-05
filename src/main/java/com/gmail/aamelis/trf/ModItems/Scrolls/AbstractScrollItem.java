@@ -62,6 +62,7 @@ public class AbstractScrollItem extends Item {
 
         if (spell.getRequiredClass() != data.getPlayerClass()) {
             serverPlayer.sendSystemMessage(Component.literal("Incompatible class for this spell!"));
+            return InteractionResult.FAIL;
         }
 
         data.unlockSpell(spellId, serverPlayer);

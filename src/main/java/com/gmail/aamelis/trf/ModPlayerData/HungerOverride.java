@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.ModPlayerData;
 
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;

@@ -5,6 +5,7 @@ import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.ManaBlastProjectile;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.SunlightReachProjectile;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -47,6 +48,21 @@ public class EntitiesInit {
                                     Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "mana_blast_projectile")
                             )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SunlightReachProjectile>> SUNLIGHT_REACH_PROJECTILE =
+            ENTITIES.register("sunlight_reach_projectile", () ->
+                    EntityType.Builder.<SunlightReachProjectile>of(
+                            SunlightReachProjectile::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 1.0f)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "sunlight_reach_projectile")
+                            )));
+
 
     public static final DeferredHolder<EntityType<?>, EntityType<FlavorNPCEntity>> FLAVOR_NPC_ENTITY =
             ENTITIES.register("flavor_npc_entity", () ->

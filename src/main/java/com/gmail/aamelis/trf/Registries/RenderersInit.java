@@ -16,6 +16,11 @@ public class RenderersInit {
         );
 
         event.registerEntityRenderer(
+                EntitiesInit.SUNLIGHT_REACH_PROJECTILE.get(),
+                ParticleProjectileRenderer::new
+        );
+
+        event.registerEntityRenderer(
                 EntitiesInit.MANA_BLAST_PROJECTILE.get(),
                 ParticleProjectileRenderer::new
         );

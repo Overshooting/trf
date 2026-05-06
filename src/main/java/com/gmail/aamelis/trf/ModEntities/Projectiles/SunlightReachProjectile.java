@@ -4,27 +4,21 @@ import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 
-public class StaffProjectile extends ThrowableProjectile {
+public class SunlightReachProjectile extends ThrowableProjectile {
 
-    private float damage = 0;
-
-    public StaffProjectile(EntityType<? extends StaffProjectile> p_37466_, Level p_37467_) {
+    public SunlightReachProjectile(EntityType<? extends ThrowableProjectile> p_37466_, Level p_37467_) {
         super(p_37466_, p_37467_);
     }
 
-    public StaffProjectile(Level level, LivingEntity shooter) {
-        super(EntitiesInit.STAFF_PROJECTILE.get(), level);
+    public SunlightReachProjectile(Level level, LivingEntity shooter) {
+        super(EntitiesInit.SUNLIGHT_REACH_PROJECTILE.get(), level);
 
         setOwner(shooter);
         setPos(shooter.getX(), shooter.getEyeY() - 0.5, shooter.getZ());
@@ -34,9 +28,7 @@ public class StaffProjectile extends ThrowableProjectile {
     public void tick() {
         super.tick();
 
-        if (!level().isClientSide()) {
-            spawnParticles();
-        }
+        spawnParticles();
 
         if (tickCount > 15) {
             discard();
@@ -59,7 +51,7 @@ public class StaffProjectile extends ThrowableProjectile {
         if (!(level() instanceof ServerLevel level)) return;
 
         level.sendParticles(
-                ParticleTypes.SOUL,
+                ParticleTypes.ASH,
                 getX(),
                 getY(),
                 getZ(),
@@ -73,7 +65,7 @@ public class StaffProjectile extends ThrowableProjectile {
         if (!(level() instanceof ServerLevel level)) return;
 
         level.sendParticles(
-                ParticleTypes.SOUL_FIRE_FLAME,
+                ParticleTypes.COPPER_FIRE_FLAME,
                 getX(),
                 getY(),
                 getZ(),
@@ -84,41 +76,7 @@ public class StaffProjectile extends ThrowableProjectile {
     }
 
     @Override
-    public boolean isNoGravity() {
-        return true;
-    }
-
-    @Override
-    public boolean canUsePortal(boolean p_352918_) {
-        return false;
-    }
-
-    @Override
-    protected void onHitEntity(EntityHitResult result) {
-        super.onHitEntity(result);
-
-        Entity target = result.getEntity();
-        Entity owner = getOwner();
-
-        if (target == owner) {
-            return;
-        }
-
-        if (target instanceof LivingEntity living) {
-            burstParticles();
-
-            living.hurt(damageSources().indirectMagic(this, owner), damage);
-        }
-
-        discard();
-    }
-
-    public void setDamage(float damage) {
-        this.damage = damage;
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    public void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 }

@@ -13,20 +13,26 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class HyacinthBladeProjectile extends ThrowableProjectile {
 
+    private float angleOffset;
 
     public HyacinthBladeProjectile(EntityType<? extends ThrowableProjectile> p_37466_, Level p_37467_) {
         super(p_37466_, p_37467_);
+
+        angleOffset = 0;
     }
 
-    public HyacinthBladeProjectile(Level level, LivingEntity shooter) {
+    public HyacinthBladeProjectile(Level level, LivingEntity shooter, float offset) {
         super(EntitiesInit.HYACINTH_BLADE_PROJECTILE.get(), level);
 
         setOwner(shooter);
+        angleOffset = offset;
     }
 
     @Override
@@ -34,23 +40,39 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
         super.tick();
         if (level().isClientSide()) return;
 
-        this.tickCount++;
+        Entity owner = getOwner();
 
-        float orbitSpeed = 0.5f;
-        float orbitRadius = 1.0f;
-
-        if (getOwner() != null) {
-            double angle = tickCount + orbitSpeed;
-            double x = getOwner().getX() + Math.cos(angle) + orbitRadius;
-            double z = getOwner().getZ() + Math.sin(angle) + orbitRadius;
-            double y = getOwner().getEyeY() - 0.5;
-
-            this.setPos(x, y, z);
-        } else if (tickCount >= 200) {
+        if (owner == null || tickCount >= 300) {
             discard();
+            return;
         }
 
-        spawnParticles();
+        float orbitSpeed = 0.2f;
+        float orbitRadius = 1.5f;
+
+        double angle = tickCount * orbitSpeed + angleOffset;
+
+        Vec3 basePos = owner.position().add(owner.getDeltaMovement());
+
+        double x = basePos.x + Math.cos(angle) * orbitRadius;
+        double z = basePos.z + Math.sin(angle) * orbitRadius;
+        double y = basePos.y + owner.getBbHeight() * 0.75;
+
+        Vec3 prevPos = position();
+        setPos(x, y, z);
+
+        AABB sweepBox = new AABB(prevPos, position()).inflate(0.5);
+
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, sweepBox)) {
+            if (target == owner || target instanceof Player) continue;
+
+            onHitEntity(new EntityHitResult(target));
+            break;
+        }
+
+        if (tickCount % 4 == 0) {
+            spawnParticles();
+        }
     }
     
     @Override
@@ -59,13 +81,27 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
         if (!(level() instanceof ServerLevel level)) return;
 
         Entity entity = result.getEntity();
+        Entity owner = getOwner();
 
-        if (entity instanceof LivingEntity && !(entity instanceof Player)) {
+        if (entity instanceof LivingEntity target && !(entity instanceof Player) && owner != null) {
+            Vec3 pushDir = target.position().subtract(owner.position()).normalize();
+
+            double strength = 1.2;
+
+            target.setDeltaMovement(
+                    pushDir.x * strength,
+                    0.4,
+                    pushDir.z * strength
+            );
+
+            target.hurt(damageSources().indirectMagic(owner, this), 4.0f);
+
             burstParticles();
+            level.playSound(null, blockPosition(),
+                    SoundEvents.BEACON_DEACTIVATE,
+                    SoundSource.PLAYERS,
+                    60.0f, 0.8f);
 
-            level.playSound(null, blockPosition(), SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 60.0f, 0.8f);
-
-            entity.hurt(damageSources().indirectMagic(getOwner(), this), 4.0f);
             discard();
         }
     }
@@ -79,12 +115,12 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
         if (!(level() instanceof ServerLevel level)) return;
 
         level.sendParticles(
-                ParticleTypes.CHERRY_LEAVES,
+                ParticleTypes.SMALL_FLAME,
                 getX(),
                 getY(),
                 getZ(),
                 4,
-                random.nextGaussian() * 0.05, random.nextGaussian() * 0.05, random.nextGaussian() * 0.05,
+                random.nextGaussian() * 0.01, random.nextGaussian() * 0.01, random.nextGaussian() * 0.01,
                 0.01
         );
     }

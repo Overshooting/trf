@@ -53,15 +53,24 @@ public class HyacinthBladeSpell implements ISpell {
     public void cast(ServerPlayer player) {
         ServerLevel level = player.level();
 
-        HyacinthBladeProjectile proj = new HyacinthBladeProjectile(level, player);
+        int count = 3;
+        float radius = 1.5f;
 
-        proj.setOwner(player);
+        for (int i = 0; i < count; i++) {
+            float angleOffset = (float) (2 * Math.PI * i / count);
 
-        proj.setPos(player.getX() + 0.5, player.getEyeY() - 0.5, player.getZ());
+            HyacinthBladeProjectile proj = new HyacinthBladeProjectile(level, player, angleOffset);
+
+            double x = player.getX() + Math.cos(angleOffset) * radius;
+            double z = player.getZ() + Math.sin(angleOffset) * radius;
+            double y = player.getEyeY() - 0.5;
+
+            proj.setPos(x, y, z);
+
+            level.addFreshEntity(proj);
+        }
 
         level.playSound(null, player.blockPosition(), SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 60.0f, 0.8f);
-
-        level.addFreshEntity(proj);
     }
 
     @Override

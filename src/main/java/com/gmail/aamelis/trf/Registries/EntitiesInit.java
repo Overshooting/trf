@@ -70,7 +70,7 @@ public class EntitiesInit {
                             )
                             .sized(1.0f, 1.0f)
                             .clientTrackingRange(4)
-                            .updateInterval(10)
+                            .updateInterval(1)
                             .build(ResourceKey.create(
                                     Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "hyacinth_blades_projectile")

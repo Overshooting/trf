@@ -4,10 +4,16 @@ import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class HyacinthBladeProjectile extends ThrowableProjectile {
@@ -21,7 +27,6 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
         super(EntitiesInit.HYACINTH_BLADE_PROJECTILE.get(), level);
 
         setOwner(shooter);
-        setPos(shooter.getX(), shooter.getEyeY() - 0.5, shooter.getZ());
     }
 
     @Override
@@ -32,7 +37,7 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
         this.tickCount++;
 
         float orbitSpeed = 0.5f;
-        float orbitRadius = 0.5f;
+        float orbitRadius = 1.0f;
 
         if (getOwner() != null) {
             double angle = tickCount + orbitSpeed;
@@ -41,7 +46,7 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
             double y = getOwner().getEyeY() - 0.5;
 
             this.setPos(x, y, z);
-        } else {
+        } else if (tickCount >= 200) {
             discard();
         }
 
@@ -50,10 +55,25 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
     
     @Override
     public void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        if (!(level() instanceof ServerLevel level)) return;
 
+        Entity entity = result.getEntity();
+
+        if (entity instanceof LivingEntity && !(entity instanceof Player)) {
+            burstParticles();
+
+            level.playSound(null, blockPosition(), SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 60.0f, 0.8f);
+
+            entity.hurt(damageSources().indirectMagic(getOwner(), this), 4.0f);
+            discard();
+        }
     }
 
     @Override
+    public void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+    }
 
     private void spawnParticles() {
         if (!(level() instanceof ServerLevel level)) return;
@@ -63,9 +83,9 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
                 getX(),
                 getY(),
                 getZ(),
-                6,
-                random.nextGaussian() * 0.1, random.nextGaussian() * 0.1, random.nextGaussian() * 0.1,
-                0.05
+                4,
+                random.nextGaussian() * 0.05, random.nextGaussian() * 0.05, random.nextGaussian() * 0.05,
+                0.01
         );
     }
 

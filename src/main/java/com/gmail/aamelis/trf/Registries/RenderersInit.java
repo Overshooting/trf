@@ -16,6 +16,11 @@ public class RenderersInit {
         );
 
         event.registerEntityRenderer(
+                EntitiesInit.HYACINTH_BLADE_PROJECTILE.get(),
+                ParticleEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
                 EntitiesInit.SUNLIGHT_REACH_PROJECTILE.get(),
                 ParticleEntityRenderer::new
         );

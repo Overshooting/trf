@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffectScheduler;
 import com.gmail.aamelis.trf.ModCastingSystem.MultiStepSpells.MultiCastManager;
 import com.gmail.aamelis.trf.ModCastingSystem.SpellCastingSystem;
 import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
@@ -7,6 +8,7 @@ import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
 import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -22,12 +24,18 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+import static com.ibm.icu.text.PluralRules.Operand.e;
+
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
         MultiCastManager.tick();
+
+        for (ServerLevel level : event.getServer().getAllLevels()) {
+            DelayedSpellEffectScheduler.tick(level);
+        }
     }
 
     @SubscribeEvent

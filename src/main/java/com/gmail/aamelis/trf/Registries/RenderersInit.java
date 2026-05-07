@@ -2,7 +2,7 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.ParticleProjectileRenderer;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.ParticleEntityRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -12,17 +12,27 @@ public class RenderersInit {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(
                 EntitiesInit.STAFF_PROJECTILE.get(),
-                ParticleProjectileRenderer::new
+                ParticleEntityRenderer::new
         );
 
         event.registerEntityRenderer(
                 EntitiesInit.SUNLIGHT_REACH_PROJECTILE.get(),
-                ParticleProjectileRenderer::new
+                ParticleEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                EntitiesInit.PAINTED_PANTHEON_PROJECTILE.get(),
+                ParticleEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                EntitiesInit.PAINTED_PANTHEON_STORM.get(),
+                ParticleEntityRenderer::new
         );
 
         event.registerEntityRenderer(
                 EntitiesInit.MANA_BLAST_PROJECTILE.get(),
-                ParticleProjectileRenderer::new
+                ParticleEntityRenderer::new
         );
 
         event.registerEntityRenderer(

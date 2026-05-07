@@ -3,7 +3,9 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.Other.PaintedPantheonStorm;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.ManaBlastProjectile;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.PaintedPantheonProjectile;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.SunlightReachProjectile;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
@@ -61,6 +63,34 @@ public class EntitiesInit {
                             .build(ResourceKey.create(
                                     Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "sunlight_reach_projectile")
+                            )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PaintedPantheonProjectile>> PAINTED_PANTHEON_PROJECTILE =
+            ENTITIES.register("painted_pantheon_projectile", () ->
+                    EntityType.Builder.<PaintedPantheonProjectile>of(
+                                    PaintedPantheonProjectile::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 1.0f)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "painted_pantheon_projectile")
+                            )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PaintedPantheonStorm>> PAINTED_PANTHEON_STORM =
+            ENTITIES.register("painted_pantheon_storm", () ->
+                    EntityType.Builder.<PaintedPantheonStorm>of(
+                                    PaintedPantheonStorm::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 1.0f)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "painted_pantheon_storm")
                             )));
 
 

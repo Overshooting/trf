@@ -9,6 +9,8 @@ import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -34,12 +36,12 @@ public class ManaBlastSpell implements ISpell {
 
     @Override
     public int getRequiredMana() {
-        return 30;
+        return 60;
     }
 
     @Override
     public long getCooldown() {
-        return 2000;
+        return 5000;
     }
 
     @Override
@@ -67,6 +69,8 @@ public class ManaBlastSpell implements ISpell {
 
         PacketDistributor.sendToPlayer(player, packet);
         PacketDistributor.sendToPlayersNear(level, player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
+
+        player.level().playSound(null, player.blockPosition(), SoundEvents.CONDUIT_ACTIVATE, SoundSource.PLAYERS, 60.0f, 0.8f);
 
         proj.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 2.0f, 0.1f);
 

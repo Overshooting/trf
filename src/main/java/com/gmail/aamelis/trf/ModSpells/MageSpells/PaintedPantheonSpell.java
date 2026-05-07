@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.PaintedPantheonProjectile;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.SunlightReachProjectile;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
@@ -12,15 +13,15 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.List;
 
-public class SunlightReachSpell implements ISpell {
+public class PaintedPantheonSpell implements ISpell {
     @Override
     public String getId() {
-        return "sunlight_reach";
+        return "painted_pantheon";
     }
 
     @Override
     public String getDisplayName() {
-        return "Sunlight Reach";
+        return "Painted Pantheon";
     }
 
     @Override
@@ -30,12 +31,12 @@ public class SunlightReachSpell implements ISpell {
 
     @Override
     public int getRequiredMana() {
-        return 150;
+        return 300;
     }
 
     @Override
     public long getCooldown() {
-        return 10000;
+        return 5000;
     }
 
     @Override
@@ -50,11 +51,11 @@ public class SunlightReachSpell implements ISpell {
 
     @Override
     public void cast(ServerPlayer player) {
-        SunlightReachProjectile proj = new SunlightReachProjectile(player.level(), player);
+        PaintedPantheonProjectile proj = new PaintedPantheonProjectile(player.level(), player);
 
-        proj.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 2.5f, 0.1f);
+        proj.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.25f, 0.1f);
 
-        player.level().playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 60.0f, 0.8f);
+        player.level().playSound(null, player.blockPosition(), SoundEvents.BOAT_PADDLE_WATER, SoundSource.PLAYERS, 60.0f, 0.8f);
 
         player.level().addFreshEntity(proj);
     }
@@ -67,24 +68,24 @@ public class SunlightReachSpell implements ISpell {
     @Override
     public List<SpellInput> getCombo() {
         return List.of(
-                SpellInput.C,
+                SpellInput.B,
                 SpellInput.V,
-                SpellInput.C
+                SpellInput.V
         );
     }
 
     @Override
     public ResourceLocation getFullPath() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/sunlight_reach_full.png");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/painted_pantheon_full.png");
     }
 
     @Override
     public ResourceLocation getEmptyPath() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/sunlight_reach_empty.png");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/painted_pantheon_empty.png");
     }
 
     @Override
     public ResourceLocation animationId() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_sunlight_reach");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_painted_pantheon");
     }
 }

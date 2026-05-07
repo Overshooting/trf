@@ -51,6 +51,7 @@ public class SpellsInit {
         register(new LightningBeamSpell());
         register(new ManaBlastSpell());
         register(new SunlightReachSpell());
+        register(new PaintedPantheonSpell());
     }
 
     public static List<String> getAllSpellNames() {

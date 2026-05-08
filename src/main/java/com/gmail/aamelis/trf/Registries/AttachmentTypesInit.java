@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
@@ -37,6 +38,14 @@ public class AttachmentTypesInit {
                     () -> AttachmentType.builder(() -> new PlayerQuestData())
                             .serialize(PlayerQuestData.CODEC)
                             .copyOnDeath()
+                            .build());
+
+    public static final Supplier<AttachmentType<PlayerStatData>> PLAYER_STATS =
+            ATTACHMENT_TYPES.register("player_stats",
+                    () -> AttachmentType.builder(PlayerStatData::new)
+                            .serialize(PlayerStatData.CODEC)
+                            .copyOnDeath()
+                            .sync(PlayerStatData.STREAM_CODEC)
                             .build());
 
     public static void register(IEventBus modEventBus) {

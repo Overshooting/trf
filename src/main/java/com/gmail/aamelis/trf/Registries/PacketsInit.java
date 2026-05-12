@@ -50,6 +50,12 @@ public class PacketsInit {
                 ModPayloadHandler::handleSpellInput
         );
 
+        registrar.playToServer(
+                StatIncreasePacket.TYPE,
+                StatIncreasePacket.STREAM_CODEC,
+                ModPayloadHandler::handleStatIncrease
+        );
+
         registrar.playToClient(
                 ComboFeedbackPacket.TYPE,
                 ComboFeedbackPacket.STREAM_CODEC,

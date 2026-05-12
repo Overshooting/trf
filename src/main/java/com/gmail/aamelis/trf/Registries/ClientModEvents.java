@@ -1,7 +1,8 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.CastKeybinds;
-import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.KeyInputHandler;
+import com.gmail.aamelis.trf.Network.KeyInputHandler;
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.Keybinds.StatKeybinds;
 import com.gmail.aamelis.trf.ModUIRendering.ManaBarRenderer;
 import com.gmail.aamelis.trf.ModUIRendering.SpellCastingUIRenderer;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
@@ -21,6 +22,7 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         CastKeybinds.register(event);
+        StatKeybinds.register(event);
     }
 
     @SubscribeEvent

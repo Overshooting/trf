@@ -4,6 +4,7 @@ import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.ParticleEntityRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
+import com.gmail.aamelis.trf.ModScreens.StatSheetScreen;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 

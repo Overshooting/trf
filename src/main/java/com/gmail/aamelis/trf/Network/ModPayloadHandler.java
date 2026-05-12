@@ -5,10 +5,10 @@ import com.gmail.aamelis.trf.ModCastingSystem.ClientCooldownState;
 import com.gmail.aamelis.trf.ModCastingSystem.SpellAnimations;
 import com.gmail.aamelis.trf.ModCastingSystem.SpellCastingSystem;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
-import com.gmail.aamelis.trf.Network.Packets.ComboFeedbackPacket;
-import com.gmail.aamelis.trf.Network.Packets.CooldownSyncPacket;
-import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
-import com.gmail.aamelis.trf.Network.Packets.SpellInputPacket;
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.Network.Packets.*;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.zigythebird.playeranim.animation.PlayerAnimationController;
 import com.zigythebird.playeranim.api.PlayerAnimationAccess;
 import net.minecraft.client.Minecraft;
@@ -85,6 +85,28 @@ public class ModPayloadHandler {
             }
         });
 
+    }
+
+    public static void handleStatIncrease(StatIncreasePacket packet, IPayloadContext context) {
+        context.enqueueWork(() -> {
+           if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+
+           PlayerLevelData levelData = serverPlayer.getData(AttachmentTypesInit.PLAYER_LEVEL);
+           levelData.usePoint(serverPlayer);
+
+           PlayerStatData statData = serverPlayer.getData(AttachmentTypesInit.PLAYER_STATS);
+
+           String type = packet.statType();
+
+           switch (type) {
+               case "str" -> statData.incrementStrength(1, serverPlayer);
+               case "con" -> statData.incrementConstitution(1, serverPlayer);
+               case "mag" -> statData.incrementMagic(1, serverPlayer);
+               case "per" -> statData.incrementPerception(1, serverPlayer);
+               case "pie" -> statData.incrementPiety(1, serverPlayer);
+               default -> throw new IllegalArgumentException("Illegal packet of type StatIncreasePacket recieved!");
+           }
+        });
     }
 
 }

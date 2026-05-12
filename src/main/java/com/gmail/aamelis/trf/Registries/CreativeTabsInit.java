@@ -46,6 +46,7 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.SHADOW_STEP_SCROLL_ITEM);
                         output.accept(ItemsInit.LIGHTNING_BEAM_SCROLL_ITEM);
                         output.accept(ItemsInit.MANA_BLAST_SCROLL_ITEM);
+                        output.accept(ItemsInit.PAINTED_PANTHEON_SCROLL_ITEM);
 
                     }).build());
 

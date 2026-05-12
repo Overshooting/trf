@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
@@ -46,6 +47,14 @@ public class AttachmentTypesInit {
                             .serialize(PlayerStatData.CODEC)
                             .copyOnDeath()
                             .sync(PlayerStatData.STREAM_CODEC)
+                            .build());
+
+    public static final Supplier<AttachmentType<PlayerLevelData>> PLAYER_LEVEL =
+            ATTACHMENT_TYPES.register("player_level",
+                    () -> AttachmentType.builder(PlayerLevelData::new)
+                            .serialize(PlayerLevelData.CODEC)
+                            .copyOnDeath()
+                            .sync(PlayerLevelData.STREAM_CODEC)
                             .build());
 
     public static void register(IEventBus modEventBus) {

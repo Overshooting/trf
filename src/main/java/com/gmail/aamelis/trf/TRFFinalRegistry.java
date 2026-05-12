@@ -41,6 +41,8 @@ public class TRFFinalRegistry {
         event.getDispatcher().register(SummonNPCCommands.SUMMON_TUTORIAL_STEP_QUEST_NPC_COMMAND);
         event.getDispatcher().register(SpellCommands.GIVE_SPELL_COMMAND);
         event.getDispatcher().register(SpellCommands.REVOKE_SPELL_COMMAND);
+        event.getDispatcher().register(SetLevelCommand.SET_LEVEL_COMMAND);
+        event.getDispatcher().register(GiveExperienceCommand.GIVE_EXPERIENCE_COMMAND);
     }
 
     private void onClientSetup(FMLClientSetupEvent event) {

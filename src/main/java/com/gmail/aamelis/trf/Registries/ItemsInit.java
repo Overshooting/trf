@@ -1,10 +1,7 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModItems.Scrolls.AbstractScrollItem;
-import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.DispelScroll;
-import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.LightningBeamScroll;
-import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.ManaBlastScroll;
-import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.ShadowStepScroll;
+import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.*;
 import com.gmail.aamelis.trf.ModItems.Weapons.AbstractStaffItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.BasicStaffItem;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
@@ -32,6 +29,8 @@ public class ItemsInit {
     public static final DeferredItem<Item> LIGHTNING_BEAM_SCROLL_ITEM = ITEMS.registerItem("lightning_beam_scroll", LightningBeamScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<Item> MANA_BLAST_SCROLL_ITEM = ITEMS.registerItem("mana_blast_scroll", ManaBlastScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> PAINTED_PANTHEON_SCROLL_ITEM = ITEMS.registerItem("painted_pantheon_scroll", PaintedPantheonScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 

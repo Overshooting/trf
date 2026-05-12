@@ -27,7 +27,6 @@ public class PlayerStatData {
         magic = thisMagic;
         perception = thisPerception;
         piety = thisPiety;
-
     }
 
     public int getStrength() {
@@ -50,59 +49,54 @@ public class PlayerStatData {
         return piety;
     }
 
-    public boolean incrementStrength(int amount, ServerPlayer player) {
-        if (0 > (strength + amount)) {
-            return false;
-        } else {
-            strength += amount;
+    public void incrementStrength(int amount, ServerPlayer player) {
+        if (0 > (strength + amount)) return;
 
-            setDirty(player);
-            return true;
-        }
+        strength += amount;
+
+        setDirty(player);
     }
 
-    public boolean incrementConstitution(int amount, ServerPlayer player) {
-        if (0 > (constitution + amount)) {
-            return false;
-        } else {
-            constitution += amount;
+    public void incrementConstitution(int amount, ServerPlayer player) {
+        if (0 > (constitution + amount)) return;
 
-            setDirty(player);
-            return true;
-        }
+        constitution += amount;
+
+        setDirty(player);
     }
 
-    public boolean incrementMagic(int amount, ServerPlayer player) {
-        if (0 > (magic + amount)) {
-            return false;
-        } else {
-            magic += amount;
+    public void incrementMagic(int amount, ServerPlayer player) {
+        if (0 > (magic + amount)) return;
 
-            setDirty(player);
-            return true;
-        }
+        magic += amount;
+
+        setDirty(player);
     }
 
-    public boolean incremenPerception(int amount, ServerPlayer player) {
-        if (0 > (perception + amount)) {
-            return false;
-        } else {
-            perception += amount;
+    public void incrementPerception(int amount, ServerPlayer player) {
+        if (0 > (perception + amount)) return;
 
-            setDirty(player);
-            return true;
-        }
+        perception += amount;
+
+        setDirty(player);
     }
 
-    public boolean incrementPiety(int amount, ServerPlayer player) {
-        if (0 > (piety + amount)) {
-            return false;
-        } else {
-            piety += amount;
+    public void incrementPiety(int amount, ServerPlayer player) {
+        if (0 > (piety + amount)) return;
 
-            setDirty(player);
-            return true;
-        }
+        piety += amount;
+
+        setDirty(player);
+    }
+
+    public void resetStats(ServerPlayer player) {
+        strength = 0;
+        constitution = 0;
+        magic = 0;
+        perception = 0;
+        piety = 0;
+
+        setDirty(player);
     }
 
     private void setDirty(ServerPlayer player) {

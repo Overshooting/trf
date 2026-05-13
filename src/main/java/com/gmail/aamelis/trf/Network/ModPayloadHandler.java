@@ -101,6 +101,7 @@ public class ModPayloadHandler {
            switch (type) {
                case "str" -> statData.incrementStrength(1, serverPlayer);
                case "con" -> statData.incrementConstitution(1, serverPlayer);
+               case "man" -> statData.incrementMana(1, serverPlayer);
                case "mag" -> statData.incrementMagic(1, serverPlayer);
                case "per" -> statData.incrementPerception(1, serverPlayer);
                case "pie" -> statData.incrementPiety(1, serverPlayer);

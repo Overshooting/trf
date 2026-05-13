@@ -24,6 +24,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class StepQuestNPCEntity extends AbstractNPCEntity {
 
     private static final EntityDataAccessor<String> DATA_QUEST =
@@ -59,16 +62,15 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
 
         int stageIndex = progress.getStage();
 
-        int delay = 0;
-
         if (stageIndex >= questLine.stages().size()) {
-            for (String line : questLine.stages().getLast().dialog().split("\n")) {
-                String text = getNPCName().getName() + ": " + line;
+            QuestStage stage = questLine.stages().getLast();
 
-                DialogScheduler.schedule(serverPlayer, text, delay);
+            List<String> lines = Arrays.stream(stage.dialog().split("\n"))
+                    .map(line -> getNPCName().getName() + ": " + line)
+                    .toList();
 
-                delay += 40;
-            }
+            DialogScheduler.schedule(serverPlayer, lines);
+
             return InteractionResult.SUCCESS;
         }
 
@@ -89,13 +91,11 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
             stage = questLine.stages().get(progress.getStage());
         }
 
-        for (String line : stage.dialog().split("\n")) {
-            String text = getNPCName().getName() + ": " + line;
+        List<String> lines = Arrays.stream(stage.dialog().split("\n"))
+                .map(line -> getNPCName().getName() + ": " + line)
+                .toList();
 
-            DialogScheduler.schedule(serverPlayer, text, delay);
-
-            delay += 40;
-        }
+        DialogScheduler.schedule(serverPlayer, lines);
 
         return InteractionResult.SUCCESS;
     }

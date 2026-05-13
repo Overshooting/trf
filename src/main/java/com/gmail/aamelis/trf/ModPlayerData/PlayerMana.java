@@ -104,6 +104,18 @@ public class PlayerMana {
         }
     }
 
+    public void calculateMaxMana(int amount, ServerPlayer player) {
+        double baseMana = 100;
+
+        maxMana = baseMana
+                + (amount * 8)
+                + (Math.sqrt(amount) * 20);
+
+        manaMultiplier = 0.0025 + (amount * 0.00002);
+
+        setDirty(player);
+    }
+
     private double checkMultiplier(ServerPlayer player) {
         if (player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass() != PlayerSpellData.MAGE) return manaMultiplier;
 

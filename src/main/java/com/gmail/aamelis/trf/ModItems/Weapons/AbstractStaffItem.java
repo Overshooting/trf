@@ -38,8 +38,8 @@ public abstract class AbstractStaffItem extends Item {
             return InteractionResult.PASS;
         }
 
-        if (!level.isClientSide()) {
-            shootProjectile(level, player);
+        if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            shootProjectile(level, serverPlayer);
         }
 
         player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);

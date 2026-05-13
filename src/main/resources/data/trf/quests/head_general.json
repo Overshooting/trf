@@ -8,7 +8,7 @@
         "count": 5
       }
     ],
-    "experience": 100
+    "experience": 75
   },
   {
     "dialog": "Good work.\nNow gather supplies.\nBring me 3 iron ingots.",
@@ -19,7 +19,7 @@
         "count": 3
       }
     ],
-    "experience": 150,
+    "experience": 185,
     "item": {
       "id": "minecraft:gold_ingot",
       "count": 2

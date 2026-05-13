@@ -1,12 +1,15 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles;
 
 import com.gmail.aamelis.trf.ModEntities.Other.PaintedPantheonStorm;
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -48,14 +51,16 @@ public class PaintedPantheonProjectile extends ThrowableProjectile {
     }
 
     private void explode() {
-        if (!(level() instanceof ServerLevel level)) {
+        if (!(level() instanceof ServerLevel level) || !(getOwner() instanceof ServerPlayer player)) {
             discard();
             return;
         }
 
+        PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
+
         PaintedPantheonStorm storm = new PaintedPantheonStorm(
-                EntitiesInit.PAINTED_PANTHEON_STORM.get(),
-                level
+                level,
+                data.getMagic()
         );
 
         storm.setPos(getX(), getY() + 7, getZ());

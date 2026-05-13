@@ -1,6 +1,8 @@
 package com.gmail.aamelis.trf.ModEntities.Other;
 
 import com.gmail.aamelis.trf.ModEntities.Projectiles.PaintedPantheonProjectile;
+import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
+import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
+import java.util.UUID;
 
 public class PaintedPantheonStorm extends Entity {
 
@@ -26,8 +29,16 @@ public class PaintedPantheonStorm extends Entity {
     private static final double RADIUS = 5.0;
     private static final double HEIGHT = 7.0;
 
+    private int manaStat;
+
     public PaintedPantheonStorm(EntityType<?> entityType, Level level) {
         super(entityType, level);
+    }
+
+    public PaintedPantheonStorm(Level level, int manaStat) {
+        this(EntitiesInit.PAINTED_PANTHEON_STORM.get(), level);
+
+        this.manaStat = manaStat;
     }
 
     @Override
@@ -73,7 +84,7 @@ public class PaintedPantheonStorm extends Entity {
 
             DamageSource source = damageSources().magic();
 
-            living.hurt(source, 4.0f);
+            living.hurt(source, SpellDamageScaling.scaleDamage(3.5f, manaStat));
         }
     }
 
@@ -145,11 +156,12 @@ public class PaintedPantheonStorm extends Entity {
 
     @Override
     protected void readAdditionalSaveData(ValueInput valueInput) {
-
+        manaStat = valueInput.getIntOr("manaStat", 0);
     }
+
 
     @Override
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
-
+        valueOutput.putInt("manaStat", manaStat);
     }
 }

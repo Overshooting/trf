@@ -3,9 +3,12 @@ package com.gmail.aamelis.trf.ModSpells.MageSpells;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.ModCastingSystem.MultiStepSpells.MultiCastManager;
 import com.gmail.aamelis.trf.ModCastingSystem.SpellAnimations;
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
+import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
 import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EffectsInit;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.BlockPos;
@@ -122,12 +125,14 @@ public class LightningBeamSpell implements ISpell {
 
                 DamageSource source = level.damageSources().indirectMagic(player, player);
 
-                entity.hurt(source, 19.75f);
+                PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
+
+                entity.hurt(source, SpellDamageScaling.scaleDamage(4.5f, data.getMagic()));
 
                 entity.addEffect(new MobEffectInstance(
                         EffectsInit.SHOCKED_EFFECT,
                         200,
-                        0
+                        data.getMagic() % 20
                 ));
             }
         }

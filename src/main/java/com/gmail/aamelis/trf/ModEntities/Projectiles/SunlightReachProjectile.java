@@ -2,11 +2,15 @@ package com.gmail.aamelis.trf.ModEntities.Projectiles;
 
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffect;
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffectScheduler;
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,15 +51,20 @@ public class SunlightReachProjectile extends ThrowableProjectile {
         if (!(level() instanceof ServerLevel serverLevel)) return;
 
         Entity target = result.getEntity();
+        Entity owner = getOwner();
 
-        if (target instanceof LivingEntity living) {
-            living.hurt(damageSources().indirectMagic(getOwner(), target), 3.0f);
+        if (!(owner instanceof ServerPlayer player)) return;
+
+        if (target instanceof LivingEntity living && (!(target instanceof ServerPlayer))) {
+            PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
+
+            living.hurt(damageSources().indirectMagic(getOwner(), target), SpellDamageScaling.scaleDamage(3.0f, data.getMagic()));
 
             DelayedSpellEffectScheduler.schedule(serverLevel,
                     new DelayedSpellEffect(40, (lvl) -> {
                         Entity e = lvl.getEntity(living.getUUID());
                         if (e instanceof LivingEntity l && l.isAlive()) {
-                            l.hurt(l.damageSources().magic(), 5.0f);
+                            l.hurt(l.damageSources().magic(), SpellDamageScaling.scaleDamage(6.0f, data.getMagic()));
 
                             burstParticles(l.position());
                         }

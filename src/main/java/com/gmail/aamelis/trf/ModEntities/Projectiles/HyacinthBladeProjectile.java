@@ -1,5 +1,9 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles;
 
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
+import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -83,7 +87,9 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
         Entity entity = result.getEntity();
         Entity owner = getOwner();
 
-        if (entity instanceof LivingEntity target && !(entity instanceof Player) && owner != null) {
+        if (!(owner instanceof ServerPlayer player)) return;
+
+        if (entity instanceof LivingEntity target && !(entity instanceof Player)) {
             Vec3 pushDir = target.position().subtract(owner.position()).normalize();
 
             double strength = 1.2;
@@ -94,7 +100,9 @@ public class HyacinthBladeProjectile extends ThrowableProjectile {
                     pushDir.z * strength
             );
 
-            target.hurt(damageSources().indirectMagic(owner, this), 4.0f);
+            PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
+
+            target.hurt(damageSources().indirectMagic(owner, this), SpellDamageScaling.scaleDamage(6.0f, data.getMagic()));
 
             burstParticles();
             level.playSound(null, blockPosition(),

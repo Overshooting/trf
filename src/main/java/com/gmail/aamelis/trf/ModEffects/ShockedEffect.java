@@ -15,8 +15,8 @@ public class ShockedEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
-        entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 8, 255));
-        entity.hurt(entity.damageSources().generic(), 0.1f);
+        entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 5 + Math.min(amplifier, 10), 255));
+        entity.hurt(entity.damageSources().generic(), (float) 0.25 * amplifier);
 
         return super.applyEffectTick(level, entity, amplifier);
     }

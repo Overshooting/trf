@@ -2,6 +2,7 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModItems.Scrolls.AbstractScrollItem;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.*;
+import com.gmail.aamelis.trf.ModItems.Stats.SoulVial;
 import com.gmail.aamelis.trf.ModItems.Weapons.AbstractStaffItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.BasicStaffItem;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
@@ -31,6 +32,12 @@ public class ItemsInit {
     public static final DeferredItem<Item> MANA_BLAST_SCROLL_ITEM = ITEMS.registerItem("mana_blast_scroll", ManaBlastScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<Item> PAINTED_PANTHEON_SCROLL_ITEM = ITEMS.registerItem("painted_pantheon_scroll", PaintedPantheonScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> SUNLIGHT_REACH_SCROLL_ITEM = ITEMS.registerItem("sunlight_reach_scroll", SunlightReachScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> HYACINTH_BLADES_SCROLL_ITEM = ITEMS.registerItem("hyacinth_blade_scroll", HyacinthBladeScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> SOUL_VIAL_ITEM = ITEMS.registerItem("soul_vial", SoulVial::new, SoulVial.PROPERTIES);
 
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 

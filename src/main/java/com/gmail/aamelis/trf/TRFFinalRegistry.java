@@ -3,6 +3,8 @@ package com.gmail.aamelis.trf;
 import com.gmail.aamelis.trf.ModCommands.*;
 import com.gmail.aamelis.trf.ModCastingSystem.SpellAnimations;
 import com.gmail.aamelis.trf.Registries.*;
+import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.commands.CommandSourceStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -33,16 +35,19 @@ public class TRFFinalRegistry {
     }
 
     private void onRegisterCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(SetMaxManaCommand.SET_MAX_MANA_COMMAND);
-        event.getDispatcher().register(PresetLightsOutCommand.LIGHTS_OUT_PRESET_COMMAND);
-        event.getDispatcher().register(SetClassCommand.SET_CLASS_COMMAND);
-        event.getDispatcher().register(SummonNPCCommands.SUMMON_FLAVOR_NPC_COMMAND);
-        event.getDispatcher().register(SummonNPCCommands.SUMMON_STEP_QUEST_NPC_COMMAND);
-        event.getDispatcher().register(SummonNPCCommands.SUMMON_TUTORIAL_STEP_QUEST_NPC_COMMAND);
-        event.getDispatcher().register(SpellCommands.GIVE_SPELL_COMMAND);
-        event.getDispatcher().register(SpellCommands.REVOKE_SPELL_COMMAND);
-        event.getDispatcher().register(SetLevelCommand.SET_LEVEL_COMMAND);
-        event.getDispatcher().register(GiveExperienceCommand.GIVE_EXPERIENCE_COMMAND);
+        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+
+        dispatcher.register(SetMaxManaCommand.SET_MAX_MANA_COMMAND);
+        dispatcher.register(PresetLightsOutCommand.LIGHTS_OUT_PRESET_COMMAND);
+        dispatcher.register(SetClassCommand.SET_CLASS_COMMAND);
+        dispatcher.register(SummonNPCCommands.SUMMON_FLAVOR_NPC_COMMAND);
+        dispatcher.register(SummonNPCCommands.SUMMON_STEP_QUEST_NPC_COMMAND);
+        dispatcher.register(SummonNPCCommands.SUMMON_TUTORIAL_STEP_QUEST_NPC_COMMAND);
+        dispatcher.register(SpellCommands.GIVE_SPELL_COMMAND);
+        dispatcher.register(SpellCommands.REVOKE_SPELL_COMMAND);
+        dispatcher.register(SetLevelCommand.SET_LEVEL_COMMAND);
+        dispatcher.register(GiveExperienceCommand.GIVE_EXPERIENCE_COMMAND);
+        dispatcher.register(ResetQuestCommand.RESET_QUEST_COMMAND);
     }
 
     private void onClientSetup(FMLClientSetupEvent event) {

@@ -1,5 +1,8 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles;
 
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -69,12 +72,14 @@ public class ManaBlastProjectile extends ThrowableProjectile {
         Entity target = result.getEntity();
         Entity owner = getOwner();
 
-        if (target == owner) {
-            return;
-        }
+        if (!(owner instanceof ServerPlayer serverPlayer)) return;
+
+        if (target == owner) return;
 
         if (target instanceof LivingEntity living && !(target instanceof ServerPlayer)) {
-            living.hurt(damageSources().indirectMagic(this, owner), 8.0f);
+            PlayerStatData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_STATS);
+
+            living.hurt(damageSources().indirectMagic(this, owner), SpellDamageScaling.scaleDamage(7.0f, data.getMagic()));
 
             runHitResult(result.getLocation(), living);
         }
@@ -85,11 +90,15 @@ public class ManaBlastProjectile extends ThrowableProjectile {
     private void runHitResult(Vec3 location, @Nullable LivingEntity firstTarget) {
         if (!(level() instanceof ServerLevel level)) return;
 
-        double radius = 8.0;
+        double radius = 4.0;
 
         AABB box = new AABB(location, location).inflate(radius);
 
         Entity owner = getOwner();
+
+        if (!(owner instanceof ServerPlayer player)) return;
+
+        PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
 
         List<LivingEntity> targets = level.getEntitiesOfClass(
                 LivingEntity.class,
@@ -131,7 +140,10 @@ public class ManaBlastProjectile extends ThrowableProjectile {
             }
 
             double dist = Math.sqrt(target.position().distanceToSqr(location));
-            float damage = Math.max(1.0f, (float)(8.0 * (1.0 - dist / radius) * blockHitMultiplier));
+
+            float base = SpellDamageScaling.scaleDamage(6.0f, data.getMagic());
+
+            float damage = Math.max(1.0f, (float)(base * (1.0 - dist / radius) * blockHitMultiplier));
 
             Vec3 knockback = target.position().subtract(location).normalize().scale(0.5);
 

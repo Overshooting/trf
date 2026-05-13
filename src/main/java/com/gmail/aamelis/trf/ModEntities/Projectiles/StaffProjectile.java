@@ -1,9 +1,13 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles;
 
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -17,10 +21,12 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class StaffProjectile extends ThrowableProjectile {
 
-    private float damage = 0;
+    private float damage;
 
     public StaffProjectile(EntityType<? extends StaffProjectile> p_37466_, Level p_37467_) {
         super(p_37466_, p_37467_);
+
+        damage = 0.0f;
     }
 
     public StaffProjectile(Level level, LivingEntity shooter) {
@@ -100,6 +106,8 @@ public class StaffProjectile extends ThrowableProjectile {
         Entity target = result.getEntity();
         Entity owner = getOwner();
 
+        if (!(owner instanceof ServerPlayer player)) return;
+
         if (target == owner) {
             return;
         }
@@ -107,7 +115,9 @@ public class StaffProjectile extends ThrowableProjectile {
         if (target instanceof LivingEntity living) {
             burstParticles();
 
-            living.hurt(damageSources().indirectMagic(this, owner), damage);
+            PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
+
+            living.hurt(damageSources().indirectMagic(this, owner), SpellDamageScaling.scaleDamage(damage, data.getMagic()));
         }
 
         discard();

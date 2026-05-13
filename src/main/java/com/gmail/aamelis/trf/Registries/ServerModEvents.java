@@ -43,7 +43,7 @@ public class ServerModEvents {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         player.getData(AttachmentTypesInit.PLAYER_MANA.get()).runManaTick(player);
 
-        DialogScheduler.tick();
+        DialogScheduler.tick(player.level());
 
         HungerOverride.overrideHunger(event);
 

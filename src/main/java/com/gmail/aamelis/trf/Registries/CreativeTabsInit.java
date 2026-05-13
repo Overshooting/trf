@@ -45,10 +45,24 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.DISPEL_SCROLL_ITEM);
                         output.accept(ItemsInit.SHADOW_STEP_SCROLL_ITEM);
                         output.accept(ItemsInit.LIGHTNING_BEAM_SCROLL_ITEM);
+                        output.accept(ItemsInit.SUNLIGHT_REACH_SCROLL_ITEM);
                         output.accept(ItemsInit.MANA_BLAST_SCROLL_ITEM);
                         output.accept(ItemsInit.PAINTED_PANTHEON_SCROLL_ITEM);
+                        output.accept(ItemsInit.HYACINTH_BLADES_SCROLL_ITEM);
 
                     }).build());
+
+    public static final Supplier<CreativeModeTab> ALL_CONSUMABLES_TAB = CREATIVE_MODE_TABS.register("trf_all_consumables_tab",
+            () -> CreativeModeTab.builder()
+                    .withTabsBefore(ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "trf_all_scrolls_tab"))
+                    .icon(() -> new ItemStack(ItemsInit.SOUL_VIAL_ITEM.get()))
+                    .title(Component.translatable("creativetab.trf.all_consumables"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ItemsInit.SOUL_VIAL_ITEM);
+
+                    })
+                    .build()
+            );
 
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);

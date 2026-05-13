@@ -28,6 +28,10 @@ public class PlayerQuestData {
         return quests;
     }
 
+    public void wipeAllQuestProgress() {
+        quests.clear();
+    }
+
     public static final MapCodec<PlayerQuestData> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Codec.unboundedMap(ResourceLocation.CODEC, QuestProgress.CODEC.codec())

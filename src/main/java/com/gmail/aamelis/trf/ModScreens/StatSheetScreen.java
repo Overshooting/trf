@@ -52,14 +52,15 @@ public class StatSheetScreen extends Screen {
         statButtons.clear();
 
         int xButton = leftPos + 160;
-        int yStart = topPos + 55;
+        int yStart = topPos + 50;
         int lineHeight = 18;
 
-        addStatButton(xButton, yStart, "str");
-        addStatButton(xButton, yStart + lineHeight, "con");
-        addStatButton(xButton, yStart + lineHeight * 2, "mag");
-        addStatButton(xButton, yStart + lineHeight * 3, "per");
-        addStatButton(xButton, yStart + lineHeight * 4, "pie");
+        addStatButton(xButton, yStart, "con");
+        addStatButton(xButton, yStart + lineHeight, "man");
+        addStatButton(xButton, yStart + lineHeight * 2, "str");
+        addStatButton(xButton, yStart + lineHeight * 3, "mag");
+        addStatButton(xButton, yStart + lineHeight * 4, "per");
+        addStatButton(xButton, yStart + lineHeight * 5, "pie");
     }
 
     private void addStatButton(int x, int y, String stat) {
@@ -139,17 +140,22 @@ public class StatSheetScreen extends Screen {
                 String.valueOf(levelData.getPoints()),
                 xValue, yTop, COLOR_VALUE, false);
 
-        int y = topPos + 55;
+        int y = topPos + 50;
         int lineHeight = 18;
 
-        guiGraphics.drawString(font, "Strength", xLabel, y, COLOR_LABEL, false);
-        guiGraphics.drawString(font,
-                String.valueOf(stats.getStrength()),
-                xValue, y, COLOR_VALUE, false);
-
-        guiGraphics.drawString(font, "Constitution", xLabel, y += lineHeight, COLOR_LABEL, false);
+        guiGraphics.drawString(font, "Constitution", xLabel, y, COLOR_LABEL, false);
         guiGraphics.drawString(font,
                 String.valueOf(stats.getConstitution()),
+                xValue, y, COLOR_VALUE, false);
+
+        guiGraphics.drawString(font, "Mana", xLabel, y += lineHeight, COLOR_LABEL, false);
+        guiGraphics.drawString(font,
+                String.valueOf(stats.getMana()),
+                xValue, y, COLOR_VALUE, false);
+
+        guiGraphics.drawString(font, "Strength", xLabel, y += lineHeight, COLOR_LABEL, false);
+        guiGraphics.drawString(font,
+                String.valueOf(stats.getStrength()),
                 xValue, y, COLOR_VALUE, false);
 
         guiGraphics.drawString(font, "Magic", xLabel, y += lineHeight, COLOR_LABEL, false);

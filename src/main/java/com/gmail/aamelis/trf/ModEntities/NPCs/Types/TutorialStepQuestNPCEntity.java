@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs.Types;
 
+import com.gmail.aamelis.trf.ModNPCs.Quests.QuestStage;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModNPCs.Quests.QuestLine;
 import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
@@ -14,6 +15,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TutorialStepQuestNPCEntity extends StepQuestNPCEntity {
 
@@ -39,15 +43,14 @@ public class TutorialStepQuestNPCEntity extends StepQuestNPCEntity {
         QuestLine questLine = QuestsInit.getQuest(questId);
 
         if (spellData.getPlayerClass() != requiredClass) {
-            int delay = 0;
+            QuestStage stage = questLine.stages().getLast();
 
-            for (String line : questLine.stages().getLast().dialog().split("\n")) {
-                String text = getNPCName().getName() + ": " + line;
+            List<String> lines = Arrays.stream(stage.dialog().split("\n"))
+                    .map(line -> getNPCName().getName() + ": " + line)
+                    .toList();
 
-                DialogScheduler.schedule(serverPlayer, text, delay);
+            DialogScheduler.schedule(serverPlayer, lines);
 
-                delay += 40;
-            }
             return InteractionResult.SUCCESS;
         }
 

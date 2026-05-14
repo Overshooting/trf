@@ -4,7 +4,8 @@ import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.Other.PaintedPantheonStorm;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.*;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.ArrowProjectiles.CopperArrow;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles.*;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -102,6 +103,20 @@ public class EntitiesInit {
                             .build(ResourceKey.create(
                                     Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "painted_pantheon_storm")
+                            )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CopperArrow>> COPPER_ARROW =
+            ENTITIES.register("copper_arrow", () ->
+                    EntityType.Builder.<CopperArrow>of(
+                                    CopperArrow::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 1.0f)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "copper_arrow")
                             )));
 
 

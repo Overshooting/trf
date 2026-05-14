@@ -1,10 +1,10 @@
-package com.gmail.aamelis.trf.ModEntities.Projectiles;
+package com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles;
 
 import com.gmail.aamelis.trf.ModEntities.Other.PaintedPantheonStorm;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.ProjectileUtils;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,8 +16,6 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-
-import java.io.Serial;
 
 public class PaintedPantheonProjectile extends ThrowableProjectile {
 

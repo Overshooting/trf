@@ -1,7 +1,6 @@
-package com.gmail.aamelis.trf.ModEntities.Projectiles;
+package com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles;
 
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
-import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;

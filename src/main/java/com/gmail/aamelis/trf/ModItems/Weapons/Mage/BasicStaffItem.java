@@ -1,4 +1,4 @@
-package com.gmail.aamelis.trf.ModItems.Weapons;
+package com.gmail.aamelis.trf.ModItems.Weapons.Mage;
 
 public class BasicStaffItem extends AbstractStaffItem {
 

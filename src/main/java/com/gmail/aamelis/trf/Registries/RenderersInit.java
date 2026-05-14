@@ -2,9 +2,12 @@ package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCModel;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Rendering.NPCRenderer;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.CopperArrowRenderer;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.Rendering.ParticleEntityRenderer;
 import com.gmail.aamelis.trf.ModScreens.GameMasterBlockScreen;
 import com.gmail.aamelis.trf.ModScreens.StatSheetScreen;
+import net.minecraft.client.renderer.entity.ArrowRenderer;
+import net.minecraft.client.renderer.entity.TippableArrowRenderer;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
@@ -39,6 +42,11 @@ public class RenderersInit {
         event.registerEntityRenderer(
                 EntitiesInit.MANA_BLAST_PROJECTILE.get(),
                 ParticleEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                EntitiesInit.COPPER_ARROW.get(),
+                CopperArrowRenderer::new
         );
 
         event.registerEntityRenderer(

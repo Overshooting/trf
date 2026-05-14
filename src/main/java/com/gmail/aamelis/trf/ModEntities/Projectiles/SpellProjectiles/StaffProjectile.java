@@ -1,5 +1,6 @@
-package com.gmail.aamelis.trf.ModEntities.Projectiles;
+package com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles;
 
+import com.gmail.aamelis.trf.ModEntities.Projectiles.ProjectileUtils;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
@@ -8,14 +9,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 

@@ -1,7 +1,8 @@
-package com.gmail.aamelis.trf.ModItems.Weapons;
+package com.gmail.aamelis.trf.ModItems.Weapons.Mage;
 
 import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.StaffProjectile;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles.StaffProjectile;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -31,10 +32,11 @@ public abstract class AbstractStaffItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
 
         ItemStack stack = player.getItemInHand(hand);
 
-        if (player.getCooldowns().isOnCooldown(stack) || !canCast(player, stack)) {
+        if (data.getPlayerClass() != PlayerSpellData.MAGE || player.getCooldowns().isOnCooldown(stack) || !canCast(player, stack)) {
             return InteractionResult.PASS;
         }
 

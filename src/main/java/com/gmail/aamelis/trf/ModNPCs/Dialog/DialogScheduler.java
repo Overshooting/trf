@@ -1,10 +1,8 @@
 package com.gmail.aamelis.trf.ModNPCs.Dialog;
 
-import com.gmail.aamelis.trf.ModEntities.Projectiles.PaintedPantheonProjectile;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.*;
 

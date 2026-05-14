@@ -156,6 +156,12 @@ public class SpellCastingSystem {
                         ItemsInit.BASIC_STAFF_ITEM.get()
                 )
         );
+        CLASS_ITEMS.put(
+                PlayerSpellData.ARCHER,
+                List.of(
+                        ItemsInit.BASIC_BOW_ITEM.get()
+                )
+        );
     }
 
 }

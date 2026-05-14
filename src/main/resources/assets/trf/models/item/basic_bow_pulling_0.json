@@ -1,0 +1,6 @@
+{
+  "parent": "trf:item/basic_bow",
+  "textures": {
+    "layer0": "trf:item/basic_bow_pulling_0"
+  }
+}

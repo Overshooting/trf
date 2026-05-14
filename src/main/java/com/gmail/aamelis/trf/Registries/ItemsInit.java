@@ -3,19 +3,17 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModItems.Scrolls.AbstractScrollItem;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.*;
 import com.gmail.aamelis.trf.ModItems.Stats.SoulVial;
-import com.gmail.aamelis.trf.ModItems.Weapons.AbstractStaffItem;
-import com.gmail.aamelis.trf.ModItems.Weapons.BasicStaffItem;
-import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
+import com.gmail.aamelis.trf.ModItems.Weapons.Mage.AbstractStaffItem;
+import com.gmail.aamelis.trf.ModItems.Weapons.Mage.BasicStaffItem;
+import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.AbstractModBowItem;
+import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.Arrows.CopperArrowItem;
+import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.BasicBowItem;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ItemsInit {
 
@@ -38,6 +36,10 @@ public class ItemsInit {
     public static final DeferredItem<Item> HYACINTH_BLADES_SCROLL_ITEM = ITEMS.registerItem("hyacinth_blade_scroll", HyacinthBladeScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<Item> SOUL_VIAL_ITEM = ITEMS.registerItem("soul_vial", SoulVial::new, SoulVial.PROPERTIES);
+
+    public static final DeferredItem<Item> COPPER_ARROW_ITEM = ITEMS.registerItem("copper_arrow", CopperArrowItem::new, CopperArrowItem.PROPERTIES);
+
+    public static final DeferredItem<Item> BASIC_BOW_ITEM = ITEMS.registerItem("basic_bow", BasicBowItem::new, AbstractModBowItem.PROPERTIES);
 
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 

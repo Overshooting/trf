@@ -25,7 +25,7 @@ public class SpellCommands {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.argument("spell", StringArgumentType.greedyString())
                                     .suggests(((context, builder) ->
-                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellNames(), builder)))
+                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellsForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
                                     .executes(context -> {
                                         String spellName = StringArgumentType.getString(context, "spell");
                                         if (!SpellsInit.getAllSpellNames().contains(spellName)) {
@@ -61,7 +61,7 @@ public class SpellCommands {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.argument("spell", StringArgumentType.greedyString())
                                     .suggests(((context, builder) ->
-                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellNames(), builder)))
+                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellsForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
                                     .executes(context -> {
                                         String spellName = StringArgumentType.getString(context, "spell");
                                         if (!SpellsInit.getAllSpellNames().contains(spellName)) {

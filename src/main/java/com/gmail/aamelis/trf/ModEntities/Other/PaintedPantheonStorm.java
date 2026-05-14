@@ -1,6 +1,6 @@
 package com.gmail.aamelis.trf.ModEntities.Other;
 
-import com.gmail.aamelis.trf.ModEntities.Projectiles.PaintedPantheonProjectile;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles.PaintedPantheonProjectile;
 import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
-import java.util.UUID;
 
 public class PaintedPantheonStorm extends Entity {
 

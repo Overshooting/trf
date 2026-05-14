@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Combo.ComboUtils;
+import com.gmail.aamelis.trf.ModSpells.ArcherSpells.ImbuePoisonSpell;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.MageSpells.*;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
@@ -53,6 +54,21 @@ public class SpellsInit {
         register(new SunlightReachSpell());
         register(new PaintedPantheonSpell());
         register(new HyacinthBladeSpell());
+        register(new ImbuePoisonSpell());
+    }
+
+    public static List<String> getAllSpellsForClass(short num) {
+        if (num < 1 || num > 4) return List.of();
+
+        List<String> returned = new ArrayList<>();
+
+        for (ISpell spell : SPELLS[num - 1]) {
+            if (spell != null) {
+                returned.add(spell.getDisplayName());
+            }
+        }
+
+        return returned;
     }
 
     public static List<String> getAllSpellNames() {

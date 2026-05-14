@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.ManaBlastProjectile;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles.ManaBlastProjectile;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
@@ -11,9 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;

@@ -1,8 +1,7 @@
 package com.gmail.aamelis.trf.ModSpells.MageSpells;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.PaintedPantheonProjectile;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.SunlightReachProjectile;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles.PaintedPantheonProjectile;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.TRFFinalRegistry;

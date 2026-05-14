@@ -22,6 +22,8 @@ public class CreativeTabsInit {
                     .title(Component.translatable("creativetab.trf.all_weapons"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ItemsInit.BASIC_STAFF_ITEM);
+                        output.accept(ItemsInit.BASIC_BOW_ITEM);
+                        output.accept(ItemsInit.COPPER_ARROW_ITEM);
 
                     }).build());
 

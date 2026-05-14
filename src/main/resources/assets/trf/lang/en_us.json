@@ -8,6 +8,8 @@
   "item.trf.hyacinth_blade_scroll": "Scroll: Hyacinth Blades",
   "item.trf.sunlight_reach_scroll": "Scroll: Sunlight's Reach",
   "item.trf.soul_vial": "Soul Vial",
+  "item.trf.basic_bow": "Basic Bow",
+  "item.trf.copper_arrow": "Copper Arrow",
 
   "block.trf.lights_out_block": "Lights Out Block",
   "block.trf.game_master_block": "Game Master Block",
@@ -17,6 +19,11 @@
   "creativetab.trf.all_blocks": "TRF: G&I Blocks",
   "creativetab.trf.all_scrolls": "TRF: G&I Scrolls",
   "creativetab.trf.all_consumables": "TRF: G&I Consumables",
+
+  "entity.trf.copper_arrow": "Copper Arrow",
+  "entity.trf.flavor_npc_entity": "Flavor NPC",
+  "entity.trf.step_quest_npc_entity": "Step Quest NPC",
+  "entity.trf.tutorial_npc_entity": "Tutorial NPC",
 
   "tooltip.trf.soul_vial_1": "Rewrite your Fate.",
   "tooltip.trf.soul_vial_2": "(RESETS YOUR STAT POINTS)",

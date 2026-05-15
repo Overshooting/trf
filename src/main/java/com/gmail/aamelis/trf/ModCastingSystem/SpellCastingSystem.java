@@ -151,6 +151,12 @@ public class SpellCastingSystem {
 
     public static void populateClassItems() {
         CLASS_ITEMS.put(
+                PlayerSpellData.WARRIOR,
+                List.of(
+
+                )
+        );
+        CLASS_ITEMS.put(
                 PlayerSpellData.MAGE,
                 List.of(
                         ItemsInit.BASIC_STAFF_ITEM.get()
@@ -159,7 +165,14 @@ public class SpellCastingSystem {
         CLASS_ITEMS.put(
                 PlayerSpellData.ARCHER,
                 List.of(
-                        ItemsInit.BASIC_BOW_ITEM.get()
+                        ItemsInit.BASIC_BOW_ITEM.get(),
+                        ItemsInit.SNIPER_BOW_ITEM.get()
+                )
+        );
+        CLASS_ITEMS.put(
+                PlayerSpellData.CLERIC,
+                List.of(
+
                 )
         );
     }

@@ -19,7 +19,8 @@ public class NPCRenderer extends MobRenderer<AbstractNPCEntity, NPCRenderState, 
 
     @Override
     public ResourceLocation getTextureLocation(NPCRenderState state) {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/entity/npcs/" + state.textureName + ".png");
+        String safePath = state.textureName.toLowerCase().replaceAll(" ", "_");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/entity/npcs/" + safePath + ".png");
     }
 
     @Override

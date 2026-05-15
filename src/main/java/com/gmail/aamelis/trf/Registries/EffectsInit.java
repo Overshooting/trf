@@ -1,5 +1,7 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModEffects.Imbuements.FireImbuementEffect;
+import com.gmail.aamelis.trf.ModEffects.Imbuements.FrostImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.PoisonImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.ShockedEffect;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
@@ -21,6 +23,12 @@ public class EffectsInit {
 
     public static final DeferredHolder<MobEffect, PoisonImbuementEffect> POISON_IMBUEMENT_EFFECT = MOB_EFFECTS.register("poison_imbuement_effect", () ->
             new PoisonImbuementEffect(MobEffectCategory.BENEFICIAL, 0x006400));
+
+    public static final DeferredHolder<MobEffect, FrostImbuementEffect> FROST_IMBUEMENT_EFFECT = MOB_EFFECTS.register("frost_imbuement_effect", () ->
+            new FrostImbuementEffect(MobEffectCategory.BENEFICIAL, 0xEDF5DD));
+
+    public static final DeferredHolder<MobEffect, FireImbuementEffect> FIRE_IMBUEMENT_EFFECT = MOB_EFFECTS.register("fire_imbuement_effect", () ->
+            new FireImbuementEffect(MobEffectCategory.BENEFICIAL, 0xFFFF4500));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

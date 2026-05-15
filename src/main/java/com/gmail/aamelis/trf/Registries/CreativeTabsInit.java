@@ -23,6 +23,7 @@ public class CreativeTabsInit {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ItemsInit.BASIC_STAFF_ITEM);
                         output.accept(ItemsInit.BASIC_BOW_ITEM);
+                        output.accept(ItemsInit.SNIPER_BOW_ITEM);
                         output.accept(ItemsInit.COPPER_ARROW_ITEM);
 
                     }).build());

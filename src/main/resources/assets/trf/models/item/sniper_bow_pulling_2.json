@@ -1,0 +1,6 @@
+{
+  "parent": "trf:item/sniper_bow",
+  "textures": {
+    "layer0": "trf:item/sniper_bow_pulling_2"
+  }
+}

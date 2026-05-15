@@ -3,7 +3,7 @@
     "type": "minecraft:condition",
     "on_false": {
       "type": "minecraft:model",
-      "model": "trf:item/basic_bow"
+      "model": "trf:item/sniper_bow"
     },
     "on_true": {
       "type": "minecraft:range_dispatch",
@@ -11,24 +11,24 @@
         {
           "model": {
             "type": "minecraft:model",
-            "model": "trf:item/basic_bow_pulling_1"
+            "model": "trf:item/sniper_bow_pulling_1"
           },
           "threshold": 0.65
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "trf:item/basic_bow_pulling_2"
+            "model": "trf:item/sniper_bow_pulling_2"
           },
           "threshold": 0.9
         }
       ],
       "fallback": {
         "type": "minecraft:model",
-        "model": "trf:item/basic_bow_pulling_0"
+        "model": "trf:item/sniper_bow_pulling_0"
       },
       "property": "minecraft:use_duration",
-      "scale": 0.07
+      "scale": 0.045
     },
     "property": "minecraft:using_item"
   }

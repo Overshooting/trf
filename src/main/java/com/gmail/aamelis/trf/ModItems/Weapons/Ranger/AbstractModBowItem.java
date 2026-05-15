@@ -21,6 +21,10 @@ import java.util.function.Supplier;
 
 public class AbstractModBowItem extends BowItem {
 
+    private float drawPower;
+    private float power;
+    private int drawTime;
+
     public static final Supplier<Properties> PROPERTIES = () ->
             new Item.Properties().stacksTo(1);
 
@@ -28,13 +32,20 @@ public class AbstractModBowItem extends BowItem {
         super(p_40660_);
     }
 
-    @Override
-    public int getUseDuration(ItemStack p_40680_, LivingEntity p_345962_) {
-        return 20000;
+    public AbstractModBowItem(Properties properties, float drawPower, float power, int drawTime) {
+        super(properties);
+        this.drawPower = drawPower;
+        this.power = power;
+        this.drawTime = drawTime;
     }
 
-    public static float getFastPower(int charge) {
-        float f = (float) charge / 10.0f;
+    @Override
+    public int getUseDuration(ItemStack p_40680_, LivingEntity p_345962_) {
+        return drawTime;
+    }
+
+    public float getFastPower(int charge) {
+        float f = (float) charge / drawPower;
         f = (f * f * f * 2.0f) / 3.0f;
 
         if (f > 1.0f) {
@@ -68,7 +79,7 @@ public class AbstractModBowItem extends BowItem {
                     player.getXRot(),
                     player.getYRot(),
                     0.0f,
-                    power * 2.0f,
+                    power * this.power,
                     1.0f
             );
 

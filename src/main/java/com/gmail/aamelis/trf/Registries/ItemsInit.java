@@ -7,6 +7,7 @@ import com.gmail.aamelis.trf.ModItems.Weapons.Mage.AbstractStaffItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Mage.BasicStaffItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.AbstractModBowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.Arrows.CopperArrowItem;
+import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.SniperBowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.BasicBowItem;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.world.item.BlockItem;
@@ -40,6 +41,8 @@ public class ItemsInit {
     public static final DeferredItem<Item> COPPER_ARROW_ITEM = ITEMS.registerItem("copper_arrow", CopperArrowItem::new, CopperArrowItem.PROPERTIES);
 
     public static final DeferredItem<Item> BASIC_BOW_ITEM = ITEMS.registerItem("basic_bow", BasicBowItem::new, AbstractModBowItem.PROPERTIES);
+
+    public static final DeferredItem<Item> SNIPER_BOW_ITEM = ITEMS.registerItem("sniper_bow", SniperBowItem::new, AbstractModBowItem.PROPERTIES);
 
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 

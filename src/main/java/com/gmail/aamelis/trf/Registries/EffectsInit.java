@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModEffects.BleedingEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.FireImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.FrostImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.PoisonImbuementEffect;
@@ -29,6 +30,9 @@ public class EffectsInit {
 
     public static final DeferredHolder<MobEffect, FireImbuementEffect> FIRE_IMBUEMENT_EFFECT = MOB_EFFECTS.register("fire_imbuement_effect", () ->
             new FireImbuementEffect(MobEffectCategory.BENEFICIAL, 0xFFFF4500));
+
+    public static final DeferredHolder<MobEffect, BleedingEffect> BLEEDING_EFFECT = MOB_EFFECTS.register("bleeding_effect", () ->
+            new BleedingEffect(MobEffectCategory.HARMFUL, 0x88080800));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

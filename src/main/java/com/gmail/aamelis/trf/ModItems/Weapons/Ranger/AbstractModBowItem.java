@@ -1,10 +1,11 @@
 package com.gmail.aamelis.trf.ModItems.Weapons.Ranger;
 
 import com.gmail.aamelis.trf.ModEntities.Projectiles.ArrowProjectiles.AbstractImbueableArrow;
+import com.gmail.aamelis.trf.ModItems.DataComponents.BowCastingData;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.Arrows.AbstractModArrowItem;
-import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.Arrows.CopperArrowItem;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
+import com.gmail.aamelis.trf.Registries.DataComponentsInit;
 import com.gmail.aamelis.trf.Registries.ItemsInit;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -74,6 +75,16 @@ public class AbstractModBowItem extends BowItem {
         if (!player.level().isClientSide()) {
             AbstractArrow arrow = item.createArrow(p_40668_, ammoStack, player, p_40667_);
 
+            BowCastingData spellData = p_40667_.get(DataComponentsInit.BOW_DATA);
+
+            if (spellData != null) {
+                if (System.currentTimeMillis() - spellData.timeCast() < 5000) {
+                    applyArrowSpell(spellData.castType(), arrow);
+                }
+
+                p_40667_.remove(DataComponentsInit.BOW_DATA);
+            }
+
             arrow.shootFromRotation(
                     player,
                     player.getXRot(),
@@ -107,8 +118,14 @@ public class AbstractModBowItem extends BowItem {
         return true;
     }
 
+    private void applyArrowSpell(byte spellType, AbstractArrow arrow) {
+        if (arrow instanceof AbstractImbueableArrow imbueable) {
+            imbueable.setSpellType(spellType);
+        }
+    }
+
     private ItemStack findAmmo(Player player) {
-        for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
+        for (ItemStack stack : player.getInventory()) {
             if (stack.getItem() instanceof AbstractModArrowItem) {
                 return stack;
             }
@@ -131,6 +148,11 @@ public class AbstractModBowItem extends BowItem {
         PlayerSpellData data = p_40673_.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
         if (data.getPlayerClass() != PlayerSpellData.ARCHER) return InteractionResult.FAIL;
 
-        return super.use(p_40672_, p_40673_, p_40674_);
+        if (!p_40673_.getAbilities().instabuild && findAmmo(p_40673_).isEmpty()) return InteractionResult.FAIL;
+        
+        p_40673_.startUsingItem(p_40674_);
+        return InteractionResult.SUCCESS;
     }
+
+
 }

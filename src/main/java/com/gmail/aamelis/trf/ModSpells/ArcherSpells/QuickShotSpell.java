@@ -7,12 +7,10 @@ import com.gmail.aamelis.trf.ModItems.DataComponents.BowCastingData;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.AbstractModBowItem;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
-import com.gmail.aamelis.trf.ModUIRendering.BowSpellRenderer;
 import com.gmail.aamelis.trf.Network.Packets.RenderBowTimerPacket;
-import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.DataComponentsInit;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -20,15 +18,16 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
-public class PiercingShotSpell implements ISpell {
+public class QuickShotSpell implements ISpell {
+
     @Override
     public String getId() {
-        return "piercing_shot";
+        return "quick_shot";
     }
 
     @Override
     public String getDisplayName() {
-        return "Piercing Shot";
+        return "Quick Shot";
     }
 
     @Override
@@ -38,12 +37,12 @@ public class PiercingShotSpell implements ISpell {
 
     @Override
     public int getRequiredMana() {
-        return 100;
+        return 200;
     }
 
     @Override
     public long getCooldown() {
-        return 5000;
+        return 10000;
     }
 
     @Override
@@ -64,17 +63,21 @@ public class PiercingShotSpell implements ISpell {
 
         bow.remove(DataComponentsInit.BOW_DATA);
 
-        bow.set(DataComponentsInit.BOW_DATA, new BowCastingData(System.currentTimeMillis(), BowCastingData.PIERCING));
+        bow.set(DataComponentsInit.BOW_DATA, new BowCastingData(System.currentTimeMillis(), BowCastingData.QUICK));
 
-        PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(System.currentTimeMillis() + (100 * 50L), 0xFF8B0000));
+        PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(System.currentTimeMillis() + (100 * 50L), 0xFF00FFFF));
 
-        DelayedSpellEffectScheduler.schedule(player.level(), new DelayedSpellEffect(100,
-                (level) -> {
+        player.sendSystemMessage(Component.literal("Quick Shot Active!"));
+
+        DelayedSpellEffectScheduler.schedule(player.level(), new DelayedSpellEffect(
+                100, (lvl) -> {
                     BowCastingData data = bow.get(DataComponentsInit.BOW_DATA);
-                    if (data != null && data.castType() == BowCastingData.PIERCING) {
+                    if (data != null && data.castType() == BowCastingData.QUICK) {
+                        player.sendSystemMessage(Component.literal("Quick Shot Ended!"));
                         bow.remove(DataComponentsInit.BOW_DATA);
                     }
-                }));
+                }
+        ));
     }
 
     @Override
@@ -85,7 +88,7 @@ public class PiercingShotSpell implements ISpell {
     @Override
     public List<SpellInput> getCombo() {
         return List.of(
-                SpellInput.C,
+                SpellInput.V,
                 SpellInput.C,
                 SpellInput.B
         );
@@ -93,16 +96,16 @@ public class PiercingShotSpell implements ISpell {
 
     @Override
     public ResourceLocation getFullPath() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/piercing_shot_full.png");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/quick_shot_full.png");
     }
 
     @Override
     public ResourceLocation getEmptyPath() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/piercing_shot_empty.png");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/quick_shot_full.png");
     }
 
     @Override
     public ResourceLocation animationId() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_piercing_shot");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_quick_shot_poison");
     }
 }

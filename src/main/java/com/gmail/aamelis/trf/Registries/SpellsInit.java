@@ -1,10 +1,7 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Combo.ComboUtils;
-import com.gmail.aamelis.trf.ModSpells.ArcherSpells.ImbueFireSpell;
-import com.gmail.aamelis.trf.ModSpells.ArcherSpells.ImbueFrostSpell;
-import com.gmail.aamelis.trf.ModSpells.ArcherSpells.ImbuePoisonSpell;
-import com.gmail.aamelis.trf.ModSpells.ArcherSpells.PiercingShotSpell;
+import com.gmail.aamelis.trf.ModSpells.ArcherSpells.*;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.MageSpells.*;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
@@ -61,6 +58,7 @@ public class SpellsInit {
         register(new ImbueFrostSpell());
         register(new ImbueFireSpell());
         register(new PiercingShotSpell());
+        register(new QuickShotSpell());
     }
 
     public static List<String> getAllSpellsForClass(short num) {

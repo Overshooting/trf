@@ -73,6 +73,12 @@ public class PacketsInit {
                 SpellAnimationPacket.STREAM_CODEC,
                 ModPayloadHandler::handleAnimation
         );
+
+        registrar.playToClient(
+          RenderBowTimerPacket.TYPE,
+          RenderBowTimerPacket.STREAM_CODEC,
+          ModPayloadHandler::handleBowTimer
+        );
     }
 
 }

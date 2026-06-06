@@ -29,10 +29,6 @@ public class AbstractModBowItem extends BowItem {
     public static final Supplier<Properties> PROPERTIES = () ->
             new Item.Properties().stacksTo(1);
 
-    public AbstractModBowItem(Properties p_40660_) {
-        super(p_40660_);
-    }
-
     public AbstractModBowItem(Properties properties, float drawPower, float power, int drawTime) {
         super(properties);
         this.drawPower = drawPower;
@@ -60,11 +56,15 @@ public class AbstractModBowItem extends BowItem {
     public boolean releaseUsing(ItemStack p_40667_, Level p_40668_, LivingEntity p_40669_, int p_40670_) {
         if (!(p_40669_ instanceof ServerPlayer player)) return false;
 
+        BowCastingData spellData = p_40667_.get(DataComponentsInit.BOW_DATA);
+
         int charge = getUseDuration(p_40667_, player) - p_40670_;
 
         float power = getFastPower(charge);
 
-        if (power < 0.1f) return false;
+        boolean chargedEnough = (spellData != null && spellData.castType() == BowCastingData.QUICK && power >= 0.03f) || power >= 0.5f;
+
+        if (!chargedEnough) return false;
 
         ItemStack ammoStack = findAmmo(player);
 
@@ -72,17 +72,19 @@ public class AbstractModBowItem extends BowItem {
 
         if (!(ammoStack.getItem() instanceof ArrowItem item)) return false;
 
+        float velocity = power * this.power;
+
         if (!player.level().isClientSide()) {
             AbstractArrow arrow = item.createArrow(p_40668_, ammoStack, player, p_40667_);
 
-            BowCastingData spellData = p_40667_.get(DataComponentsInit.BOW_DATA);
-
             if (spellData != null) {
-                if (System.currentTimeMillis() - spellData.timeCast() < 5000) {
-                    applyArrowSpell(spellData.castType(), arrow);
+                if ((System.currentTimeMillis() - spellData.timeCast() < 5000) && arrow instanceof AbstractImbueableArrow imbueableArrow) {
+                    imbueableArrow.setSpellType(spellData.castType());
                 }
 
-                p_40667_.remove(DataComponentsInit.BOW_DATA);
+                if (spellData.castType() == BowCastingData.QUICK) {
+                    velocity = 2.0F;
+                }
             }
 
             arrow.shootFromRotation(
@@ -90,11 +92,11 @@ public class AbstractModBowItem extends BowItem {
                     player.getXRot(),
                     player.getYRot(),
                     0.0f,
-                    power * this.power,
+                    velocity,
                     1.0f
             );
 
-            arrow.setCritArrow(power >= 1.0f);
+            arrow.setCritArrow((spellData != null && spellData.castType() == BowCastingData.QUICK) || power >= 1.0f);
 
             if (player.getAbilities().instabuild) {
                 arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
@@ -149,7 +151,7 @@ public class AbstractModBowItem extends BowItem {
         if (data.getPlayerClass() != PlayerSpellData.ARCHER) return InteractionResult.FAIL;
 
         if (!p_40673_.getAbilities().instabuild && findAmmo(p_40673_).isEmpty()) return InteractionResult.FAIL;
-        
+
         p_40673_.startUsingItem(p_40674_);
         return InteractionResult.SUCCESS;
     }

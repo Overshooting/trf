@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.CastKeybinds;
+import com.gmail.aamelis.trf.ModUIRendering.BowSpellRenderer;
 import com.gmail.aamelis.trf.Network.KeyInputHandler;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Keybinds.StatKeybinds;
 import com.gmail.aamelis.trf.ModUIRendering.ManaBarRenderer;
@@ -34,6 +35,7 @@ public class ClientModEvents {
     public static void onRender(RenderGuiEvent.Post event) {
         SpellCastingUIRenderer.renderMessage(event);
         ManaBarRenderer.renderManaBar(event);
+        BowSpellRenderer.renderTimer(event);
     }
 
     @SubscribeEvent

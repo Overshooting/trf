@@ -7,6 +7,7 @@ import com.gmail.aamelis.trf.ModCastingSystem.SpellCastingSystem;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.ModUIRendering.BowSpellRenderer;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.zigythebird.playeranim.animation.PlayerAnimationController;
@@ -15,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -105,8 +107,14 @@ public class ModPayloadHandler {
                case "mag" -> statData.incrementMagic(1, serverPlayer);
                case "per" -> statData.incrementPerception(1, serverPlayer);
                case "pie" -> statData.incrementPiety(1, serverPlayer);
-               default -> throw new IllegalArgumentException("Illegal packet of type StatIncreasePacket recieved!");
+               default -> throw new IllegalArgumentException("Illegal packet of type StatIncreasePacket received!");
            }
+        });
+    }
+
+    public static void handleBowTimer(RenderBowTimerPacket packet, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            BowSpellRenderer.renewTimer(packet.endTime(), packet.color());
         });
     }
 

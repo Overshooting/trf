@@ -3,6 +3,8 @@ package com.gmail.aamelis.trf.ModEntities.Projectiles.ArrowProjectiles;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.ImbuementEffect;
 import com.gmail.aamelis.trf.ModItems.DataComponents.BowCastingData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.Network.Packets.BackButtonPacket;
+import com.gmail.aamelis.trf.Network.Packets.RenderBowTimerPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EffectsInit;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
@@ -102,6 +105,8 @@ public class AbstractImbueableArrow extends AbstractArrow {
                 int amplifier = data.getPerception() % 50;
 
                 living.addEffect(new MobEffectInstance(EffectsInit.BLEEDING_EFFECT, duration, amplifier));
+
+                PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(0, 0xFFFFFFFF));
             }
         }
 

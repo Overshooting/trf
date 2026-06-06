@@ -9,6 +9,7 @@ public record BowCastingData(long timeCast, byte castType) {
 
     public static final byte NONE = 0;
     public static final byte PIERCING = 1;
+    public static final byte QUICK = 2;
 
     public BowCastingData() {
         this(System.currentTimeMillis(), NONE);

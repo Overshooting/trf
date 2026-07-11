@@ -60,11 +60,23 @@ public class SpellCastingSystem {
         ItemStack heldItem = player.getMainHandItem();
         List<Item> validClassItems = CLASS_ITEMS.getOrDefault(spell.getRequiredClass(), Collections.emptyList());
 
-        if (playerSpellData.hasSpell(spell.getId()) && playerManaData.getCurrentMana() >= spell.getRequiredMana() && !isOnCooldown(player, spell) && validClassItems.contains(heldItem.getItem().asItem())) {
+        if (playerSpellData.hasSpell(spell.getId()) &&
+                playerManaData.getCurrentMana() >= spell.getRequiredMana() &&
+                !isOnCooldown(player, spell) &&
+                validClassItems.contains(heldItem.getItem().asItem()))
+        {
             playerManaData.useMana(player, spell.getRequiredMana());
             spell.cast(player);
             setCooldown(player, spell);
             success = true;
+        } else {
+            System.out.println("Casting failed with parameters:" +
+                    "\nSpell Unlocked: " + playerSpellData.hasSpell(spell.getId()) +
+                    "\nHas Mana: " + (playerManaData.getCurrentMana() >= spell.getRequiredMana()) +
+                    "\nHas Cooldown: " + !isOnCooldown(player, spell) +
+                    "\nCorrect Held Item: " + (validClassItems.contains(heldItem.getItem().asItem())) +
+                    "\nCurrently Unlocked Spells: " + playerSpellData.getUnlockedSpells().toString() +
+                    "\nAttempted Spell: " + spell.getId());
         }
 
         return success;

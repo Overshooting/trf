@@ -59,6 +59,7 @@ public class SpellsInit {
         register(new ImbueFireSpell());
         register(new PiercingShotSpell());
         register(new QuickShotSpell());
+        register(new TrapSpell());
     }
 
     public static List<String> getAllSpellsForClass(short num) {

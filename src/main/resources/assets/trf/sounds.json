@@ -1,0 +1,12 @@
+{
+  "monster_trap_place": {
+    "subtitle": "sounds.trf.monster_trap_place",
+    "sounds": [
+      {
+        "name": "trf:monster_trap_place",
+        "pitch": 1.0,
+        "volume": 1.0
+      }
+    ]
+  }
+}

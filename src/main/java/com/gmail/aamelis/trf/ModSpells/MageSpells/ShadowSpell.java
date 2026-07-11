@@ -18,6 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class ShadowSpell implements ISpell {
+
     @Override
     public String getId() {
         return "shadow_step";

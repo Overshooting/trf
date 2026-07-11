@@ -106,6 +106,6 @@ public class QuickShotSpell implements ISpell {
 
     @Override
     public ResourceLocation animationId() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_quick_shot_poison");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_quick_shot");
     }
 }

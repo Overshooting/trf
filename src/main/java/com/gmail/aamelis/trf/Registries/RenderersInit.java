@@ -40,6 +40,11 @@ public class RenderersInit {
         );
 
         event.registerEntityRenderer(
+                EntitiesInit.MONSTER_TRAP.get(),
+                ParticleEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
                 EntitiesInit.MANA_BLAST_PROJECTILE.get(),
                 ParticleEntityRenderer::new
         );

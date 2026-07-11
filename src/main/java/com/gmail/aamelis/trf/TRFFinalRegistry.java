@@ -28,6 +28,7 @@ public class TRFFinalRegistry {
         AdvancementTriggersInit.register(modEventBus);
         EffectsInit.register(modEventBus);
         DataComponentsInit.register(modEventBus);
+        SoundsInit.register(modEventBus);
 
         SpellsInit.register();
 

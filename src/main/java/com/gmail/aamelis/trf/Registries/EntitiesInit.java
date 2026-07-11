@@ -3,6 +3,7 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.FlavorNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.StepQuestNPCEntity;
 import com.gmail.aamelis.trf.ModEntities.NPCs.Types.TutorialStepQuestNPCEntity;
+import com.gmail.aamelis.trf.ModEntities.Other.MonsterTrap;
 import com.gmail.aamelis.trf.ModEntities.Other.PaintedPantheonStorm;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.ArrowProjectiles.CopperArrow;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles.*;
@@ -103,6 +104,20 @@ public class EntitiesInit {
                             .build(ResourceKey.create(
                                     Registries.ENTITY_TYPE,
                                     ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "painted_pantheon_storm")
+                            )));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<MonsterTrap>> MONSTER_TRAP =
+            ENTITIES.register("monster_trap", () ->
+                    EntityType.Builder.<MonsterTrap>of(
+                                    MonsterTrap::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(1.0f, 0.3f)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build(ResourceKey.create(
+                                    Registries.ENTITY_TYPE,
+                                    ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "monster_trap")
                             )));
 
     public static final DeferredHolder<EntityType<?>, EntityType<CopperArrow>> COPPER_ARROW =

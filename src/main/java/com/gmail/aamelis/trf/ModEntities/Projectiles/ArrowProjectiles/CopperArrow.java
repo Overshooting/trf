@@ -18,7 +18,7 @@ public class CopperArrow extends AbstractImbueableArrow {
     }
 
     public CopperArrow(Level level, ServerPlayer shooter) {
-        super(EntitiesInit.COPPER_ARROW.get(), shooter, level, 2.0f);
+        super(EntitiesInit.COPPER_ARROW.get(), shooter, level, new ItemStack(ItemsInit.COPPER_ARROW_ITEM.get()), 2.0f);
 
         if (shooter != null) {
             setOwner(shooter);

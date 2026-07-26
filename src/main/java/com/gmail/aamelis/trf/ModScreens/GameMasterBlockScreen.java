@@ -2,9 +2,11 @@ package com.gmail.aamelis.trf.ModScreens;
 
 import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameMasterBlockEntity;
 import com.gmail.aamelis.trf.ModBlocks.ModBlockEntities.GameType;
+import com.gmail.aamelis.trf.ModScreens.Utils.ScreenContainer;
 import com.gmail.aamelis.trf.Network.Packets.*;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -16,6 +18,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlockMenu> {
@@ -24,9 +28,13 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
             TRFFinalRegistry.MODID, "textures/gui/game_master_block/main_screen.png"
     );
 
+    public static final String HOME_ID = "home";
+    public static final String LIGHTS_OUT_ID = "lights";
+
     private EditBox corner1X, corner1Y, corner1Z, corner2X, corner2Y, corner2Z;
     private Button lightsOutButton, backButton, sendCornersButton, startButton, resetButton;
     private String message;
+    private final ScreenContainer[] screens = new ScreenContainer[2];
 
     public GameMasterBlockScreen(GameMasterBlockMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -53,6 +61,9 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
         int inputStartX = left + 10;
         int inputRow1Y = bottom - 50;
         int inputRow2Y = bottom - 25;
+
+        ScreenContainer homeScreen = new ScreenContainer(HOME_ID);
+        ScreenContainer lightsOutScreen = new ScreenContainer(LIGHTS_OUT_ID);
 
         lightsOutButton = Button.builder(Component.literal("Lights Out"), btn -> {
             if (minecraft != null && minecraft.player != null) {
@@ -132,17 +143,25 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
         corner2Y = new EditBox(font, inputStartX + fieldWidth, inputRow2Y, fieldWidth, 20, Component.literal("C2Y"));
         corner2Z = new EditBox(font, inputStartX + fieldWidth * 2, inputRow2Y, fieldWidth, 20, Component.literal("C2Z"));
 
-        addRenderableWidget(corner1X);
-        addRenderableWidget(corner1Y);
-        addRenderableWidget(corner1Z);
-        addRenderableWidget(corner2X);
-        addRenderableWidget(corner2Y);
-        addRenderableWidget(corner2Z);
-        addRenderableWidget(lightsOutButton);
-        addRenderableWidget(backButton);
-        addRenderableWidget(sendCornersButton);
-        addRenderableWidget(startButton);
-        addRenderableWidget(resetButton);
+        AbstractWidget[] homeArray = {lightsOutButton};
+        List<AbstractWidget> homeWidgets = List.of(homeArray);
+
+        AbstractWidget[] lightsOutArray = {backButton, sendCornersButton, startButton, resetButton, corner1X, corner1Y, corner1Z, corner2X, corner2Y, corner2Z};
+        List<AbstractWidget> lightsOutWidgets = List.of(lightsOutArray);
+
+        for (AbstractWidget widget : homeWidgets) {
+            addRenderableWidget(widget);
+        }
+
+        for (AbstractWidget widget : lightsOutWidgets) {
+            addRenderableWidget(widget);
+        }
+
+        homeScreen.setWidgets(homeWidgets);
+        lightsOutScreen.setWidgets(lightsOutWidgets);
+
+        screens[0] = homeScreen;
+        screens[1] = lightsOutScreen;
     }
 
     @Override
@@ -175,8 +194,6 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
 
         int left = leftPos + 10;
         int top = topPos + 10;
-        int right = left + imageWidth;
-        int bottom = topPos + imageHeight;
 
         if (game == GameType.NONE) {
             guiGraphics.drawString(font, "Select a Game:", left,  top, -12566464, false);
@@ -228,77 +245,29 @@ public class GameMasterBlockScreen extends AbstractContainerScreen<GameMasterBlo
 
         switch (blockEntity.getGame()) {
             case LIGHTS_OUT -> {
-                setUpLightsOutScreen(blockEntity);
+                setScreen(LIGHTS_OUT_ID);
             }
 
             default -> {
-                setUpHomeScreen();
+                setScreen(HOME_ID);
             }
         }
 
     }
 
-    private void setUpLightsOutScreen(GameMasterBlockEntity blockEntity) {
-        lightsOutButton.active = false;
-        lightsOutButton.visible = false;
-
-        backButton.active = true;
-        backButton.visible = true;
-
-        sendCornersButton.active = true;
-        sendCornersButton.visible = true;
-
-        startButton.active = true;
-        startButton.visible = true;
-
-        resetButton.active = true;
-        resetButton.visible = true;
-
-        corner1X.active = true;
-        corner1Y.active = true;
-        corner1Z.active = true;
-        corner2X.active = true;
-        corner2Y.active = true;
-        corner2Z.active = true;
-
-        corner1X.visible = true;
-        corner1Y.visible = true;
-        corner1Z.visible = true;
-        corner2X.visible = true;
-        corner2Y.visible = true;
-        corner2Z.visible = true;
-
-        message = blockEntity.getMessage();
-    }
-
-    private void setUpHomeScreen() {
-        lightsOutButton.active = true;
-        lightsOutButton.visible = true;
-
-        backButton.active = false;
-        backButton.visible = false;
-
-        sendCornersButton.active = false;
-        sendCornersButton.visible = false;
-
-        startButton.active = false;
-        startButton.visible = false;
-
-        resetButton.active = false;
-        resetButton.visible = false;
-
-        corner1X.active = false;
-        corner1Y.active = false;
-        corner1Z.active = false;
-        corner2X.active = false;
-        corner2Y.active = false;
-        corner2Z.active = false;
-
-        corner1X.visible = false;
-        corner1Y.visible = false;
-        corner1Z.visible = false;
-        corner2X.visible = false;
-        corner2Y.visible = false;
-        corner2Z.visible = false;
+    private void setScreen(String id) {
+        for (ScreenContainer screen : screens) {
+            if (screen.getContainerName().equals(id)) {
+                for (AbstractWidget widget : screen.getWidgets()) {
+                    widget.active = true;
+                    widget.visible = true;
+                }
+            } else {
+                for (AbstractWidget widget : screen.getWidgets()) {
+                    widget.active = false;
+                    widget.visible = false;
+                }
+            }
+        }
     }
 }

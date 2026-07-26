@@ -60,6 +60,7 @@ public class SpellsInit {
         register(new PiercingShotSpell());
         register(new QuickShotSpell());
         register(new TrapSpell());
+        register(new CloakingSpell());
     }
 
     public static List<String> getAllSpellsForClass(short num) {

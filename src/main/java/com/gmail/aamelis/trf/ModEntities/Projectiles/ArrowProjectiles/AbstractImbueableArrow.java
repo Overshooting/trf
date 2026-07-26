@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,8 +44,8 @@ public class AbstractImbueableArrow extends AbstractArrow {
         this.damage = damage;
     }
 
-    public AbstractImbueableArrow(EntityType<? extends AbstractArrow> type, LivingEntity shooter, Level level, float damage) {
-        super(type, shooter, level, ItemStack.EMPTY, null);
+    public AbstractImbueableArrow(EntityType<? extends AbstractArrow> type, LivingEntity shooter, Level level, ItemStack asItem, float damage) {
+        super(type, shooter, level, asItem, null);
 
         this.damage = damage;
     }
@@ -93,6 +94,7 @@ public class AbstractImbueableArrow extends AbstractArrow {
 
     @Override
     public byte getPierceLevel() {
+        System.out.println("Piercing level returned as: " + (specialArrowType == BowCastingData.PIERCING ? (byte) 20 : (byte) 0));
         return specialArrowType == BowCastingData.PIERCING ? (byte) 20 : (byte) 0;
     }
 

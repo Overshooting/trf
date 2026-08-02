@@ -30,7 +30,7 @@ public class TRFFinalRegistry {
         DataComponentsInit.register(modEventBus);
         SoundsInit.register(modEventBus);
 
-        SpellsInit.register();
+        SpellsInit.registerSpells();
 
         NeoForge.EVENT_BUS.addListener(this::onRegisterCommands);
         modEventBus.addListener(this::onClientSetup);

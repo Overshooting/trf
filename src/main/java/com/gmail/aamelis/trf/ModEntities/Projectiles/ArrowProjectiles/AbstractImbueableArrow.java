@@ -1,42 +1,35 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles.ArrowProjectiles;
 
 import com.gmail.aamelis.trf.ModEffects.Imbuements.ImbuementEffect;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.ProjectileUtils;
 import com.gmail.aamelis.trf.ModItems.DataComponents.BowCastingData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
-import com.gmail.aamelis.trf.Network.Packets.BackButtonPacket;
 import com.gmail.aamelis.trf.Network.Packets.RenderBowTimerPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EffectsInit;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.checkerframework.checker.units.qual.A;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Logger;
 
 public class AbstractImbueableArrow extends AbstractArrow {
 
     private final float damage;
     private byte specialArrowType = BowCastingData.NONE;
-
-    public AbstractImbueableArrow(EntityType<? extends AbstractArrow> p_331098_, Level p_331626_) {
-        super(p_331098_, p_331626_);
-
-        damage = 0f;
-    }
 
     public AbstractImbueableArrow(EntityType<? extends AbstractArrow> type, Level level, float damage) {
         super(type, level);
@@ -88,21 +81,49 @@ public class AbstractImbueableArrow extends AbstractArrow {
         if (!piercing) discard();
     }
 
+    @Override
+    protected void onHitBlock(BlockHitResult p_36755_) {
+        if (!(getOwner() instanceof ServerPlayer player)) return;
+
+        if (ProjectileUtils.validateBlock(level().getBlockState(p_36755_.getBlockPos()).getBlock())) {
+            switch (this.specialArrowType) {
+                case BowCastingData.DUMMY -> {
+                    if (!(level() instanceof ServerLevel level)) return;
+
+                    ProjectileUtils.applyExplosion(this, level, p_36755_.getLocation(), null);
+
+                    level.sendParticles(ParticleTypes.COPPER_FIRE_FLAME,
+                            this.getX(),
+                            this.getY(),
+                            this.getZ(),
+                            20,
+                            random.nextGaussian() * 3,
+                            random.nextGaussian() * 3,
+                            random.nextGaussian() * 3,
+                            0.1);
+
+                    level.playSound(null, p_36755_.getBlockPos(), SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+                    PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(0, 0xFFFFFFFF));
+                }
+            }
+        }
+    }
+
     public void setSpellType(byte spellType) {
         this.specialArrowType = spellType;
     }
 
     @Override
     public byte getPierceLevel() {
-        System.out.println("Piercing level returned as: " + (specialArrowType == BowCastingData.PIERCING ? (byte) 20 : (byte) 0));
         return specialArrowType == BowCastingData.PIERCING ? (byte) 20 : (byte) 0;
     }
 
     private void applyFinalEffects(LivingEntity living, ServerPlayer player) {
+        PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
+
         switch (this.specialArrowType) {
             case BowCastingData.PIERCING -> {
-                PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
-
                 int duration = 200 - (150 / (data.getPerception() + 1));
                 int amplifier = data.getPerception() % 50;
 
@@ -110,9 +131,9 @@ public class AbstractImbueableArrow extends AbstractArrow {
 
                 PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(0, 0xFFFFFFFF));
             }
-        }
 
-        PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
+            case BowCastingData.DUMMY -> PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(0, 0xFFFFFFFF));
+        }
 
         double thisDamage = damage * getDeltaMovement().length() * (1 + data.getPerception() * 0.05);
 

@@ -10,7 +10,6 @@ import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.Network.Packets.RenderBowTimerPacket;
 import com.gmail.aamelis.trf.Registries.DataComponentsInit;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -18,16 +17,16 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
-public class QuickShotSpell implements ISpell {
+public class DummyShotSpell implements ISpell {
 
     @Override
     public String getId() {
-        return "quick_shot";
+        return "dummy_shot";
     }
 
     @Override
     public String getDisplayName() {
-        return "Quick Shot";
+        return "Dummy Shot";
     }
 
     @Override
@@ -63,21 +62,17 @@ public class QuickShotSpell implements ISpell {
 
         bow.remove(DataComponentsInit.BOW_DATA);
 
-        bow.set(DataComponentsInit.BOW_DATA, new BowCastingData(System.currentTimeMillis(), BowCastingData.QUICK));
+        bow.set(DataComponentsInit.BOW_DATA, new BowCastingData(System.currentTimeMillis(), BowCastingData.DUMMY));
 
-        PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(System.currentTimeMillis() + (100 * 50L),   0xFF00FFFF));
+        PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(System.currentTimeMillis() + (100 * 50L), 0xFF10FF00));
 
-        player.sendSystemMessage(Component.literal("Quick Shot Active!"));
-
-        DelayedSpellEffectScheduler.schedule(player.level(), new DelayedSpellEffect(
-                100, (lvl) -> {
+        DelayedSpellEffectScheduler.schedule(player.level(), new DelayedSpellEffect(100,
+                (level) -> {
                     BowCastingData data = bow.get(DataComponentsInit.BOW_DATA);
-                    if (data != null && data.castType() == BowCastingData.QUICK) {
-                        player.sendSystemMessage(Component.literal("Quick Shot Ended!"));
+                    if (data != null && data.castType() == BowCastingData.DUMMY) {
                         bow.remove(DataComponentsInit.BOW_DATA);
                     }
-                }
-        ));
+                }));
     }
 
     @Override
@@ -88,24 +83,24 @@ public class QuickShotSpell implements ISpell {
     @Override
     public List<SpellInput> getCombo() {
         return List.of(
-                SpellInput.V,
+                SpellInput.B,
                 SpellInput.C,
-                SpellInput.B
+                SpellInput.C
         );
     }
 
     @Override
     public ResourceLocation getFullPath() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/quick_shot_full.png");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/dummy_shot_full.png");
     }
 
     @Override
     public ResourceLocation getEmptyPath() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/quick_shot_full.png");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "textures/gui/cooldowns/dummy_shot_empty.png");
     }
 
     @Override
     public ResourceLocation animationId() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_quick_shot");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.cast_dummy_shot");
     }
 }

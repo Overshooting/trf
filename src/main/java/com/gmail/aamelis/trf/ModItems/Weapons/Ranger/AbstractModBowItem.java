@@ -4,6 +4,7 @@ import com.gmail.aamelis.trf.ModEntities.Projectiles.ArrowProjectiles.AbstractIm
 import com.gmail.aamelis.trf.ModItems.DataComponents.BowCastingData;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.Arrows.AbstractModArrowItem;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
+import com.gmail.aamelis.trf.Network.Packets.RenderBowTimerPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.DataComponentsInit;
 import com.gmail.aamelis.trf.Registries.ItemsInit;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -80,6 +82,12 @@ public class AbstractModBowItem extends BowItem {
             if (spellData != null) {
                 if ((System.currentTimeMillis() - spellData.timeCast() < 5000) && arrow instanceof AbstractImbueableArrow imbueableArrow) {
                     imbueableArrow.setSpellType(spellData.castType());
+
+                    if (spellData.castType() == BowCastingData.DUMMY) {
+                        p_40667_.remove(DataComponentsInit.BOW_DATA);
+
+                        PacketDistributor.sendToPlayer(player, new RenderBowTimerPacket(0, 0xFFFFFFFF));
+                    }
                 }
 
                 if (spellData.castType() == BowCastingData.QUICK) {

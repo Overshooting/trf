@@ -87,66 +87,7 @@ public class ManaBlastProjectile extends ThrowableProjectile {
     private void runHitResult(Vec3 location, @Nullable LivingEntity firstTarget) {
         if (!(level() instanceof ServerLevel level)) return;
 
-        double radius = 4.0;
-
-        AABB box = new AABB(location, location).inflate(radius);
-
-        Entity owner = getOwner();
-
-        if (!(owner instanceof ServerPlayer player)) return;
-
-        PlayerStatData data = player.getData(AttachmentTypesInit.PLAYER_STATS);
-
-        List<LivingEntity> targets = level.getEntitiesOfClass(
-                LivingEntity.class,
-                box,
-                entity -> entity != owner && !(entity instanceof ServerPlayer) &&
-                        (firstTarget == null || entity != firstTarget)
-        );
-
-        for (LivingEntity target : targets) {
-            if (target.position().distanceToSqr(location) > radius * radius) continue;
-
-            double distSqr = target.position().distanceToSqr(location);
-            if (distSqr > radius * radius) return;
-
-            Vec3 start = location;
-            Vec3 end = target.getEyePosition();
-
-            ClipContext context = new ClipContext(
-                    start,
-                    end,
-                    ClipContext.Block.COLLIDER,
-                    ClipContext.Fluid.NONE,
-                    this
-            );
-
-            BlockHitResult result = level.clip(context);
-
-            double blockHitMultiplier = 1.0;
-
-            if (result.getType() == HitResult.Type.BLOCK) {
-                Block block = level.getBlockState(result.getBlockPos()).getBlock();
-
-                if (!ProjectileUtils.validateBlock(block)) break;
-
-                double hitDist = result.getLocation().distanceToSqr(start);
-                double targetDist = end.distanceToSqr(start);
-
-                if (hitDist + 1e-4 < targetDist) blockHitMultiplier = 0.2;
-            }
-
-            double dist = Math.sqrt(target.position().distanceToSqr(location));
-
-            float base = SpellDamageScaling.scaleDamage(6.0f, data.getMagic());
-
-            float damage = Math.max(1.0f, (float)(base * (1.0 - dist / radius) * blockHitMultiplier));
-
-            Vec3 knockback = target.position().subtract(location).normalize().scale(0.5);
-
-            target.hurt(damageSources().indirectMagic(this, owner), damage);
-            target.push(knockback.x, 0.3, knockback.z);
-        }
+        ProjectileUtils.applyExplosion(this, level, location, firstTarget);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.gmail.aamelis.trf.ModEffects.BleedingEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.FireImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.FrostImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.PoisonImbuementEffect;
+import com.gmail.aamelis.trf.ModEffects.ParryingEffect;
 import com.gmail.aamelis.trf.ModEffects.ShockedEffect;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,19 +21,22 @@ public class EffectsInit {
     );
 
     public static final DeferredHolder<MobEffect, ShockedEffect> SHOCKED_EFFECT = MOB_EFFECTS.register("shocked_effect", () ->
-            new ShockedEffect(MobEffectCategory.HARMFUL, 0x00F0FF));
+            new ShockedEffect(MobEffectCategory.HARMFUL, 0xFF00F0FF));
 
     public static final DeferredHolder<MobEffect, PoisonImbuementEffect> POISON_IMBUEMENT_EFFECT = MOB_EFFECTS.register("poison_imbuement_effect", () ->
             new PoisonImbuementEffect(MobEffectCategory.BENEFICIAL, 0x006400));
 
     public static final DeferredHolder<MobEffect, FrostImbuementEffect> FROST_IMBUEMENT_EFFECT = MOB_EFFECTS.register("frost_imbuement_effect", () ->
-            new FrostImbuementEffect(MobEffectCategory.BENEFICIAL, 0xEDF5DD));
+            new FrostImbuementEffect(MobEffectCategory.BENEFICIAL, 0xFFEDF5DD));
 
     public static final DeferredHolder<MobEffect, FireImbuementEffect> FIRE_IMBUEMENT_EFFECT = MOB_EFFECTS.register("fire_imbuement_effect", () ->
             new FireImbuementEffect(MobEffectCategory.BENEFICIAL, 0xFFFF4500));
 
     public static final DeferredHolder<MobEffect, BleedingEffect> BLEEDING_EFFECT = MOB_EFFECTS.register("bleeding_effect", () ->
-            new BleedingEffect(MobEffectCategory.HARMFUL, 0x88080800));
+            new BleedingEffect(MobEffectCategory.HARMFUL, 0xFF880808));
+
+    public static final DeferredHolder<MobEffect, ParryingEffect> PARRYING_EFFECT = MOB_EFFECTS.register("parrying_effect", () ->
+            new ParryingEffect(MobEffectCategory.BENEFICIAL, 0xFF707070));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

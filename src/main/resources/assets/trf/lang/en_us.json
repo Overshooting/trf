@@ -7,10 +7,13 @@
   "item.trf.painted_pantheon_scroll": "Scroll: Painted Pantheon",
   "item.trf.hyacinth_blade_scroll": "Scroll: Hyacinth Blades",
   "item.trf.sunlight_reach_scroll": "Scroll: Sunlight's Reach",
+  "item.trf.piercing_shot_scroll": "Journal Fragment: Piercing Shot",
+  "item.trf.quick_shot_scroll": "Journal Fragment: Quick Shot",
   "item.trf.soul_vial": "Soul Vial",
   "item.trf.basic_bow": "Basic Bow",
   "item.trf.sniper_bow": "Sniper Bow",
   "item.trf.copper_arrow": "Copper Arrow",
+  "item.trf.tin_sword": "Tin Sword",
 
   "block.trf.lights_out_block": "Lights Out Block",
   "block.trf.game_master_block": "Game Master Block",

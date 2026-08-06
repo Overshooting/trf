@@ -1,6 +1,8 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModItems.Scrolls.AbstractScrollItem;
+import com.gmail.aamelis.trf.ModItems.Scrolls.Archer.PiercingShotScroll;
+import com.gmail.aamelis.trf.ModItems.Scrolls.Archer.QuickShotScroll;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.*;
 import com.gmail.aamelis.trf.ModItems.Stats.SoulVial;
 import com.gmail.aamelis.trf.ModItems.Weapons.Mage.AbstractStaffItem;
@@ -9,6 +11,7 @@ import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.AbstractModBowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.Arrows.CopperArrowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.SniperBowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.BasicBowItem;
+import com.gmail.aamelis.trf.ModItems.Weapons.Warrior.TinSwordItem;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -36,6 +39,10 @@ public class ItemsInit {
 
     public static final DeferredItem<Item> HYACINTH_BLADES_SCROLL_ITEM = ITEMS.registerItem("hyacinth_blade_scroll", HyacinthBladeScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
+    public static final DeferredItem<Item> PIERCING_SHOT_SCROLL_ITEM = ITEMS.registerItem("piercing_shot_scroll", PiercingShotScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> QUICK_SHOT_SCROLL_ITEM = ITEMS.registerItem("quick_shot_scroll", QuickShotScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
     public static final DeferredItem<Item> SOUL_VIAL_ITEM = ITEMS.registerItem("soul_vial", SoulVial::new, SoulVial.PROPERTIES);
 
     public static final DeferredItem<Item> COPPER_ARROW_ITEM = ITEMS.registerItem("copper_arrow", CopperArrowItem::new, CopperArrowItem.PROPERTIES);
@@ -43,6 +50,8 @@ public class ItemsInit {
     public static final DeferredItem<Item> BASIC_BOW_ITEM = ITEMS.registerItem("basic_bow", BasicBowItem::new, AbstractModBowItem.PROPERTIES);
 
     public static final DeferredItem<Item> SNIPER_BOW_ITEM = ITEMS.registerItem("sniper_bow", SniperBowItem::new, AbstractModBowItem.PROPERTIES);
+
+    public static final DeferredItem<Item> TIN_SWORD_ITEM = ITEMS.registerItem("tin_sword", TinSwordItem::new, TinSwordItem.PROPERTIES);
 
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 

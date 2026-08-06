@@ -25,6 +25,7 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.BASIC_BOW_ITEM);
                         output.accept(ItemsInit.SNIPER_BOW_ITEM);
                         output.accept(ItemsInit.COPPER_ARROW_ITEM);
+                        output.accept(ItemsInit.TIN_SWORD_ITEM);
 
                     }).build());
 
@@ -52,6 +53,8 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.MANA_BLAST_SCROLL_ITEM);
                         output.accept(ItemsInit.PAINTED_PANTHEON_SCROLL_ITEM);
                         output.accept(ItemsInit.HYACINTH_BLADES_SCROLL_ITEM);
+                        output.accept(ItemsInit.PIERCING_SHOT_SCROLL_ITEM);
+                        output.accept(ItemsInit.QUICK_SHOT_SCROLL_ITEM);
 
                     }).build());
 

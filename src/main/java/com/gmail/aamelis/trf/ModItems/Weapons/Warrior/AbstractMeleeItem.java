@@ -21,7 +21,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class AbstractMeleeItem extends Item {
+abstract class AbstractMeleeItem extends Item {
 
     public AbstractMeleeItem(Properties properties) {
         super(properties);
@@ -29,7 +29,6 @@ public class AbstractMeleeItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (!player.isShiftKeyDown()) return InteractionResult.PASS;
         if (!(player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
 
@@ -38,12 +37,18 @@ public class AbstractMeleeItem extends Item {
         if (isCooldown) {
             return InteractionResult.PASS;
         } else {
+            System.out.println("Parry initiated!");
+
             SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId().toString());
 
             PacketDistributor.sendToPlayer(serverPlayer, packet);
             PacketDistributor.sendToPlayersNear(serverLevel, serverPlayer, player.getX(), player.getY(), player.getZ(), 64.0, packet);
 
+            serverPlayer.addEffect(new MobEffectInstance(EffectsInit.PARRYING_EFFECT, 30, 1));
+
             DelayedSpellEffectScheduler.schedule(serverLevel, new DelayedSpellEffect(30, (lvl) -> {
+                System.out.println("Parry Window Closed!");
+
                 Collection<MobEffectInstance> effects = serverPlayer.getActiveEffects();
                 ArrayList<MobEffectInstance> effectsToRemove = new ArrayList<MobEffectInstance>();
                 for (MobEffectInstance effect : effects) {
@@ -57,6 +62,7 @@ public class AbstractMeleeItem extends Item {
 
                     serverPlayer.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 255));
                     serverPlayer.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 255));
+                    serverPlayer.getCooldowns().addCooldown(serverPlayer.getItemInHand(hand), 40);
                 }
             }
                     ));
@@ -65,7 +71,5 @@ public class AbstractMeleeItem extends Item {
         }
     }
 
-    public ResourceLocation animId() {
-        return ResourceLocation.parse("unreachable");
-    }
+    abstract ResourceLocation animId();
 }

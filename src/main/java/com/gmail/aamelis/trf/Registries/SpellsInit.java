@@ -38,6 +38,8 @@ public class SpellsInit {
     }
 
     public static void registerSpells() {
+        int count = 0;
+
         for (ISpell spell : register) {
             List<SpellInput> combo = spell.getCombo();
 
@@ -49,7 +51,10 @@ public class SpellsInit {
             }
 
             SPELLS[classNumber][index] = spell;
+            count++;
         }
+
+        System.out.println("Registered " + count + " spells");
     }
 
     @Nullable

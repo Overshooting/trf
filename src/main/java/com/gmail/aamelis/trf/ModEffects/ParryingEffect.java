@@ -14,6 +14,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class ParryingEffect extends MobEffect {
 
     public ParryingEffect(MobEffectCategory category, int color) {
@@ -27,6 +30,18 @@ public class ParryingEffect extends MobEffect {
                 Entity damaging = damageSource.getEntity();
 
                 if (damaging instanceof LivingEntity livingEntity) {
+                    Collection<MobEffectInstance> effects = player.getActiveEffects();
+                    ArrayList<MobEffectInstance> effectsToRemove = new ArrayList<MobEffectInstance>();
+                    for (MobEffectInstance effect : effects) {
+                        if (effect.getEffect() == EffectsInit.PARRYING_EFFECT) {
+                            effectsToRemove.add(effect);
+                        }
+                    }
+
+                    for (MobEffectInstance effect : effectsToRemove) {
+                        player.removeEffect(effect.getEffect());
+                    }
+
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 255));
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 20, 255));
 

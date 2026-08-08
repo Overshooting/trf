@@ -2,7 +2,9 @@ package com.gmail.aamelis.trf.ModItems.Weapons.Warrior;
 
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffect;
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffectScheduler;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
+import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EffectsInit;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -31,11 +33,14 @@ abstract class AbstractMeleeItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!(player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
 
+        PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
+
+        if (data.getPlayerClass() != PlayerSpellData.WARRIOR) return InteractionResult.CONSUME;
 
         boolean isCooldown = serverPlayer.getCooldowns().isOnCooldown(serverPlayer.getItemInHand(hand));
 
         if (isCooldown) {
-            return InteractionResult.PASS;
+            return InteractionResult.CONSUME;
         } else {
             System.out.println("Parry initiated!");
 
@@ -46,7 +51,7 @@ abstract class AbstractMeleeItem extends Item {
 
             serverPlayer.addEffect(new MobEffectInstance(EffectsInit.PARRYING_EFFECT, 30, 1));
 
-            DelayedSpellEffectScheduler.schedule(serverLevel, new DelayedSpellEffect(30, (lvl) -> {
+            DelayedSpellEffectScheduler.schedule(serverLevel, new DelayedSpellEffect(29, (lvl) -> {
                 System.out.println("Parry Window Closed!");
 
                 Collection<MobEffectInstance> effects = serverPlayer.getActiveEffects();

@@ -10,7 +10,6 @@ public class ClientComboState {
     public static final int SUCCESS = 1;
     public static final int FAILURE = 2;
 
-
     public static ArrayList<SpellInput> currentInputs = new ArrayList<>();
 
     public static int resultState = NOT_FINISHED;

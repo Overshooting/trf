@@ -32,9 +32,7 @@ public class ProjectileUtils {
                 block != Blocks.SEAGRASS;
     }
 
-    public static void applyExplosion(Projectile exploding, ServerLevel level, Vec3 location, @Nullable LivingEntity firstTarget) {
-        double radius = 4.0;
-
+    public static void applyExplosion(Projectile exploding, ServerLevel level, Vec3 location, @Nullable LivingEntity firstTarget, double radius) {
         AABB box = new AABB(location, location).inflate(radius);
 
         Entity owner = exploding.getOwner();

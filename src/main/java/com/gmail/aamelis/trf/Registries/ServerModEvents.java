@@ -7,22 +7,16 @@ import com.gmail.aamelis.trf.ModNPCs.Dialog.DialogScheduler;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
 import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
+import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -31,8 +25,6 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-
-import static com.ibm.icu.text.PluralRules.Operand.e;
 
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
@@ -83,6 +75,15 @@ public class ServerModEvents {
     @SubscribeEvent
     public static void livingDeathEvent(LivingDeathEvent event) {
         KillObjective.livingDeathEvent(event);
+
+        LivingEntity entity = event.getEntity();
+        if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
+
+        PlayerLevelData data = player.getData(AttachmentTypesInit.PLAYER_LEVEL);
+
+        int exp = entity.getExperienceReward(player.level(), event.getSource().getEntity());
+
+        data.adjustVanillaExp(exp, player);
     }
 
     @SubscribeEvent

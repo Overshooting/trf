@@ -129,6 +129,13 @@ public class PlayerLevelData {
         setDirty(player);
     }
 
+    public void adjustVanillaExp(int exp, ServerPlayer player) {
+        double realExp = exp * (1.5 * Math.min(1, (exp - 20)));
+        experience += realExp;
+
+        runExpCheck(player);
+    }
+
     private void setDirty(ServerPlayer player) {
         player.setData(AttachmentTypesInit.PLAYER_LEVEL.get(), new PlayerLevelData(level, points, experience, maxExperience));
     }

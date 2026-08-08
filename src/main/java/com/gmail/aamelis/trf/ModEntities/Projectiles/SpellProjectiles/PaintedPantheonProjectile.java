@@ -58,7 +58,8 @@ public class PaintedPantheonProjectile extends ThrowableProjectile {
 
         PaintedPantheonStorm storm = new PaintedPantheonStorm(
                 level,
-                data.getMagic()
+                data.getMagic(),
+                player
         );
 
         storm.setPos(getX(), getY() + 7, getZ());

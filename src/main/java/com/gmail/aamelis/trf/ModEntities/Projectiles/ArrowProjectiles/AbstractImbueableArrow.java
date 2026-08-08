@@ -90,7 +90,7 @@ public class AbstractImbueableArrow extends AbstractArrow {
                 case BowCastingData.DUMMY -> {
                     if (!(level() instanceof ServerLevel level)) return;
 
-                    ProjectileUtils.applyExplosion(this, level, p_36755_.getLocation(), null);
+                    ProjectileUtils.applyExplosion(this, level, p_36755_.getLocation(), null, 6.0);
 
                     level.sendParticles(ParticleTypes.COPPER_FIRE_FLAME,
                             this.getX(),

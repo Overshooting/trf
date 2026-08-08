@@ -25,18 +25,20 @@ public class PaintedPantheonStorm extends Entity {
     private static final int DAMAGE_INTERVAL = 20;
 
     private static final double RADIUS = 5.0;
-    private static final double HEIGHT = 7.0;
+    private static final double HEIGHT = 9.0;
 
     private int manaStat;
+    private ServerPlayer owner;
 
     public PaintedPantheonStorm(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
-    public PaintedPantheonStorm(Level level, int manaStat) {
+    public PaintedPantheonStorm(Level level, int manaStat, ServerPlayer player) {
         this(EntitiesInit.PAINTED_PANTHEON_STORM.get(), level);
 
         this.manaStat = manaStat;
+        this.owner = player;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class PaintedPantheonStorm extends Entity {
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, area);
 
         for (LivingEntity living : entities) {
-            if (living instanceof Player || living instanceof ServerPlayer) continue;
+            if (living instanceof Player) continue;
 
             double dx = living.getX() - getX();
             double dz = living.getZ() - getZ();
@@ -80,7 +82,7 @@ public class PaintedPantheonStorm extends Entity {
                 continue;
             }
 
-            DamageSource source = damageSources().magic();
+            DamageSource source = damageSources().mobProjectile(this, owner);
 
             living.hurt(source, SpellDamageScaling.scaleDamage(3.5f, manaStat));
         }

@@ -1,0 +1,19 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.player.sword_parry": {
+      "loop": false,
+      "animation_length": 1.25,
+      "bones": {
+        "right_arm": {
+          "rotation": {
+            "0.0": [0, 0, 0],
+            "0.15": [-90, 0, -30],
+            "1.0": [-90, 0, -30],
+            "1.25": [0, 0, 0]
+          }
+        }
+      }
+    }
+  }
+}

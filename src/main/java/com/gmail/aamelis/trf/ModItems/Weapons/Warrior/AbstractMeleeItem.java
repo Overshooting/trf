@@ -49,13 +49,14 @@ abstract class AbstractMeleeItem extends Item {
             PacketDistributor.sendToPlayer(serverPlayer, packet);
             PacketDistributor.sendToPlayersNear(serverLevel, serverPlayer, player.getX(), player.getY(), player.getZ(), 64.0, packet);
 
-            serverPlayer.addEffect(new MobEffectInstance(EffectsInit.PARRYING_EFFECT, 30, 1));
+            serverPlayer.addEffect(new MobEffectInstance(EffectsInit.PARRYING_EFFECT, 26, 1));
 
-            DelayedSpellEffectScheduler.schedule(serverLevel, new DelayedSpellEffect(29, (lvl) -> {
+            DelayedSpellEffectScheduler.schedule(serverLevel, new DelayedSpellEffect(25, (lvl) -> {
                 System.out.println("Parry Window Closed!");
 
                 Collection<MobEffectInstance> effects = serverPlayer.getActiveEffects();
                 ArrayList<MobEffectInstance> effectsToRemove = new ArrayList<MobEffectInstance>();
+                boolean parryingFound = false;
                 for (MobEffectInstance effect : effects) {
                     if (effect.getEffect() == EffectsInit.PARRYING_EFFECT) {
                         effectsToRemove.add(effect);
@@ -65,6 +66,10 @@ abstract class AbstractMeleeItem extends Item {
                 for (MobEffectInstance effect : effectsToRemove) {
                     serverPlayer.removeEffect(effect.getEffect());
 
+                    parryingFound = true;
+                }
+
+                if (parryingFound) {
                     serverPlayer.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 255));
                     serverPlayer.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 255));
                     serverPlayer.getCooldowns().addCooldown(serverPlayer.getItemInHand(hand), 40);

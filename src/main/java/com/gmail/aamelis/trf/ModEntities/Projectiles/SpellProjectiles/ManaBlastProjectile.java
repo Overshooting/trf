@@ -87,7 +87,7 @@ public class ManaBlastProjectile extends ThrowableProjectile {
     private void runHitResult(Vec3 location, @Nullable LivingEntity firstTarget) {
         if (!(level() instanceof ServerLevel level)) return;
 
-        ProjectileUtils.applyExplosion(this, level, location, firstTarget);
+        ProjectileUtils.applyExplosion(this, level, location, firstTarget, 4.0);
     }
 
     @Override

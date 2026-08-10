@@ -4,6 +4,7 @@ import com.gmail.aamelis.trf.ModItems.DataComponents.BowCastingData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerParryingData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
@@ -56,6 +57,13 @@ public class AttachmentTypesInit {
                             .serialize(PlayerLevelData.CODEC)
                             .copyOnDeath()
                             .sync(PlayerLevelData.STREAM_CODEC)
+                            .build());
+
+    public static final Supplier<AttachmentType<PlayerParryingData>> PARRYING_DATA =
+            ATTACHMENT_TYPES.register("parrying_data",
+                    () -> AttachmentType.builder(() -> new PlayerParryingData())
+                            .serialize(PlayerParryingData.CODEC)
+                            .sync(PlayerParryingData.STREAM_CODEC)
                             .build());
 
     public static void register(IEventBus modEventBus) {

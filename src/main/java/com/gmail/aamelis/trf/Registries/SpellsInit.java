@@ -5,6 +5,7 @@ import com.gmail.aamelis.trf.ModSpells.ArcherSpells.*;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.MageSpells.*;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
+import com.gmail.aamelis.trf.ModSpells.WarriorSpells.DoubleCutSpell;
 
 import javax.annotation.Nullable;
 import java.sql.Date;
@@ -35,6 +36,7 @@ public class SpellsInit {
         register.add(new TrapSpell());
         register.add(new CloakingSpell());
         register.add(new DummyShotSpell());
+        register.add(new DoubleCutSpell());
     }
 
     public static void registerSpells() {

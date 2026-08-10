@@ -2,7 +2,7 @@ package com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles;
 
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffect;
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffectScheduler;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.ProjectileUtils;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.DamageUtils;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
@@ -82,7 +82,7 @@ public class SunlightReachProjectile extends ThrowableProjectile {
 
         Block block = level().getBlockState(result.getBlockPos()).getBlock();
 
-        if (ProjectileUtils.validateBlock(block)) {
+        if (DamageUtils.validateBlock(block)) {
             burstParticles(position());
             discard();
         }

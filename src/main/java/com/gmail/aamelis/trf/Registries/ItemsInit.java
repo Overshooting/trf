@@ -1,9 +1,12 @@
 package com.gmail.aamelis.trf.Registries;
 
 import com.gmail.aamelis.trf.ModItems.Scrolls.AbstractScrollItem;
+import com.gmail.aamelis.trf.ModItems.Scrolls.Archer.CloakingTacticsScroll;
+import com.gmail.aamelis.trf.ModItems.Scrolls.Archer.MonsterTrapScroll;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Archer.PiercingShotScroll;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Archer.QuickShotScroll;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.*;
+import com.gmail.aamelis.trf.ModItems.Scrolls.Warrior.DoubleCutScroll;
 import com.gmail.aamelis.trf.ModItems.Stats.SoulVial;
 import com.gmail.aamelis.trf.ModItems.Weapons.Mage.AbstractStaffItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Mage.BasicStaffItem;
@@ -42,6 +45,12 @@ public class ItemsInit {
     public static final DeferredItem<Item> PIERCING_SHOT_SCROLL_ITEM = ITEMS.registerItem("piercing_shot_scroll", PiercingShotScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<Item> QUICK_SHOT_SCROLL_ITEM = ITEMS.registerItem("quick_shot_scroll", QuickShotScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> CLOAKING_TACTICS_SCROLL_ITEM = ITEMS.registerItem("cloaking_tactics_scroll", CloakingTacticsScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> MONSTER_TRAP_SCROLL_ITEM = ITEMS.registerItem("monster_trap_scroll", MonsterTrapScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> DOUBLE_CUT_SCROLL_ITEM = ITEMS.registerItem("double_cut_scroll", DoubleCutScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<Item> SOUL_VIAL_ITEM = ITEMS.registerItem("soul_vial", SoulVial::new, SoulVial.PROPERTIES);
 

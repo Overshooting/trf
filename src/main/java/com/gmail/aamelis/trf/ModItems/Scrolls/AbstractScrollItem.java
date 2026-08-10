@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.ModItems.Scrolls;
 
+import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -89,9 +91,26 @@ public class AbstractScrollItem extends Item {
                 default -> "None";
             };
 
+            String combination = "Incantation: " + parseCombo(spell.getCombo());
+
             tooltipAdder.accept(Component.literal(className));
+            tooltipAdder.accept(Component.literal(combination));
         } else {
             tooltipAdder.accept(Component.literal("Invalid Spell"));
         }
+    }
+
+    private String parseCombo(List<SpellInput> inputs) {
+        StringBuilder sb = new StringBuilder();
+
+        for (SpellInput input : inputs) {
+            switch (input) {
+                case C -> sb.append("C");
+                case B -> sb.append("B");
+                case V -> sb.append("V");
+            }
+        }
+
+        return sb.toString();
     }
 }

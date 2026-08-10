@@ -55,6 +55,9 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.HYACINTH_BLADES_SCROLL_ITEM);
                         output.accept(ItemsInit.PIERCING_SHOT_SCROLL_ITEM);
                         output.accept(ItemsInit.QUICK_SHOT_SCROLL_ITEM);
+                        output.accept(ItemsInit.CLOAKING_TACTICS_SCROLL_ITEM);
+                        output.accept(ItemsInit.MONSTER_TRAP_SCROLL_ITEM);
+                        output.accept(ItemsInit.DOUBLE_CUT_SCROLL_ITEM);
 
                     }).build());
 

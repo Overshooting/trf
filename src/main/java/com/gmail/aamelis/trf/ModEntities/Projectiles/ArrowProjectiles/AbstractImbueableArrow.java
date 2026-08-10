@@ -1,9 +1,10 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles.ArrowProjectiles;
 
 import com.gmail.aamelis.trf.ModEffects.Imbuements.ImbuementEffect;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.ProjectileUtils;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.DamageUtils;
 import com.gmail.aamelis.trf.ModItems.DataComponents.BowCastingData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.Network.Packets.RenderBowTimerPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EffectsInit;
@@ -85,12 +86,12 @@ public class AbstractImbueableArrow extends AbstractArrow {
     protected void onHitBlock(BlockHitResult p_36755_) {
         if (!(getOwner() instanceof ServerPlayer player)) return;
 
-        if (ProjectileUtils.validateBlock(level().getBlockState(p_36755_.getBlockPos()).getBlock())) {
+        if (DamageUtils.validateBlock(level().getBlockState(p_36755_.getBlockPos()).getBlock())) {
             switch (this.specialArrowType) {
                 case BowCastingData.DUMMY -> {
                     if (!(level() instanceof ServerLevel level)) return;
 
-                    ProjectileUtils.applyExplosion(this, level, p_36755_.getLocation(), null, 6.0);
+                    DamageUtils.applyExplosion(this, level, p_36755_.getLocation(), null, 6.0, damage, PlayerSpellData.ARCHER);
 
                     level.sendParticles(ParticleTypes.COPPER_FIRE_FLAME,
                             this.getX(),

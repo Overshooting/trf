@@ -2,6 +2,7 @@ package com.gmail.aamelis.trf.ModItems.Weapons.Warrior;
 
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffect;
 import com.gmail.aamelis.trf.ModCastingSystem.DelayedEffects.DelayedSpellEffectScheduler;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerParryingData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
@@ -44,38 +45,14 @@ abstract class AbstractMeleeItem extends Item {
         } else {
             System.out.println("Parry initiated!");
 
+            PlayerParryingData parryingData = serverPlayer.getData(AttachmentTypesInit.PARRYING_DATA);
+
+            parryingData.setParryingTicks(25, serverPlayer);
+
             SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId().toString());
 
             PacketDistributor.sendToPlayer(serverPlayer, packet);
             PacketDistributor.sendToPlayersNear(serverLevel, serverPlayer, player.getX(), player.getY(), player.getZ(), 64.0, packet);
-
-            serverPlayer.addEffect(new MobEffectInstance(EffectsInit.PARRYING_EFFECT, 26, 1));
-
-            DelayedSpellEffectScheduler.schedule(serverLevel, new DelayedSpellEffect(25, (lvl) -> {
-                System.out.println("Parry Window Closed!");
-
-                Collection<MobEffectInstance> effects = serverPlayer.getActiveEffects();
-                ArrayList<MobEffectInstance> effectsToRemove = new ArrayList<MobEffectInstance>();
-                boolean parryingFound = false;
-                for (MobEffectInstance effect : effects) {
-                    if (effect.getEffect() == EffectsInit.PARRYING_EFFECT) {
-                        effectsToRemove.add(effect);
-                    }
-                }
-
-                for (MobEffectInstance effect : effectsToRemove) {
-                    serverPlayer.removeEffect(effect.getEffect());
-
-                    parryingFound = true;
-                }
-
-                if (parryingFound) {
-                    serverPlayer.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 255));
-                    serverPlayer.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 255));
-                    serverPlayer.getCooldowns().addCooldown(serverPlayer.getItemInHand(hand), 40);
-                }
-            }
-                    ));
 
             return InteractionResult.SUCCESS;
         }

@@ -1,7 +1,7 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles;
 
 import com.gmail.aamelis.trf.ModEntities.Other.PaintedPantheonStorm;
-import com.gmail.aamelis.trf.ModEntities.Projectiles.ProjectileUtils;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.DamageUtils;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
@@ -144,7 +144,7 @@ public class PaintedPantheonProjectile extends ThrowableProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
 
-        if (ProjectileUtils.validateBlock(level().getBlockState(result.getBlockPos()).getBlock())) {
+        if (DamageUtils.validateBlock(level().getBlockState(result.getBlockPos()).getBlock())) {
             explode();
         }
     }

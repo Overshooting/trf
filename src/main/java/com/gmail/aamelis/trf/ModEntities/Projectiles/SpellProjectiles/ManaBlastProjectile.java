@@ -1,7 +1,8 @@
 package com.gmail.aamelis.trf.ModEntities.Projectiles.SpellProjectiles;
 
-import com.gmail.aamelis.trf.ModEntities.Projectiles.ProjectileUtils;
+import com.gmail.aamelis.trf.ModEntities.Projectiles.DamageUtils;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.PlayerStatData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.SpellDamageScaling;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.EntitiesInit;
@@ -13,15 +14,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.*;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class ManaBlastProjectile extends ThrowableProjectile {
+
+    private static final float DAMAGE = 5.0f;
 
     public ManaBlastProjectile(EntityType<? extends ThrowableProjectile> p_37466_, Level p_37467_) {
         super(p_37466_, p_37467_);
@@ -78,16 +79,16 @@ public class ManaBlastProjectile extends ThrowableProjectile {
 
             living.hurt(damageSources().indirectMagic(this, owner), SpellDamageScaling.scaleDamage(7.0f, data.getMagic()));
 
-            runHitResult(result.getLocation(), living);
+            runHitResult(result.getLocation(), living, DAMAGE);
         }
 
         discard();
     }
 
-    private void runHitResult(Vec3 location, @Nullable LivingEntity firstTarget) {
+    private void runHitResult(Vec3 location, @Nullable LivingEntity firstTarget, float damage) {
         if (!(level() instanceof ServerLevel level)) return;
 
-        ProjectileUtils.applyExplosion(this, level, location, firstTarget, 4.0);
+        DamageUtils.applyExplosion(this, level, location, firstTarget, 4.0, damage, PlayerSpellData.MAGE);
     }
 
     @Override
@@ -96,8 +97,8 @@ public class ManaBlastProjectile extends ThrowableProjectile {
 
         Block block = level().getBlockState(result.getBlockPos()).getBlock();
 
-        if (ProjectileUtils.validateBlock(block)) {
-            runHitResult(result.getLocation(), null);
+        if (DamageUtils.validateBlock(block)) {
+            runHitResult(result.getLocation(), null, DAMAGE);
             discard();
         }
     }

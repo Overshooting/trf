@@ -4,7 +4,6 @@ import com.gmail.aamelis.trf.ModEffects.BleedingEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.FireImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.FrostImbuementEffect;
 import com.gmail.aamelis.trf.ModEffects.Imbuements.PoisonImbuementEffect;
-import com.gmail.aamelis.trf.ModEffects.ParryingEffect;
 import com.gmail.aamelis.trf.ModEffects.ShockedEffect;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,9 +33,6 @@ public class EffectsInit {
 
     public static final DeferredHolder<MobEffect, BleedingEffect> BLEEDING_EFFECT = MOB_EFFECTS.register("bleeding_effect", () ->
             new BleedingEffect(MobEffectCategory.HARMFUL, 0xFF880808));
-
-    public static final DeferredHolder<MobEffect, ParryingEffect> PARRYING_EFFECT = MOB_EFFECTS.register("parrying_effect", () ->
-            new ParryingEffect(MobEffectCategory.BENEFICIAL, 0xFF707070));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

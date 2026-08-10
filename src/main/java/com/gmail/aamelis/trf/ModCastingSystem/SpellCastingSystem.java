@@ -165,7 +165,7 @@ public class SpellCastingSystem {
         CLASS_ITEMS.put(
                 PlayerSpellData.WARRIOR,
                 List.of(
-
+                    ItemsInit.TIN_SWORD_ITEM.get()
                 )
         );
         CLASS_ITEMS.put(
@@ -187,6 +187,10 @@ public class SpellCastingSystem {
 
                 )
         );
+    }
+
+    public static List<Item> getItemsForClass(short classType) {
+        return CLASS_ITEMS.get(classType);
     }
 
 }

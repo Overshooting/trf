@@ -8,16 +8,22 @@ import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
 import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
+import com.gmail.aamelis.trf.ModPlayerData.PlayerParryingData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -39,9 +45,26 @@ public class ServerModEvents {
     }
 
     @SubscribeEvent
+    public static void onIncomingLivingHurt(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && event.getSource().is(DamageTypes.MOB_ATTACK)) {
+            PlayerParryingData data = player.getData(AttachmentTypesInit.PARRYING_DATA);
+
+            Entity entity = event.getSource().getEntity();
+
+            if (entity instanceof LivingEntity livingEntity) {
+                System.out.println("Handling damage from living entity");
+
+                data.handleDamage(event, livingEntity, player);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void playerTickEvent(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         player.getData(AttachmentTypesInit.PLAYER_MANA.get()).runManaTick(player);
+
+        player.getData(AttachmentTypesInit.PARRYING_DATA.get()).tick(player);
 
         DialogScheduler.tick(player.level());
 

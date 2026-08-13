@@ -36,5 +36,8 @@ public class ItemObjective implements QuestObjective{
 
         QuestsInit.forEachActiveObjective(player, (obj, progress) ->
                 obj.onItemPickup(player, progress, stack));
+
+        QuestsInit.forEachGlobalActiveObjective(player.level(), (obj, progress) ->
+                obj.onItemPickup(player, progress, stack));
     }
 }

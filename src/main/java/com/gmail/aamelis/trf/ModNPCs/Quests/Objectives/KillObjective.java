@@ -36,5 +36,8 @@ public class KillObjective implements QuestObjective{
 
         QuestsInit.forEachActiveObjective(player, (obj, progress) ->
                 obj.onKill(player, progress, type));
+
+        QuestsInit.forEachGlobalActiveObjective(player.level(), (obj, progress) ->
+                obj.onKill(player, progress, type));
     }
 }

@@ -52,8 +52,6 @@ public class ServerModEvents {
             Entity entity = event.getSource().getEntity();
 
             if (entity instanceof LivingEntity livingEntity) {
-                System.out.println("Handling damage from living entity");
-
                 data.handleDamage(event, livingEntity, player);
             }
         }

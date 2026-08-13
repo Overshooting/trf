@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.Registries;
 
+import com.gmail.aamelis.trf.ModGlobalData.GlobalQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.QuestDataLoader;
@@ -9,6 +10,7 @@ import com.gmail.aamelis.trf.ModNPCs.Quests.QuestLine;
 import com.gmail.aamelis.trf.ModNPCs.Quests.QuestStage;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
@@ -31,6 +33,24 @@ public class QuestsInit {
         PlayerQuestData data = player.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
 
         for (var entry: data.getAll().entrySet()) {
+            QuestLine questLine = QuestsInit.getQuest(entry.getKey());
+            QuestProgress progress = entry.getValue();
+
+            int stageIndex = progress.getStage();
+            if (stageIndex >= questLine.stages().size()) continue;
+
+            QuestStage stage = questLine.stages().get(stageIndex);
+
+            for (QuestObjective obj : stage.objectives()) {
+                action.accept(obj, progress);
+            }
+        }
+    }
+
+    public static void forEachGlobalActiveObjective(ServerLevel level, BiConsumer<QuestObjective, QuestProgress> action) {
+        GlobalQuestData data = GlobalQuestData.getGlobalQuestData(level);
+
+        for (var entry: data.getAllQuestProgress().entrySet()) {
             QuestLine questLine = QuestsInit.getQuest(entry.getKey());
             QuestProgress progress = entry.getValue();
 

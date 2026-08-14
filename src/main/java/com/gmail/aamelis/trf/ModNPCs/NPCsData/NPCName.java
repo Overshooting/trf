@@ -10,13 +10,13 @@ import java.util.HashMap;
 import static com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCType.*;
 
 public enum NPCName {
-    DEFAULT("null", FLAVOR_TYPE),
-    WILLIAM("William", FLAVOR_TYPE),
-    ALEX("Alex", FLAVOR_TYPE),
-    HEAD_GENERAL("Head General", TUTORIAL_TYPE);
+    DEFAULT("null", FLAVOR_TYPE, PLAYER_TYPE),
+    WILLIAM("William", FLAVOR_TYPE, PLAYER_TYPE),
+    ALEX("Alex", FLAVOR_TYPE, PLAYER_TYPE),
+    HEAD_GENERAL("Head General", TUTORIAL_TYPE, PLAYER_TYPE);
 
     private final String name;
-    private final byte type;
+    private final byte type, questType;
     private static final HashMap<String, NPCName> nameMap = new HashMap<>();
     private static final ArrayList<String> validFlavorNames = new ArrayList<>();
     private static final ArrayList<String> validQuestNames = new ArrayList<>();
@@ -36,9 +36,10 @@ public enum NPCName {
         }
     }
 
-    NPCName(String name, byte type) {
+    NPCName(String name, byte type, byte thisQuestType) {
         this.name = name;
         this.type = type;
+        this.questType = thisQuestType;
     }
 
     public String getName() {
@@ -47,6 +48,10 @@ public enum NPCName {
 
     public byte getType() {
         return type;
+    }
+
+    public byte getQuestType() {
+        return questType;
     }
 
     public String getResourceLocationName() {
@@ -75,7 +80,6 @@ public enum NPCName {
                 return name;
             }
         }
-
         return null;
     }
 

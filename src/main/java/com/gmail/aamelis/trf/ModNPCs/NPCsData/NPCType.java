@@ -4,4 +4,7 @@ public class NPCType {
     public static final byte FLAVOR_TYPE = 0;
     public static final byte STEP_QUEST_TYPE = 1;
     public static final byte TUTORIAL_TYPE = 2;
+
+    public static final byte GLOBAL_TYPE = 100;
+    public static final byte PLAYER_TYPE = 99;
 }

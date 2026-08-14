@@ -1,6 +1,5 @@
 package com.gmail.aamelis.trf.ModGlobalData;
 
-
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

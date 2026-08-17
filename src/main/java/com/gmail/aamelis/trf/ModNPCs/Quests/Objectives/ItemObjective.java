@@ -3,6 +3,7 @@ package com.gmail.aamelis.trf.ModNPCs.Quests.Objectives;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.gmail.aamelis.trf.Registries.QuestsInit;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,14 +19,33 @@ public class ItemObjective implements QuestObjective{
     }
 
     @Override
-    public boolean isComplete(Player player, QuestProgress progress) {
-        return player.getInventory().countItem(item) >= count;
+    public boolean isComplete(ServerPlayer player, QuestProgress progress) {
+        int totalSharedCount = 0;
+
+        for (ServerPlayer thisPlayer : player.level().getServer().getPlayerList().getPlayers()) {
+            Inventory inventory = thisPlayer.getInventory();
+
+            for (ItemStack I : inventory.getNonEquipmentItems()) {
+                if (I.getItem() == item) {
+                    totalSharedCount += I.getCount();
+
+                    if (totalSharedCount == count) break;
+                }
+            }
+
+            if (totalSharedCount == count) break;
+        }
+
+        System.out.println("Complete check returned: " + (totalSharedCount >= count) + " with params: totalSharedCount: " + totalSharedCount + " and totalCount: " + count);
+        return totalSharedCount >= count;
     }
 
     @Override
     public void onItemPickup(ServerPlayer player, QuestProgress progress, ItemStack stack) {
         if (stack.getItem() == item) {
             progress.incrementItem(stack);
+
+            System.out.println("itemPickup called for Item: " + item.getName().getString() + ", progress incremented to: " + progress.getItemCount(item));
         }
     }
 

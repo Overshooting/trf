@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class QuestProgressChecker {
 
-    public static void checkCompletion(ServerPlayer player, ResourceLocation questId, QuestLine questLine, QuestProgress progress) {
+    public static void checkPlayerCompletion(ServerPlayer player, ResourceLocation questId, QuestLine questLine, QuestProgress progress) {
         int stageIndex = progress.getStage();
 
         if (stageIndex >= questLine.stages().size()) return;
@@ -17,7 +17,11 @@ public class QuestProgressChecker {
 
         if (!complete) return;
 
-        QuestRewardHandler.giveRewards(player, stage);
+        if (!questLine.isGlobal()) {
+            QuestRewardHandler.givePlayerRewards(player, stage);
+        } else {
+            QuestRewardHandler.giveGlobalRewards(player, stage);
+        }
 
         progress.advanceStage();
     }

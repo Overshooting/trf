@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.ModNPCs.DataLoaders;
 
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.Data.ObjectiveData;
+import com.gmail.aamelis.trf.ModNPCs.DataLoaders.Data.QuestData;
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.Data.StageData;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.ItemObjective;
 import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
@@ -18,27 +19,29 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
-public class QuestDataLoader extends SimpleJsonResourceReloadListener<List<StageData>> {
+public class QuestDataLoader extends SimpleJsonResourceReloadListener<QuestData> {
 
     public static final Map<ResourceLocation, QuestLine> LOADED_QUESTS = new HashMap<>();
 
     public QuestDataLoader() {
-        super(QuestCodecs.QUEST_CODEC, FileToIdConverter.json("quests"));
+        super(QuestCodecs.QUEST_DATA_CODEC, FileToIdConverter.json("quests"));
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, List<StageData>> data, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+    protected void apply(Map<ResourceLocation, QuestData> data, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         LOADED_QUESTS.clear();
 
-        for (Map.Entry<ResourceLocation, List<StageData>> entry : data.entrySet()) {
+        for (Map.Entry<ResourceLocation, QuestData> entry : data.entrySet()) {
             ResourceLocation id = entry.getKey();
-            List<StageData> stagesRaw = entry.getValue();
+            QuestData questData = entry.getValue();
 
-            List<QuestStage> stages = stagesRaw.stream()
+            List<QuestStage> stages = questData.stages().stream()
                     .map(this::convertStage)
                     .toList();
 
-            LOADED_QUESTS.put(id, new QuestLine(id, stages));
+            LOADED_QUESTS.put(id, new QuestLine(id, questData.global(), stages));
+
+            System.out.println("Successfully loaded quest for: " + id.toString());
         }
     }
 

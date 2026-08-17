@@ -18,7 +18,7 @@ public class KillObjective implements QuestObjective{
     }
 
     @Override
-    public boolean isComplete(Player player, QuestProgress progress) {
+    public boolean isComplete(ServerPlayer player, QuestProgress progress) {
         return progress.getKillCount(target) >= required;
     }
 

@@ -1,39 +1,43 @@
-[
-  {
-    "dialog": "Welcome, recruit.\nWe need you to prove your strength.\nKill 5 zombies.",
-    "objectives": [
+{
+  "global": false,
+  "stages":
+    [
       {
-        "type": "kill",
-        "target": "minecraft:zombie",
-        "count": 5
-      }
-    ],
-    "experience": 75
-  },
-  {
-    "dialog": "Good work.\nNow gather supplies.\nBring me 3 iron ingots.",
-    "objectives": [
+        "dialog": "Welcome, recruit.\nWe need you to prove your strength.\nKill 5 zombies.",
+        "objectives": [
+          {
+            "type": "kill",
+            "target": "minecraft:zombie",
+            "count": 5
+          }
+        ],
+        "experience": 75
+      },
       {
-        "type": "item",
-        "target": "minecraft:iron_ingot",
-        "count": 3
-      }
-    ],
-    "experience": 185,
-    "item": {
-      "id": "minecraft:gold_ingot",
-      "count": 2
-    }
-  },
-  {
-    "dialog": "Get outta here.",
-    "objectives": [
+        "dialog": "Good work.\nNow gather supplies.\nBring me 3 iron ingots.",
+        "objectives": [
+          {
+            "type": "item",
+            "target": "minecraft:iron_ingot",
+            "count": 3
+          }
+        ],
+        "experience": 185,
+        "item": {
+          "id": "minecraft:gold_ingot",
+          "count": 2
+        }
+      },
       {
-        "type": "custom",
-        "target": "empty",
-        "count": 1
+        "dialog": "Get outta here.",
+        "objectives": [
+          {
+            "type": "custom",
+            "target": "empty",
+            "count": 1
+          }
+        ],
+        "experience": 0
       }
-    ],
-    "experience": 0
-  }
-]
+    ]
+}

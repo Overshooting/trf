@@ -15,7 +15,7 @@ public class TriggerObjective implements QuestObjective{
     }
 
     @Override
-    public boolean isComplete(Player player, QuestProgress progress) {
+    public boolean isComplete(ServerPlayer player, QuestProgress progress) {
         return progress.getTriggerCount(triggerId) >= required;
     }
 

@@ -2,6 +2,7 @@ package com.gmail.aamelis.trf.ModNPCs.DataLoaders;
 
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.Data.ItemRewardData;
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.Data.ObjectiveData;
+import com.gmail.aamelis.trf.ModNPCs.DataLoaders.Data.QuestData;
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.Data.StageData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -34,6 +35,14 @@ public class QuestCodecs {
             ).apply(instance, StageData::new)
     );
 
-    public static final Codec<List<StageData>> QUEST_CODEC = STAGE_CODEC.listOf();
+    public static final Codec<QuestData> QUEST_DATA_CODEC = RecordCodecBuilder.create(instance ->
+            instance.group(
+                    Codec.BOOL.optionalFieldOf("global", false)
+                            .forGetter(QuestData::global),
+                    STAGE_CODEC.listOf()
+                            .fieldOf("stages")
+                            .forGetter(QuestData::stages)
+            ).apply(instance, QuestData::new)
+    );
 
 }

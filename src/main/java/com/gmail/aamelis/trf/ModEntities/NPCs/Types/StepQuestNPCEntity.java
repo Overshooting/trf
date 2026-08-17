@@ -1,5 +1,6 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs.Types;
 
+import com.gmail.aamelis.trf.ModGlobalData.GlobalQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
@@ -55,10 +56,19 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
             return InteractionResult.SUCCESS;
         }
 
-        PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+        QuestProgress progress;
 
         QuestLine questLine = QuestsInit.getQuest(questId);
-        QuestProgress progress = data.getOrCreate(questId);
+
+        if (questLine.isGlobal()) {
+            GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+
+            progress = data.getQuestProgress(questId);
+        } else {
+            PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+
+            progress = data.getOrCreate(questId);
+        }
 
         int stageIndex = progress.getStage();
 
@@ -85,10 +95,16 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
         }
 
         if (complete) {
-            QuestProgressChecker.checkCompletion(serverPlayer, questId, questLine, progress);
-            data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
-            progress = data.getOrCreate(questId);
-            stage = questLine.stages().get(progress.getStage());
+            QuestProgressChecker.checkPlayerCompletion(serverPlayer, questId, questLine, progress);
+            if (questLine.isGlobal()) {
+                GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+                progress = data.getQuestProgress(questId);
+                stage = questLine.stages().get(progress.getStage());
+            } else {
+                PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+                progress = data.getOrCreate(questId);
+                stage = questLine.stages().get(progress.getStage());
+            }
         }
 
         List<String> lines = Arrays.stream(stage.dialog().split("\n"))

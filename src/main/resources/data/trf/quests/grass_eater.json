@@ -1,0 +1,28 @@
+{
+  "global": true,
+  "stages":
+  [
+    {
+      "dialog": "Hello!\nI like eating grass blocks!\nWould you please bring me one?",
+      "objectives": [
+        {
+          "type": "item",
+          "target": "minecraft:grass_block",
+          "count": 1
+        }
+      ],
+      "experience": 10000
+    },
+    {
+      "dialog": "Thank You!",
+      "objectives": [
+        {
+          "type": "custom",
+          "target": "empty",
+          "count": 1
+        }
+      ],
+      "experience": 0
+    }
+  ]
+}

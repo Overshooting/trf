@@ -49,7 +49,10 @@ public class TRFFinalRegistry {
         dispatcher.register(SpellCommands.REVOKE_SPELL_COMMAND);
         dispatcher.register(SetLevelCommand.SET_LEVEL_COMMAND);
         dispatcher.register(GiveExperienceCommand.GIVE_EXPERIENCE_COMMAND);
-        dispatcher.register(ResetQuestCommand.RESET_QUEST_COMMAND);
+        dispatcher.register(ResetQuestCommand.RESET_ALL_PLAYER_QUEST_COMMAND);
+        dispatcher.register(ResetQuestCommand.RESET_PLAYER_QUEST_COMMAND);
+        dispatcher.register(ResetQuestCommand.RESET_ALL_GLOBAL_QUEST_COMMAND);
+        dispatcher.register(ResetQuestCommand.RESET_GLOBAL_QUEST_COMMAND);
     }
 
     private void onClientSetup(FMLClientSetupEvent event) {

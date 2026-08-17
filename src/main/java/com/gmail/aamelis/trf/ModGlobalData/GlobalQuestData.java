@@ -68,8 +68,9 @@ public class GlobalQuestData extends SavedData {
         setDirty();
     }
 
-    public int countQuests() {
-        return questProgress.size();
+    public void wipeQuestProgress(ResourceLocation id) {
+        questProgress.remove(id);
+        setDirty();
     }
 
 }

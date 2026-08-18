@@ -31,7 +31,8 @@ public class QuestCodecs {
                 Codec.STRING.fieldOf("dialog").forGetter(StageData::dialog),
                     OBJECTIVE_CODEC.listOf().fieldOf("objectives").forGetter(StageData::objectives),
                     Codec.INT.fieldOf("experience").forGetter(StageData::experience),
-                    ITEM_REWARD_CODEC.optionalFieldOf("item").forGetter(StageData::item)
+                    ITEM_REWARD_CODEC.optionalFieldOf("item").forGetter(StageData::item),
+                    Codec.STRING.optionalFieldOf("broadcast").forGetter(StageData::broadcast)
             ).apply(instance, StageData::new)
     );
 

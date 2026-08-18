@@ -50,6 +50,9 @@ public class ServerModEvents {
     public static void handleBroadcast(ServerPlayer player, String broadcast) {
         switch (broadcast) {
             case GRASS_GIVEN -> player.sendSystemMessage(Component.literal("Grass Given"));
+
+            case "head_general_zombie" -> player.sendSystemMessage(Component.literal("Zombies killed"));
+            case "head_general_iron" -> player.sendSystemMessage(Component.literal("Iron Obtained"));
         }
     }
 

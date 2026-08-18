@@ -47,6 +47,7 @@ public class QuestDataLoader extends SimpleJsonResourceReloadListener<QuestData>
 
     private QuestStage convertStage(StageData data) {
         ItemStack rewardStack = null;
+        String broadcast = "";
 
         if (data.item().isPresent()) {
             var itemData = data.item().get();
@@ -60,7 +61,11 @@ public class QuestDataLoader extends SimpleJsonResourceReloadListener<QuestData>
             rewardStack = new ItemStack(item.get().value(), itemData.count());
         }
 
-        return new QuestStage(data.dialog(), data.objectives().stream().map(this::convertObjective).toList(), data.experience(), rewardStack);
+        if (data.broadcast().isPresent()) {
+            broadcast = data.broadcast().get();
+        }
+
+        return new QuestStage(data.dialog(), data.objectives().stream().map(this::convertObjective).toList(), data.experience(), rewardStack, broadcast);
     }
 
     private QuestObjective convertObjective(ObjectiveData data) {

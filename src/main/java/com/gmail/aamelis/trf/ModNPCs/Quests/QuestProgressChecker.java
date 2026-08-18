@@ -29,6 +29,8 @@ public class QuestProgressChecker {
 
         if (!complete) return;
 
+        ServerModEvents.handleBroadcast(player, stage.broadcast());
+
         for (QuestObjective objective : objectives) {
             if (objective instanceof ItemObjective itemObjective) {
                 ItemStack required = itemObjective.getRequiredStack();
@@ -48,8 +50,6 @@ public class QuestProgressChecker {
         }
 
         progress.advanceStage();
-
-        System.out.println("Check: " + (progress.getStage() >= questLine.stages().size() - 1) + " stage: " + progress.getStage() + " size: " + questLine.stages().size());
 
         if (progress.getStage() >= questLine.stages().size() - 1) {
             ServerModEvents.handleBroadcast(player, questLine.broadcast());

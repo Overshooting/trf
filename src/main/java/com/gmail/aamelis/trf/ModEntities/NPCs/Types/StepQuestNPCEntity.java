@@ -64,7 +64,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
         boolean firstTime;
 
         if (questLine.isGlobal()) {
-            GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+            GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
 
             firstTime = !(data.getAllQuestProgress().containsKey(questId));
 
@@ -95,7 +95,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
             if (complete) {
                 QuestProgressChecker.checkPlayerCompletion(serverPlayer, questId, questLine, progress);
                 if (questLine.isGlobal()) {
-                    GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+                    GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
                     progress = data.getQuestProgress(questId);
                     stage = questLine.stages().get(progress.getStage());
                 } else {
@@ -113,7 +113,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
                 System.out.println("Repeatable reached!");
                 if (questLine.isGlobal()) {
                     System.out.println("Global reached!");
-                    GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+                    GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
                     System.out.println("Wiping global quest progress!");
                     data.wipeQuestProgress(questId);
                 } else {

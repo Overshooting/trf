@@ -1,10 +1,15 @@
 package com.gmail.aamelis.trf.ModCommands;
 
 import com.gmail.aamelis.trf.ModGlobalData.GlobalQuestData;
+import com.gmail.aamelis.trf.ModGlobalData.GlobalRewardData;
 import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
+import com.gmail.aamelis.trf.ModNPCs.Quests.QuestLine;
+import com.gmail.aamelis.trf.ModNPCs.Quests.QuestStage;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerRewardData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
+import com.gmail.aamelis.trf.Registries.QuestsInit;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -84,9 +89,17 @@ public class ResetQuestCommand {
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                     .executes(context -> {
                         ServerLevel level = context.getSource().getLevel();
-                        GlobalQuestData data = level.getDataStorage().get(GlobalQuestData.TYPE);
+                        GlobalQuestData data = level.getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
+                        GlobalRewardData rewardData = level.getDataStorage().computeIfAbsent(GlobalRewardData.TYPE);
 
                         data.wipeAllQuestProgress();
+                        rewardData.removeAllRewards();
+
+                        for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
+                            PlayerRewardData playerRewardData = player.getData(AttachmentTypesInit.PLAYER_REWARD_DATA);
+
+                            playerRewardData.removeAllRewards();
+                        }
 
                         context.getSource().sendSuccess(() -> Component.literal("All global quests reset!"), true);
 
@@ -102,11 +115,25 @@ public class ResetQuestCommand {
                                     .executes(context -> {
                                         ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, StringArgumentType.getString(context, "questId"));
                                         ServerLevel level = context.getSource().getLevel();
-                                        GlobalQuestData data = level.getDataStorage().get(GlobalQuestData.TYPE);
+                                        GlobalQuestData data = level.getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
+                                        GlobalRewardData rewardData = level.getDataStorage().computeIfAbsent(GlobalRewardData.TYPE);
+
+                                        QuestLine line = QuestsInit.getQuest(questId);
 
                                         data.wipeQuestProgress(questId);
+                                        for (QuestStage stage : line.stages()) {
+                                            rewardData.removeRewards(stage);
+                                        }
 
-                                        context.getSource().sendSuccess(() -> Component.literal("Reset quest " + questId + " for " + " all players"), true);
+                                        for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
+                                            PlayerRewardData playerRewardData = player.getData(AttachmentTypesInit.PLAYER_REWARD_DATA);
+
+                                            for (QuestStage stage : line.stages()) {
+                                                playerRewardData.removeRewards(stage);
+                                            }
+                                        }
+
+                                        context.getSource().sendSuccess(() -> Component.literal("Reset quest " + questId + " for all players"), true);
 
                                         return 1;
                                     })

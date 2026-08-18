@@ -65,11 +65,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
 
         if (questLine.isGlobal()) {
             GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
-
             firstTime = !(data.getAllQuestProgress().containsKey(questId));
-
-            System.out.println("Detected first time: " + firstTime);
-
             progress = data.getQuestProgress(questId);
         } else {
             PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
@@ -110,11 +106,8 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
 
         if (stageIndex >= questLine.stages().size() - 1) {
             if (questLine.isRepeatable()) {
-                System.out.println("Repeatable reached!");
                 if (questLine.isGlobal()) {
-                    System.out.println("Global reached!");
                     GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
-                    System.out.println("Wiping global quest progress!");
                     data.wipeQuestProgress(questId);
                 } else {
                     PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
@@ -122,8 +115,6 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
                 }
             }
         }
-
-        System.out.println("Scheduling instanced dialogue");
 
         List<String> lines = Arrays.stream(stage.dialog().split("\n"))
                 .map(line -> getNPCName().getName() + ": " + line)

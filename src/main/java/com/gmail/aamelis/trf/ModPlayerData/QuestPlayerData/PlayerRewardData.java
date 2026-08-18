@@ -38,7 +38,7 @@ public class PlayerRewardData {
             int globalCount = globalRewards.get(reward);
             int playerCount = rewards.get(reward);
 
-            for (int i = globalCount; i <= playerCount; i++) {
+            for (int i = playerCount; i <= globalCount; i++) {
                 QuestRewardHandler.givePlayerRewards(player, reward);
             }
 
@@ -52,6 +52,14 @@ public class PlayerRewardData {
         } else {
             rewards.put(stage, rewards.get(stage) + 1);
         }
+    }
+
+    public void removeRewards(QuestStage stage) {
+        rewards.remove(stage);
+    }
+
+    public void removeAllRewards() {
+        rewards.clear();
     }
 
     public static final MapCodec<PlayerRewardData> CODEC = RecordCodecBuilder.mapCodec(playerRewardDataInstance ->

@@ -65,4 +65,16 @@ public class GlobalRewardData extends SavedData {
 
         setDirty();
     }
+
+    public void removeRewards(QuestStage stage) {
+        rewards.remove(stage);
+
+        setDirty();
+    }
+
+    public void removeAllRewards() {
+        rewards.clear();
+
+        setDirty();
+    }
 }

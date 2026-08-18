@@ -9,6 +9,7 @@ import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.KillObjective;
 import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerParryingData;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerRewardData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -16,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -132,6 +134,17 @@ public class ServerModEvents {
     @SubscribeEvent
     public static void onServerStartedEvent(ServerStartedEvent event) {
         SpellCastingSystem.populateClassItems();
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+
+        PlayerRewardData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_REWARD_DATA);
+
+        data.matchRewards(serverPlayer);
     }
 
 }

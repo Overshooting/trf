@@ -41,6 +41,8 @@ public class QuestCodecs {
                             .forGetter(QuestData::global),
                     Codec.BOOL.optionalFieldOf("repeatable", false)
                                     .forGetter(QuestData::repeatable),
+                    Codec.STRING.optionalFieldOf("broadcast", "none")
+                                    .forGetter(QuestData::completedBroadcast),
                     STAGE_CODEC.listOf()
                             .fieldOf("stages")
                             .forGetter(QuestData::stages)

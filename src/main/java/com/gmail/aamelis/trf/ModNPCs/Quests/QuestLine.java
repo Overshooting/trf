@@ -4,5 +4,5 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public record QuestLine(ResourceLocation id, boolean isGlobal, boolean isRepeatable, List<QuestStage> stages) {
+public record QuestLine(ResourceLocation id, boolean isGlobal, boolean isRepeatable, List<QuestStage> stages, String broadcast) {
 }

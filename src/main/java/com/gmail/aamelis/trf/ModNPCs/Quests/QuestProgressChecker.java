@@ -6,6 +6,7 @@ import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.QuestObjective;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
+import com.gmail.aamelis.trf.Registries.ServerModEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -47,6 +48,12 @@ public class QuestProgressChecker {
         }
 
         progress.advanceStage();
+
+        System.out.println("Check: " + (progress.getStage() >= questLine.stages().size() - 1) + " stage: " + progress.getStage() + " size: " + questLine.stages().size());
+
+        if (progress.getStage() >= questLine.stages().size() - 1) {
+            ServerModEvents.handleBroadcast(player, questLine.broadcast());
+        }
     }
 
 }

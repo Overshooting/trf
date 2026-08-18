@@ -10,6 +10,7 @@ import com.gmail.aamelis.trf.ModPlayerData.HungerOverride;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerParryingData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -35,12 +36,20 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 @EventBusSubscriber(modid = TRFFinalRegistry.MODID)
 public class ServerModEvents {
 
+    public static final String GRASS_GIVEN = "grass_given";
+
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
         MultiCastManager.tick();
 
         for (ServerLevel level : event.getServer().getAllLevels()) {
             DelayedSpellEffectScheduler.tick(level);
+        }
+    }
+
+    public static void handleBroadcast(ServerPlayer player, String broadcast) {
+        switch (broadcast) {
+            case GRASS_GIVEN -> player.sendSystemMessage(Component.literal("Grass Given"));
         }
     }
 

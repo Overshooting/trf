@@ -39,7 +39,7 @@ public class QuestDataLoader extends SimpleJsonResourceReloadListener<QuestData>
                     .map(this::convertStage)
                     .toList();
 
-            LOADED_QUESTS.put(id, new QuestLine(id, questData.global(), questData.repeatable(), stages));
+            LOADED_QUESTS.put(id, new QuestLine(id, questData.global(), questData.repeatable(), stages,  questData.completedBroadcast()));
 
             System.out.println("Successfully loaded quest for: " + id.toString());
         }

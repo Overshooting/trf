@@ -25,4 +25,17 @@ public class TriggerObjective implements QuestObjective{
             progress.incrementTrigger(triggerId);
         }
     }
+
+    public String getTriggerId() {
+        return triggerId;
+    }
+
+    public int getRequired() {
+        return required;
+    }
+
+    @Override
+    public String type() {
+        return "trigger";
+    }
 }

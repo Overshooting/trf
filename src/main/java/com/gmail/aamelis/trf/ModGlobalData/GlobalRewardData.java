@@ -2,11 +2,9 @@ package com.gmail.aamelis.trf.ModGlobalData;
 
 import com.gmail.aamelis.trf.ModNPCs.DataLoaders.QuestCodecs;
 import com.gmail.aamelis.trf.ModNPCs.Quests.QuestStage;
-import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
@@ -22,7 +20,7 @@ public class GlobalRewardData extends SavedData {
             RecordCodecBuilder.mapCodec(instance ->
                     instance.group(
                             Codec.unboundedMap(
-                                            QuestCodecs.STAGE_CODEC,
+                                            QuestCodecs.STAGE_CODEC.codec(),
                                             Codec.INT
                                     )
                                     .fieldOf("rewards")
@@ -54,15 +52,15 @@ public class GlobalRewardData extends SavedData {
         return level.getDataStorage().computeIfAbsent(TYPE);
     }
 
-    public Map<QuestProgress, Integer> getRewardSet() {
+    public Map<QuestStage, Integer> getRewardSet() {
         return rewards;
     }
 
-    public void incrementReward(QuestProgress progress) {
-        if (!rewards.containsKey(progress)) {
-            rewards.put(progress, 1);
+    public void incrementReward(QuestStage stage) {
+        if (!rewards.containsKey(stage)) {
+            rewards.put(stage, 1);
         } else {
-            rewards.compute(progress, (k, currentAmount) -> (currentAmount + 1));
+            rewards.put(stage, rewards.get(stage) + 1);
         }
 
         setDirty();

@@ -7,6 +7,7 @@ import com.gmail.aamelis.trf.ModPlayerData.PlayerMana;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerParryingData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
+import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerRewardData;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -40,6 +41,13 @@ public class AttachmentTypesInit {
             ATTACHMENT_TYPES.register("player_quest_data",
                     () -> AttachmentType.builder(() -> new PlayerQuestData())
                             .serialize(PlayerQuestData.CODEC)
+                            .copyOnDeath()
+                            .build());
+
+    public static final Supplier<AttachmentType<PlayerRewardData>> PLAYER_REWARD_DATA =
+            ATTACHMENT_TYPES.register("player_reward_data",
+                    () -> AttachmentType.builder(() -> new PlayerRewardData())
+                            .serialize(PlayerRewardData.CODEC)
                             .copyOnDeath()
                             .build());
 

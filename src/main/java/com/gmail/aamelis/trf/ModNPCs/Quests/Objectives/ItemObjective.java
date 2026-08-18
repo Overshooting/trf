@@ -44,6 +44,11 @@ public class ItemObjective implements QuestObjective{
         }
     }
 
+    @Override
+    public String type() {
+        return "item";
+    }
+
     public static void itemPickupEvent(ItemEntityPickupEvent.Post event) {
         if (!(event.getPlayer() instanceof ServerPlayer player)) return;
 

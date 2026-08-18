@@ -11,4 +11,5 @@ public interface QuestObjective {
     default void onKill(ServerPlayer player, QuestProgress progress, EntityType<?> type) {}
     default void onItemPickup(ServerPlayer player, QuestProgress progress, ItemStack stack) {}
     default void onTrigger(ServerPlayer player, QuestProgress progress, String triggerId) {}
+    String type();
 }

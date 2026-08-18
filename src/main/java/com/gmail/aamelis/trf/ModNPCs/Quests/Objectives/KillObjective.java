@@ -29,6 +29,19 @@ public class KillObjective implements QuestObjective{
         }
     }
 
+    @Override
+    public String type() {
+        return "kill";
+    }
+
+    public EntityType<?> getTarget() {
+        return target;
+    }
+
+    public int getRequired() {
+        return required;
+    }
+
     public static void livingDeathEvent(LivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
 

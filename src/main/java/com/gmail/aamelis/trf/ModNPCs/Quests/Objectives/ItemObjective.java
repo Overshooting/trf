@@ -18,26 +18,21 @@ public class ItemObjective implements QuestObjective{
         this.count = count;
     }
 
+    public ItemStack getRequiredStack() {
+        return new ItemStack(item, count);
+    }
+
     @Override
     public boolean isComplete(ServerPlayer player, QuestProgress progress) {
-        int totalSharedCount = 0;
+        int desiredItemIndex = player.getInventory().findSlotMatchingItem(new ItemStack(item));
 
-        for (ServerPlayer thisPlayer : player.level().getServer().getPlayerList().getPlayers()) {
-            Inventory inventory = thisPlayer.getInventory();
+        if (desiredItemIndex == -1) return false;
 
-            for (ItemStack I : inventory.getNonEquipmentItems()) {
-                if (I.getItem() == item) {
-                    totalSharedCount += I.getCount();
-
-                    if (totalSharedCount == count) break;
-                }
-            }
-
-            if (totalSharedCount == count) break;
+        if (player.getInventory().getItem(desiredItemIndex).getItem() == item && player.getInventory().getItem(desiredItemIndex).getCount() >= count) {
+            return true;
+        } else {
+            return false;
         }
-
-        System.out.println("Complete check returned: " + (totalSharedCount >= count) + " with params: totalSharedCount: " + totalSharedCount + " and totalCount: " + count);
-        return totalSharedCount >= count;
     }
 
     @Override

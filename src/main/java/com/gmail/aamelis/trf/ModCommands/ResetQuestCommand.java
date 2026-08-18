@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.ModCommands;
 
 import com.gmail.aamelis.trf.ModGlobalData.GlobalQuestData;
+import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
@@ -10,6 +11,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -48,10 +50,12 @@ public class ResetQuestCommand {
                     );
 
     public static final LiteralArgumentBuilder<CommandSourceStack> RESET_PLAYER_QUEST_COMMAND =
-            Commands.literal("resetAllQuests")
+            Commands.literal("resetQuest")
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.argument("questId", StringArgumentType.string())
+                                    .suggests((context, builder) ->
+                                            SharedSuggestionProvider.suggest(NPCName.getPlayerQuestIds(), builder))
                             .executes(context -> {
                                 Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
                                 ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, StringArgumentType.getString(context, "questId"));
@@ -72,7 +76,8 @@ public class ResetQuestCommand {
 
                                 return targets.size();
                             })
-                    ));
+                        )
+                    );
 
     public static final LiteralArgumentBuilder<CommandSourceStack> RESET_ALL_GLOBAL_QUEST_COMMAND =
             Commands.literal("resetAllGlobalQuests")
@@ -89,9 +94,11 @@ public class ResetQuestCommand {
                     });
 
     public static final LiteralArgumentBuilder<CommandSourceStack> RESET_GLOBAL_QUEST_COMMAND =
-            Commands.literal("resetAllQuests")
+            Commands.literal("resetGlobalQuest")
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                             .then(Commands.argument("questId", StringArgumentType.string())
+                                    .suggests((context, builder) ->
+                                            SharedSuggestionProvider.suggest(NPCName.getGlobalQuestIds(), builder))
                                     .executes(context -> {
                                         ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, StringArgumentType.getString(context, "questId"));
                                         ServerLevel level = context.getSource().getLevel();

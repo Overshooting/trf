@@ -69,7 +69,14 @@ public class GlobalQuestData extends SavedData {
     }
 
     public void wipeQuestProgress(ResourceLocation id) {
+        System.out.println(questProgress.containsKey(id));
+
         questProgress.remove(id);
+
+        System.out.println("Removed mapping for id: " + id);
+
+        System.out.println(questProgress.containsKey(id));
+
         setDirty();
     }
 

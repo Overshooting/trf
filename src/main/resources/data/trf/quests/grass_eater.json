@@ -1,5 +1,6 @@
 {
   "global": true,
+  "repeatable": true,
   "stages":
   [
     {

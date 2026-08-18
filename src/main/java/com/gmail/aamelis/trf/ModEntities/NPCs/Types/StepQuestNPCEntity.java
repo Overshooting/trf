@@ -1,6 +1,7 @@
 package com.gmail.aamelis.trf.ModEntities.NPCs.Types;
 
 import com.gmail.aamelis.trf.ModGlobalData.GlobalQuestData;
+import com.gmail.aamelis.trf.ModNPCs.Quests.Objectives.QuestObjective;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerQuestData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.QuestProgress;
 import com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCName;
@@ -60,52 +61,69 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
 
         QuestLine questLine = QuestsInit.getQuest(questId);
 
+        boolean firstTime;
+
         if (questLine.isGlobal()) {
             GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+
+            firstTime = !(data.getAllQuestProgress().containsKey(questId));
+
+            System.out.println("Detected first time: " + firstTime);
 
             progress = data.getQuestProgress(questId);
         } else {
             PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+
+            firstTime = !(data.getAll().containsKey(questId));
 
             progress = data.getOrCreate(questId);
         }
 
         int stageIndex = progress.getStage();
 
-        if (stageIndex >= questLine.stages().size()) {
-            QuestStage stage = questLine.stages().getLast();
-
-            List<String> lines = Arrays.stream(stage.dialog().split("\n"))
-                    .map(line -> getNPCName().getName() + ": " + line)
-                    .toList();
-
-            DialogScheduler.schedule(serverPlayer, lines);
-
-            return InteractionResult.SUCCESS;
-        }
-
         QuestStage stage = questLine.stages().get(stageIndex);
 
-        boolean complete = true;
-        for (var obj : stage.objectives()) {
-            if (!obj.isComplete(serverPlayer, progress)) {
-                complete = false;
-                break;
+        if (!firstTime) {
+            boolean complete = true;
+            for (QuestObjective obj : stage.objectives()) {
+                if (!obj.isComplete(serverPlayer, progress)) {
+                    complete = false;
+                    break;
+                }
+            }
+
+            if (complete) {
+                QuestProgressChecker.checkPlayerCompletion(serverPlayer, questId, questLine, progress);
+                if (questLine.isGlobal()) {
+                    GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+                    progress = data.getQuestProgress(questId);
+                    stage = questLine.stages().get(progress.getStage());
+                } else {
+                    PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+                    progress = data.getOrCreate(questId);
+                    stage = questLine.stages().get(progress.getStage());
+                }
             }
         }
 
-        if (complete) {
-            QuestProgressChecker.checkPlayerCompletion(serverPlayer, questId, questLine, progress);
-            if (questLine.isGlobal()) {
-                GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
-                progress = data.getQuestProgress(questId);
-                stage = questLine.stages().get(progress.getStage());
-            } else {
-                PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
-                progress = data.getOrCreate(questId);
-                stage = questLine.stages().get(progress.getStage());
+        stageIndex =  progress.getStage();
+
+        if (stageIndex >= questLine.stages().size() - 1) {
+            if (questLine.isRepeatable()) {
+                System.out.println("Repeatable reached!");
+                if (questLine.isGlobal()) {
+                    System.out.println("Global reached!");
+                    GlobalQuestData data = serverPlayer.level().getDataStorage().get(GlobalQuestData.TYPE);
+                    System.out.println("Wiping global quest progress!");
+                    data.wipeQuestProgress(questId);
+                } else {
+                    PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);
+                    data.wipeQuest(questId);
+                }
             }
         }
+
+        System.out.println("Scheduling instanced dialogue");
 
         List<String> lines = Arrays.stream(stage.dialog().split("\n"))
                 .map(line -> getNPCName().getName() + ": " + line)

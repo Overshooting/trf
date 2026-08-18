@@ -1,11 +1,16 @@
 package com.gmail.aamelis.trf.ModNPCs.NPCsData;
 
+import com.gmail.aamelis.trf.ModNPCs.Quests.QuestLine;
+import com.gmail.aamelis.trf.Registries.QuestsInit;
+import com.gmail.aamelis.trf.TRFFinalRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.gmail.aamelis.trf.ModNPCs.NPCsData.NPCType.*;
 
@@ -77,6 +82,60 @@ public enum NPCName {
             }
         }
         return null;
+    }
+
+    public static List<String> getGlobalQuestIds() {
+        List<String> globalIds = new ArrayList<>();
+        for (String name : validQuestNames) {
+            String resourceLocationName = name.toLowerCase().replaceAll("[ ,]+", "_");
+            ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, resourceLocationName);
+
+            QuestLine line = QuestsInit.getQuest(questId);
+
+            if (line.isGlobal()) {
+                globalIds.add(resourceLocationName);
+            }
+        }
+
+        for (String name : validTutorialNames) {
+            String resourceLocationName = name.toLowerCase().replaceAll("[ ,]+", "_");
+            ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, resourceLocationName);
+
+            QuestLine line = QuestsInit.getQuest(questId);
+
+            if (line.isGlobal()) {
+                globalIds.add(resourceLocationName);
+            }
+        }
+
+        return globalIds;
+    }
+
+    public static List<String> getPlayerQuestIds() {
+        List<String> playerIds = new ArrayList<>();
+        for (String name : validQuestNames) {
+            String resourceLocationName = name.toLowerCase().replaceAll("[ ,]+", "_");
+            ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, resourceLocationName);
+
+            QuestLine line = QuestsInit.getQuest(questId);
+
+            if (!line.isGlobal()) {
+                playerIds.add(resourceLocationName);
+            }
+        }
+
+        for (String name : validTutorialNames) {
+            String resourceLocationName = name.toLowerCase().replaceAll("[ ,]+", "_");
+            ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, resourceLocationName);
+
+            QuestLine line = QuestsInit.getQuest(questId);
+
+            if (!line.isGlobal()) {
+                playerIds.add(resourceLocationName);
+            }
+        }
+
+        return playerIds;
     }
 
     public static final Codec<NPCName> CODEC = Codec.STRING.xmap(

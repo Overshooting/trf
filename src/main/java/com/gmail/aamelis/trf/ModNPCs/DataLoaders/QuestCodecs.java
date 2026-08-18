@@ -39,6 +39,8 @@ public class QuestCodecs {
             instance.group(
                     Codec.BOOL.optionalFieldOf("global", false)
                             .forGetter(QuestData::global),
+                    Codec.BOOL.optionalFieldOf("repeatable", false)
+                                    .forGetter(QuestData::repeatable),
                     STAGE_CODEC.listOf()
                             .fieldOf("stages")
                             .forGetter(QuestData::stages)

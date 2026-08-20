@@ -61,6 +61,7 @@ public class SpellCastingSystem {
         List<Item> validClassItems = CLASS_ITEMS.getOrDefault(spell.getRequiredClass(), Collections.emptyList());
 
         if (playerSpellData.hasSpell(spell.getId()) &&
+                playerSpellData.isActiveSpell(spell.getId()) &&
                 playerManaData.getCurrentMana() >= spell.getRequiredMana() &&
                 !isOnCooldown(player, spell) &&
                 validClassItems.contains(heldItem.getItem().asItem()))
@@ -72,6 +73,7 @@ public class SpellCastingSystem {
         } else {
             System.out.println("Casting failed with parameters:" +
                     "\nSpell Unlocked: " + playerSpellData.hasSpell(spell.getId()) +
+                    "\nIs Active: " + playerSpellData.isActiveSpell(spell.getId()) +
                     "\nHas Mana: " + (playerManaData.getCurrentMana() >= spell.getRequiredMana()) +
                     "\nHas Cooldown: " + !isOnCooldown(player, spell) +
                     "\nCorrect Held Item: " + (validClassItems.contains(heldItem.getItem().asItem())) +

@@ -24,19 +24,22 @@ public class PlayerSpellData {
 
     private short playerClass;
     private final Set<String> unlockedSpells;
+    private final Set<String> activeSpells;
 
     public PlayerSpellData() {
-        this(EMPTY, new HashSet<>());
+        this(EMPTY, new HashSet<>(), new HashSet<>());
     }
 
-    public PlayerSpellData(short playerClass, Set<String> unlockedSpells) {
+    public PlayerSpellData(short playerClass, Set<String> unlockedSpells, Set<String> activeSpells) {
         this.playerClass = playerClass;
         this.unlockedSpells = new HashSet<>(unlockedSpells);
+        this.activeSpells = new HashSet<>(activeSpells);
     }
 
-    public PlayerSpellData(short s, List<String> strings) {
+    public PlayerSpellData(short s, List<String> strings, List<String> activeSpells) {
         this.playerClass = s;
         this.unlockedSpells = new HashSet<>(strings);
+        this.activeSpells = new HashSet<>(activeSpells);
     }
 
     public short getPlayerClass() {
@@ -76,6 +79,30 @@ public class PlayerSpellData {
         return unlockedSpells;
     }
 
+    public Collection<String> getActiveSpells() {
+        return activeSpells;
+    }
+
+    public boolean deactivateSpell(ServerPlayer player, String spellId) {
+        boolean removed = activeSpells.remove(spellId);
+
+        setDirty(player);
+
+        return removed;
+    }
+
+    public boolean tryActivateSpell(ServerPlayer player, String spellId) {
+        boolean added = activeSpells.size() < 6 && activeSpells.add(spellId);
+
+        setDirty(player);
+
+        return added;
+    }
+
+    public boolean isActiveSpell(String spellId) {
+        return activeSpells.contains(spellId);
+    }
+
     public boolean revokeSpell(String spellId, ServerPlayer player) {
         boolean revoked = unlockedSpells.remove(spellId);
 
@@ -84,7 +111,7 @@ public class PlayerSpellData {
     }
 
     private void setDirty(ServerPlayer player) {
-        player.setData(AttachmentTypesInit.PLAYER_SPELL_DATA, new PlayerSpellData(playerClass, unlockedSpells));
+        player.setData(AttachmentTypesInit.PLAYER_SPELL_DATA, new PlayerSpellData(playerClass, unlockedSpells, activeSpells));
     }
 
     public static List<String> getAllClassStrings() {
@@ -97,7 +124,9 @@ public class PlayerSpellData {
                             Codec.SHORT.fieldOf("player_class")
                                     .forGetter(PlayerSpellData::getPlayerClass),
                             Codec.STRING.listOf().fieldOf("spells")
-                                    .forGetter(data -> List.copyOf(data.unlockedSpells))
+                                    .forGetter(data -> List.copyOf(data.unlockedSpells)),
+                            Codec.STRING.listOf().fieldOf("active")
+                                    .forGetter(data -> List.copyOf(data.activeSpells))
                     ).apply(instance, PlayerSpellData::new)
             );
 
@@ -107,6 +136,11 @@ public class PlayerSpellData {
                         buf.writeShort(playerSpellData.getPlayerClass());
                         buf.writeInt(playerSpellData.getUnlockedSpells().size());
                         for (String spellName : playerSpellData.getUnlockedSpells()) {
+                            buf.writeUtf(spellName);
+                        }
+
+                        buf.writeInt(playerSpellData.getActiveSpells().size());
+                        for (String spellName : playerSpellData.getActiveSpells()) {
                             buf.writeUtf(spellName);
                         }
                     },
@@ -119,7 +153,13 @@ public class PlayerSpellData {
                             spells.add(buf.readUtf());
                         }
 
-                        return new PlayerSpellData(playerClass, spells);
+                        size = buf.readInt();
+                        Set<String> activeSpells = new HashSet<>();
+                        for (int i = 0; i < size; i++) {
+                            activeSpells.add(buf.readUtf());
+                        }
+
+                        return new PlayerSpellData(playerClass, spells,  activeSpells);
                     }
 
             );

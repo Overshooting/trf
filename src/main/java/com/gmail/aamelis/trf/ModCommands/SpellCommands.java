@@ -94,4 +94,85 @@ public class SpellCommands {
                             )
                     );
 
+    public static final LiteralArgumentBuilder<CommandSourceStack> ACTIVATE_SPELL_COMMAND =
+            Commands.literal("activateSpell")
+                    .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .then(Commands.argument("spell", StringArgumentType.greedyString())
+                                    .suggests(((context, builder) ->
+                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellsForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
+                                    .executes(context -> {
+                                        String spellName = StringArgumentType.getString(context, "spell");
+                                        if (!SpellsInit.getAllSpellNames().contains(spellName)) {
+                                            context.getSource().sendFailure(Component.literal("No spell with the name of " + spellName + " found!"));
+                                            return 0;
+                                        }
+
+                                        Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                        String spellId = spellName.replaceAll(" ", "_").toLowerCase();
+                                        int successCount = 0, failCount = 0;
+
+                                        for (ServerPlayer player : targets) {
+                                            PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
+
+                                            boolean added = data.tryActivateSpell(player, spellId);
+
+                                            if (added) {
+                                                successCount++;
+                                            } else {
+                                                failCount++;
+                                            }
+                                        }
+
+                                        final int finalSuccessCount = successCount;
+                                        final int finalFailCount = failCount;
+                                        if (finalSuccessCount > 0) {
+                                            context.getSource().sendSuccess(() -> Component.literal("Successfully activated spell for " + finalSuccessCount + " players, failed to activate spell for " + finalFailCount + " players" ), true);
+                                        } else {
+                                            context.getSource().sendFailure(Component.literal("Failed to activate spell for " + finalFailCount + " players"));
+                                        }
+
+                                        return targets.size();
+                                    })
+                            )
+                    );
+
+    public static final LiteralArgumentBuilder<CommandSourceStack> DEACTIVATE_SPELL_COMMAND =
+            Commands.literal("deactivateSpell")
+                    .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .then(Commands.argument("spell", StringArgumentType.greedyString())
+                                    .suggests(((context, builder) ->
+                                            SharedSuggestionProvider.suggest(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getActiveSpells(), builder)))
+                                    .executes(context -> {
+                                        String spellName = StringArgumentType.getString(context, "spell");
+                                        if (!SpellsInit.getAllSpellNames().contains(spellName)) {
+                                            context.getSource().sendFailure(Component.literal("No spell with the name of " + spellName + " found!"));
+                                            return 0;
+                                        }
+
+                                        Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                        String spellId = spellName.replaceAll(" ", "_").toLowerCase();
+                                        int revoked = 0;
+
+                                        for (ServerPlayer player : targets) {
+                                            PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
+
+                                            revoked += data.deactivateSpell(player, spellId) ? 1 : 0;
+                                        }
+
+                                        final int printed = revoked;
+                                        if (printed == 1) {
+                                            context.getSource().sendSuccess(() -> Component.literal("Deactivated spell " + spellName + " for " +
+                                                    targets.iterator().next().getScoreboardName()), true);
+                                        } else {
+                                            context.getSource().sendSuccess(() -> Component.literal("Deactivated spell " + spellName + " for " +
+                                                    printed + " players"), true);
+                                        }
+
+                                        return printed;
+                                    })
+                            )
+                    );
+
 }

@@ -1,7 +1,6 @@
 {
   "global": true,
   "repeatable": true,
-  "broadcast": "grass_given",
   "stages":
   [
     {

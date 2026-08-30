@@ -6,5 +6,5 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public record QuestStage(String dialog, List<QuestObjective> objectives, int experience, @Nullable ItemStack rewardItem, String broadcast) {
+public record QuestStage(String dialog, List<QuestObjective> objectives, int experience, @Nullable ItemStack rewardItem, @Nullable String broadcast) {
 }

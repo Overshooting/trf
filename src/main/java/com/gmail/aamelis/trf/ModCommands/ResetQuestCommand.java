@@ -22,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.chunk.Configuration;
 
 import java.util.Collection;
@@ -89,8 +90,8 @@ public class ResetQuestCommand {
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                     .executes(context -> {
                         ServerLevel level = context.getSource().getLevel();
-                        GlobalQuestData data = level.getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
-                        GlobalRewardData rewardData = level.getDataStorage().computeIfAbsent(GlobalRewardData.TYPE);
+                        GlobalQuestData data = GlobalQuestData.getGlobalQuestData(level.getServer());
+                        GlobalRewardData rewardData = GlobalRewardData.getGlobalRewardData(level.getServer());
 
                         data.wipeAllQuestProgress();
                         rewardData.removeAllRewards();
@@ -98,7 +99,7 @@ public class ResetQuestCommand {
                         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
                             PlayerRewardData playerRewardData = player.getData(AttachmentTypesInit.PLAYER_REWARD_DATA);
 
-                            playerRewardData.removeAllRewards();
+                            playerRewardData.removeAllRewards(player);
                         }
 
                         context.getSource().sendSuccess(() -> Component.literal("All global quests reset!"), true);
@@ -115,21 +116,27 @@ public class ResetQuestCommand {
                                     .executes(context -> {
                                         ResourceLocation questId = ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, StringArgumentType.getString(context, "questId"));
                                         ServerLevel level = context.getSource().getLevel();
-                                        GlobalQuestData data = level.getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
-                                        GlobalRewardData rewardData = level.getDataStorage().computeIfAbsent(GlobalRewardData.TYPE);
+                                        GlobalQuestData data = GlobalQuestData.getGlobalQuestData(level.getServer());
+                                        GlobalRewardData rewardData = GlobalRewardData.getGlobalRewardData(level.getServer());
 
                                         QuestLine line = QuestsInit.getQuest(questId);
 
                                         data.wipeQuestProgress(questId);
                                         for (QuestStage stage : line.stages()) {
-                                            rewardData.removeRewards(stage);
+                                            int experience = stage.experience();
+                                            ItemStack item = stage.rewardItem();
+
+                                            rewardData.removeRewards(experience, item);
                                         }
 
                                         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
                                             PlayerRewardData playerRewardData = player.getData(AttachmentTypesInit.PLAYER_REWARD_DATA);
 
                                             for (QuestStage stage : line.stages()) {
-                                                playerRewardData.removeRewards(stage);
+                                                int experience = stage.experience();
+                                                ItemStack item = stage.rewardItem();
+
+                                                playerRewardData.removeRewards(experience, item, player);
                                             }
                                         }
 

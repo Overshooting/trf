@@ -10,13 +10,19 @@ import net.minecraft.resources.ResourceLocation;
 
 public class NPCModel extends EntityModel<NPCRenderState> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "npc_model"), "main");
+    private final ModelPart bb_main;
 
     public NPCModel(ModelPart root) {
         super(root);
+
+        this.bb_main = root.getChild("bb_main");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, -11.0F, -7.0F, 13.0F, 11.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

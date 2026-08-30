@@ -29,7 +29,9 @@ public class QuestProgressChecker {
 
         if (!complete) return;
 
-        ServerModEvents.handleBroadcast(player, stage.broadcast());
+        if (stage.broadcast() != null && !stage.broadcast().isEmpty()) {
+            ServerModEvents.handleBroadcast(player, stage.broadcast());
+        }
 
         for (QuestObjective objective : objectives) {
             if (objective instanceof ItemObjective itemObjective) {

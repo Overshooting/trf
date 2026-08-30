@@ -120,8 +120,15 @@ public class StatSheetScreen extends Screen {
         int xLabel = leftPos + 12;
         int xValue = leftPos + 140;
 
-
         int yTop = topPos + 8;
+
+        int experienceSize = 0;
+        int experience = levelData.getReadableExperience();
+
+        while (experience > 0) {
+            experienceSize += 5;
+            experience /= 10;
+        }
 
         guiGraphics.drawString(font, "Level", xLabel, yTop, COLOR_LABEL, false);
         guiGraphics.drawString(font,
@@ -132,7 +139,7 @@ public class StatSheetScreen extends Screen {
         guiGraphics.drawString(font, "XP", xLabel, yTop, COLOR_LABEL, false);
         guiGraphics.drawString(font,
                 levelData.getReadableExperience() + " / " + levelData.getReadableMaxExperience(),
-                xValue, yTop, COLOR_VALUE, false);
+                xValue - (experienceSize), yTop, COLOR_VALUE, false);
 
         yTop += 12;
         guiGraphics.drawString(font, "Points", xLabel, yTop, COLOR_LABEL, false);

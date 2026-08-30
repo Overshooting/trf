@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
@@ -48,8 +49,8 @@ public class GlobalQuestData extends SavedData {
         this.questProgress = new HashMap<>(questProgress);
     }
 
-    public static GlobalQuestData getGlobalQuestData(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(TYPE);
+    public static GlobalQuestData getGlobalQuestData(MinecraftServer server) {
+        return server.overworld().getDataStorage().computeIfAbsent(TYPE);
     }
 
     public QuestProgress getQuestProgress(ResourceLocation id) {

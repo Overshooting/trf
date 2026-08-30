@@ -48,7 +48,7 @@ public class QuestsInit {
     }
 
     public static void forEachGlobalActiveObjective(ServerLevel level, BiConsumer<QuestObjective, QuestProgress> action) {
-        GlobalQuestData data = GlobalQuestData.getGlobalQuestData(level);
+        GlobalQuestData data = GlobalQuestData.getGlobalQuestData(level.getServer());
 
         for (var entry: data.getAllQuestProgress().entrySet()) {
             QuestLine questLine = QuestsInit.getQuest(entry.getKey());

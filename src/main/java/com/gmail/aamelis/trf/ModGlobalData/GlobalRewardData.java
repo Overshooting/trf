@@ -5,7 +5,10 @@ import com.gmail.aamelis.trf.ModNPCs.Quests.QuestStage;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
@@ -19,10 +22,9 @@ public class GlobalRewardData extends SavedData {
     public static final MapCodec<GlobalRewardData> MAP_CODEC =
             RecordCodecBuilder.mapCodec(instance ->
                     instance.group(
-                            Codec.unboundedMap(
-                                            QuestCodecs.STAGE_CODEC.codec(),
-                                            Codec.INT
-                                    )
+                            Codec.INT.fieldOf("experience")
+                                    .forGetter(GlobalRewardData::getExperience),
+                            Codec.unboundedMap(QuestCodecs.ITEM_NAME_CODEC.codec(), Codec.INT)
                                     .fieldOf("rewards")
                                     .forGetter(data -> data.rewards)
                     ).apply(instance, GlobalRewardData::new)
@@ -38,41 +40,64 @@ public class GlobalRewardData extends SavedData {
                     null
             );
 
-    private final Map<QuestStage, Integer> rewards;
+    private int experience;
+    private final Map<Item, Integer> rewards;
 
     public GlobalRewardData() {
-        this(new HashMap<>());
+        this(0, new HashMap<>());
     }
 
-    public GlobalRewardData(Map<QuestStage, Integer> map) {
+    public GlobalRewardData(int exp, Map<Item, Integer> map) {
+        experience = exp;
         rewards = new HashMap<>(map);
     }
 
-    public static GlobalRewardData getGlobalRewardData(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(TYPE);
+    public static GlobalRewardData getGlobalRewardData(MinecraftServer server) {
+        return server.overworld().getDataStorage().computeIfAbsent(TYPE);
     }
 
-    public Map<QuestStage, Integer> getRewardSet() {
+    public Map<Item, Integer> getItemRewardSet() {
         return rewards;
     }
 
-    public void incrementReward(QuestStage stage) {
-        if (!rewards.containsKey(stage)) {
-            rewards.put(stage, 1);
-        } else {
-            rewards.put(stage, rewards.get(stage) + 1);
+    public int getExperience() {
+        return experience;
+    }
+
+    public void incrementReward(int experience, ItemStack item) {
+        if (experience > 0) {
+            this.experience += experience;
+        }
+
+        if (item != null) {
+            rewards.merge(item.getItem(), item.getCount(), Integer::sum);
         }
 
         setDirty();
     }
 
-    public void removeRewards(QuestStage stage) {
-        rewards.remove(stage);
+    public void removeRewards(int experience, ItemStack item) {
+        if (experience > 0) {
+            this.experience -= experience;
+
+            if (this.experience < 0) {
+                this.experience = 0;
+            }
+        }
+
+        if (item != null) {
+            rewards.merge(item.getItem(), (item.getCount()) * -1, Integer::sum);
+
+            if (rewards.get(item) < 0) {
+                rewards.remove(item);
+            }
+        }
 
         setDirty();
     }
 
     public void removeAllRewards() {
+        experience = 0;
         rewards.clear();
 
         setDirty();

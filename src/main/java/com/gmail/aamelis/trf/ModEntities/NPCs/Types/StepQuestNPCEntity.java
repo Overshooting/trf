@@ -64,7 +64,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
         boolean firstTime;
 
         if (questLine.isGlobal()) {
-            GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
+            GlobalQuestData data = GlobalQuestData.getGlobalQuestData(serverPlayer.level().getServer());
             firstTime = !(data.getAllQuestProgress().containsKey(questId));
             progress = data.getQuestProgress(questId);
         } else {
@@ -91,7 +91,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
             if (complete) {
                 QuestProgressChecker.checkPlayerCompletion(serverPlayer, questId, questLine, progress);
                 if (questLine.isGlobal()) {
-                    GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
+                    GlobalQuestData data = GlobalQuestData.getGlobalQuestData(serverPlayer.level().getServer());
                     progress = data.getQuestProgress(questId);
                     stage = questLine.stages().get(progress.getStage());
                 } else {
@@ -107,7 +107,7 @@ public class StepQuestNPCEntity extends AbstractNPCEntity {
         if (stageIndex >= questLine.stages().size() - 1) {
             if (questLine.isRepeatable()) {
                 if (questLine.isGlobal()) {
-                    GlobalQuestData data = serverPlayer.level().getDataStorage().computeIfAbsent(GlobalQuestData.TYPE);
+                    GlobalQuestData data = GlobalQuestData.getGlobalQuestData(serverPlayer.level().getServer());
                     data.wipeQuestProgress(questId);
                 } else {
                     PlayerQuestData data = serverPlayer.getData(AttachmentTypesInit.PLAYER_QUEST_DATA);

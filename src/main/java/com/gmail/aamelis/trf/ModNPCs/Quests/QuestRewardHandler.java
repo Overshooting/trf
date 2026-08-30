@@ -1,11 +1,9 @@
 package com.gmail.aamelis.trf.ModNPCs.Quests;
 
-import com.gmail.aamelis.trf.ModGlobalData.GlobalQuestData;
 import com.gmail.aamelis.trf.ModGlobalData.GlobalRewardData;
 import com.gmail.aamelis.trf.ModPlayerData.ModStats.Levels.PlayerLevelData;
 import com.gmail.aamelis.trf.ModPlayerData.QuestPlayerData.PlayerRewardData;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,9 +33,12 @@ public class QuestRewardHandler {
         for (ServerPlayer thisPlayer : server.getPlayerList().getPlayers()) {
             PlayerLevelData data = thisPlayer.getData(AttachmentTypesInit.PLAYER_LEVEL);
             PlayerRewardData rewardData = thisPlayer.getData(AttachmentTypesInit.PLAYER_REWARD_DATA);
-            data.addExperience(stage.experience(), thisPlayer);
+            int experience = stage.experience();
+            ItemStack stack = stage.rewardItem();
 
-            rewardData.incrementRewards(stage);
+            data.addExperience(experience, thisPlayer);
+
+            rewardData.incrementRewards(experience, stack, player);
 
             if (stage.rewardItem() != null) {
                 ItemStack copy = stage.rewardItem().copy();
@@ -50,9 +51,12 @@ public class QuestRewardHandler {
             }
         }
 
-        GlobalRewardData globalRewardData = player.level().getDataStorage().computeIfAbsent(GlobalRewardData.TYPE);
+        GlobalRewardData globalRewardData = GlobalRewardData.getGlobalRewardData(server);
 
-        globalRewardData.incrementReward(stage);
+        int experience = stage.experience();
+        ItemStack item = stage.rewardItem();
+
+        globalRewardData.incrementReward(experience, item);
     }
 
 }

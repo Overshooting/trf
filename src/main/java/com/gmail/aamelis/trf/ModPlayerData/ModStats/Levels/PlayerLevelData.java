@@ -95,7 +95,7 @@ public class PlayerLevelData {
 
             maxExperience = calculateMax(level);
 
-            player.level().playSound(null, player.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 60.0f, 0.8f);
+            player.level().playSound(null, player.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0f, 0.7f);
         }
 
 

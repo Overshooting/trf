@@ -13,6 +13,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
@@ -98,6 +99,13 @@ public class QuestCodecs {
                     }
             );
 
+    public static final MapCodec<Item> ITEM_NAME_CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    Codec.INT.fieldOf("id")
+                            .forGetter(Item::getId)
+            ).apply(instance, Item::byId)
+    );
+
     public static final MapCodec<QuestStage> STAGE_CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Codec.STRING
@@ -118,8 +126,8 @@ public class QuestCodecs {
                             .forGetter(stage -> Optional.ofNullable(stage.rewardItem())),
 
                     Codec.STRING
-                            .fieldOf("broadcast")
-                            .forGetter(QuestStage::broadcast)
+                            .optionalFieldOf("broadcast")
+                            .forGetter(stage -> Optional.ofNullable(stage.broadcast()))
 
             ).apply(instance, (dialog, objectives, experience, rewardItem, broadcast) ->
                     new QuestStage(
@@ -127,7 +135,7 @@ public class QuestCodecs {
                             objectives,
                             experience,
                             rewardItem.orElse(null),
-                            broadcast
+                            broadcast.orElse("")
                     )
             )
     );

@@ -3,6 +3,7 @@ package com.gmail.aamelis.trf.Registries;
 import com.gmail.aamelis.trf.ModItems.Scrolls.AbstractScrollItem;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Archer.*;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Mage.*;
+import com.gmail.aamelis.trf.ModItems.Scrolls.Warrior.CatClawScroll;
 import com.gmail.aamelis.trf.ModItems.Scrolls.Warrior.DoubleCutScroll;
 import com.gmail.aamelis.trf.ModItems.Stats.SoulVial;
 import com.gmail.aamelis.trf.ModItems.Weapons.Mage.AbstractStaffItem;
@@ -56,6 +57,8 @@ public class ItemsInit {
     public static final DeferredItem<Item> DUMMY_SHOT_SCROLL_ITEM = ITEMS.registerItem("dummy_shot_scroll", DummyShotScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<Item> DOUBLE_CUT_SCROLL_ITEM = ITEMS.registerItem("double_cut_scroll", DoubleCutScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
+
+    public static final DeferredItem<Item> CAT_CLAW_SCROLL_ITEM = ITEMS.registerItem("cat_claw_scroll", CatClawScroll::new, AbstractScrollItem.SCROLL_PROPERTIES);
 
     public static final DeferredItem<Item> SOUL_VIAL_ITEM = ITEMS.registerItem("soul_vial", SoulVial::new, SoulVial.PROPERTIES);
 

@@ -19,6 +19,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DamageUtils {
@@ -127,10 +128,12 @@ public class DamageUtils {
         );
     }
 
-    public static void applySlashHurtBox(AABB boundingBox, ServerPlayer owner, ServerLevel level, float baseDamage, short classType, double range, double maxAngleDegrees) {
+    public static List<LivingEntity> applySlashHurtBox(AABB boundingBox, ServerPlayer owner, ServerLevel level, float baseDamage, short classType, double range, double maxAngleDegrees) {
         Vec3 look = owner.getLookAngle().normalize();
         Vec3 origin = owner.getEyePosition();
         double angleThreshold = Math.cos(Math.toRadians(maxAngleDegrees));
+
+        List<LivingEntity> hit = new ArrayList<>();
 
         List<LivingEntity> targets = level.getEntitiesOfClass(
                 LivingEntity.class,
@@ -184,7 +187,21 @@ public class DamageUtils {
                     target.damageSources().playerAttack(owner),
                     damage
             );
+
+            hit.add(target);
         }
+
+        return hit;
+    }
+
+    public static List<LivingEntity> applySlashHurtBox(AABB boundingBox, ServerPlayer owner, ServerLevel level, float baseDamage, short classType, double range, double maxAngleDegrees, double knockback) {
+        List<LivingEntity> hit = applySlashHurtBox(boundingBox, owner, level, baseDamage, classType, range, maxAngleDegrees);
+
+        for (LivingEntity target : hit) {
+            target.knockback(knockback, target.getX(), target.getZ());
+        }
+
+        return hit;
     }
 
 

@@ -94,6 +94,31 @@ public class SpellCommands {
                             )
                     );
 
+    public static final LiteralArgumentBuilder<CommandSourceStack> REVOKE_ALL_SPELLS_COMMAND =
+            Commands.literal("revokeAllSpells")
+                    .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                    .then(Commands.argument("targets", EntityArgument.players())
+                            .executes(context -> {
+                                Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+
+                                for (ServerPlayer player : targets) {
+                                    PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
+
+                                    data.revokeAllSpells(player);
+                                }
+
+                                if (targets.size() == 1) {
+                                    context.getSource().sendSuccess(() -> Component.literal("Revoked all spells for " +
+                                            targets.iterator().next().getScoreboardName()), true);
+                                } else {
+                                    context.getSource().sendSuccess(() -> Component.literal("Revoked all spells for " +
+                                            targets.size() + " players"), true);
+                                }
+
+                                return targets.size();
+                            })
+                    );
+
     public static final LiteralArgumentBuilder<CommandSourceStack> ACTIVATE_SPELL_COMMAND =
             Commands.literal("activateSpell")
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
@@ -135,6 +160,33 @@ public class SpellCommands {
                                         return targets.size();
                                     })
                             )
+                    );
+
+    public static final LiteralArgumentBuilder<CommandSourceStack> DEACTIVATE_ALL_SPELLS_COMMAND =
+            Commands.literal("deactivateAllSpell")
+                    .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                    .then(Commands.argument("targets", EntityArgument.players())
+                                    .executes(context -> {
+                                        Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+                                        int revoked = 0;
+
+                                        for (ServerPlayer player : targets) {
+                                            PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
+
+                                            revoked += data.deactivateAllSpells(player) ? 1 : 0;
+                                        }
+
+                                        final int printed = revoked;
+                                        if (printed == 1) {
+                                            context.getSource().sendSuccess(() -> Component.literal("Deactivated all spells for " +
+                                                    targets.iterator().next().getScoreboardName()), true);
+                                        } else {
+                                            context.getSource().sendSuccess(() -> Component.literal("Deactivated all spells for " +
+                                                    printed + " players"), true);
+                                        }
+
+                                        return printed;
+                                    })
                     );
 
     public static final LiteralArgumentBuilder<CommandSourceStack> DEACTIVATE_SPELL_COMMAND =

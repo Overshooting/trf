@@ -1,6 +1,8 @@
 package com.gmail.aamelis.trf.ModPlayerData;
 
+import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
+import com.gmail.aamelis.trf.Registries.SpellsInit;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -69,6 +71,31 @@ public class PlayerSpellData {
         unlockedSpells.add(spellId);
 
         setDirty(player);
+    }
+
+    public void unlockAllSpells(ServerPlayer player) {
+        List<ISpell> spells = SpellsInit.getSpellsForClass(playerClass);
+
+        for (ISpell spell : spells) {
+            unlockedSpells.add(spell.getId());
+        }
+
+        setDirty(player);
+    }
+
+    public void revokeAllSpells(ServerPlayer player) {
+        unlockedSpells.clear();
+        activeSpells.clear();
+
+        setDirty(player);
+    }
+
+    public boolean deactivateAllSpells(ServerPlayer player) {
+        activeSpells.clear();
+
+        setDirty(player);
+
+        return activeSpells.isEmpty();
     }
 
     public boolean hasSpell(String spellId) {

@@ -62,6 +62,7 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.IMBUE_POISON_SCROLL_ITEM);
                         output.accept(ItemsInit.IMBUE_FROST_SCROLL_ITEM);
                         output.accept(ItemsInit.DOUBLE_CUT_SCROLL_ITEM);
+                        output.accept(ItemsInit.CAT_CLAW_SCROLL_ITEM);
 
                     }).build());
 

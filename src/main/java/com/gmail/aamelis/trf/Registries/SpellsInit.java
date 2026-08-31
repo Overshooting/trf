@@ -5,6 +5,7 @@ import com.gmail.aamelis.trf.ModSpells.ArcherSpells.*;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
 import com.gmail.aamelis.trf.ModSpells.MageSpells.*;
 import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
+import com.gmail.aamelis.trf.ModSpells.WarriorSpells.CatClawSpell;
 import com.gmail.aamelis.trf.ModSpells.WarriorSpells.DoubleCutSpell;
 
 import javax.annotation.Nullable;
@@ -33,6 +34,7 @@ public class SpellsInit {
         register.add(new CloakingSpell());
         register.add(new DummyShotSpell());
         register.add(new DoubleCutSpell());
+        register.add(new CatClawSpell());
     }
 
     public static void registerSpells() {
@@ -86,7 +88,7 @@ public class SpellsInit {
             if (spell != null) {
                 System.out.println("Found spell: " + spell.getId());
 
-                returned.add(spell.getDisplayName());
+                returned.add(spell.getId());
             }
         }
 
@@ -105,6 +107,19 @@ public class SpellsInit {
         }
 
         return returned;
+    }
+
+    public static List<ISpell> getSpellsForClass(short classNumber) {
+        ISpell[] array = SPELLS[classNumber - 1];
+
+        List<ISpell> spells = new ArrayList<>();
+        for (ISpell spell : array) {
+            if (spell != null) {
+                spells.add(spell);
+            }
+        }
+
+        return spells;
     }
 
 }

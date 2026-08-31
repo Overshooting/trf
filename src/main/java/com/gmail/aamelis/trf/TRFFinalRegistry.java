@@ -55,6 +55,9 @@ public class TRFFinalRegistry {
         dispatcher.register(ResetQuestCommand.RESET_GLOBAL_QUEST_COMMAND);
         dispatcher.register(SpellCommands.ACTIVATE_SPELL_COMMAND);
         dispatcher.register(SpellCommands.DEACTIVATE_SPELL_COMMAND);
+        dispatcher.register(SpellCommands.GIVE_ALL_SPELLS_COMMAND);
+        dispatcher.register(SpellCommands.REVOKE_ALL_SPELLS_COMMAND);
+        dispatcher.register(SpellCommands.DEACTIVATE_ALL_SPELLS_COMMAND);
     }
 
     private void onClientSetup(FMLClientSetupEvent event) {

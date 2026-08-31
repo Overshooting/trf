@@ -6,6 +6,7 @@ import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.ModEntities.Projectiles.DamageUtils;
 import com.gmail.aamelis.trf.ModPlayerData.PlayerSpellData;
 import com.gmail.aamelis.trf.ModSpells.ISpell;
+import com.gmail.aamelis.trf.ModUIRendering.RenderUtils;
 import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -103,33 +104,7 @@ public class DoubleCutSpell implements ISpell {
                 SLASH_ANGLE
         );
 
-        Vec3 eyePos = player.getEyePosition();
-        Vec3 lookAngle = player.getLookAngle();
-
-        double slashX = eyePos.x + lookAngle.x;
-        double slashY = player.getY() + player.getEyeHeight() - 0.5;
-        double slashZ = eyePos.z + lookAngle.z;
-
-        double xOffset = 0.0;
-        double zOffset = 0.0;
-
-        if (lookAngle.z > lookAngle.x) {
-            zOffset = ((int)(Math.random() * 2) == 0 ? -1 : 1) *(Math.random() * 3) + 1;
-        } else {
-            xOffset = ((int)(Math.random() * 2) == 0 ? -1 : 1) *(Math.random() * 3) + 1;
-        }
-
-        level.sendParticles(
-                ParticleTypes.CRIMSON_SPORE,
-                slashX,
-                slashY,
-                slashZ,
-                60,
-                xOffset,
-                0.0,
-                zOffset,
-                0.0
-        );
+        RenderUtils.renderSlashParticles(player, level, true);
 
         DelayedSpellEffectScheduler.schedule(
                 level,
@@ -172,17 +147,7 @@ public class DoubleCutSpell implements ISpell {
                             SLASH_ANGLE
                     );
 
-                    lvl.sendParticles(
-                            ParticleTypes.CRIMSON_SPORE,
-                            slashX,
-                            slashY,
-                            slashZ,
-                            40,
-                            0.0,
-                            (Math.random() * 2) + 1,
-                            0.0,
-                            0.0
-                    );
+                    RenderUtils.renderSlashParticles(player, lvl, false);
                 })
         );
     }

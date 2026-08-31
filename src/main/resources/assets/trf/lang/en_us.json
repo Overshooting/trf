@@ -11,6 +11,10 @@
   "item.trf.quick_shot_scroll": "Journal Fragment: Quick Shot",
   "item.trf.cloaking_tactics_scroll": "Journal Fragment: Cloaking Tactics",
   "item.trf.monster_trap_scroll": "Journal Fragment: Monster Trap",
+  "item.trf.dummy_shot_scroll": "Journal Fragment: Dummy Shot",
+  "item.trf.imbue_fire_scroll": "Journal Fragment: Imbue Fire",
+  "item.trf.imbue_frost_scroll": "Journal Fragment: Imbue Frost",
+  "item.trf.imbue_poison_scroll": "Journal Fragment: Imbue Poison",
   "item.trf.double_cut_scroll": "Fighting Manual: Double Cut",
   "item.trf.soul_vial": "Soul Vial",
   "item.trf.basic_bow": "Basic Bow",
@@ -36,9 +40,11 @@
   "tooltip.trf.soul_vial_2": "(RESETS YOUR STAT POINTS)",
 
   "key.category.trf.spell_keys": "TRF Spell Casting",
-  "key.category.trf.stat_keys": "TRF Stat Sheet",
+  "key.category.trf.stat_sheet_keys": "TRF Stat Sheet",
 
   "key.trf.spell_c": "Primary Incantation",
-  "key.trf.spell_b": "Secondary Incantation",
-  "key.trf.spell_v": "Tertiary Incantation"
+  "key.trf.spell_v": "Secondary Incantation",
+  "key.trf.spell_b": "Tertiary Incantation",
+
+  "key.trf.toggle_stat_sheet": "Toggle Stat Sheet"
 }

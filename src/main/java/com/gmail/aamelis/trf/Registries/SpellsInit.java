@@ -8,12 +8,8 @@ import com.gmail.aamelis.trf.ModCastingSystem.Keybinds.SpellInput;
 import com.gmail.aamelis.trf.ModSpells.WarriorSpells.DoubleCutSpell;
 
 import javax.annotation.Nullable;
-import java.sql.Date;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SpellsInit {
 
@@ -33,7 +29,7 @@ public class SpellsInit {
         register.add(new ImbueFireSpell());
         register.add(new PiercingShotSpell());
         register.add(new QuickShotSpell());
-        register.add(new TrapSpell());
+        register.add(new MonsterTrapSpell());
         register.add(new CloakingSpell());
         register.add(new DummyShotSpell());
         register.add(new DoubleCutSpell());
@@ -51,6 +47,9 @@ public class SpellsInit {
             if (SPELLS[classNumber][index] != null) {
                 throw new IllegalStateException("Duplicate combo for class + " + (classNumber + 1) + " at index: " + index);
             }
+
+            System.out.println("Added spell: " + spell.getDisplayName() +
+                    "\nwith combo: " + combo.get(0).toString() + ", " + combo.get(1).toString() + ", " +  combo.get(2).toString());
 
             SPELLS[classNumber][index] = spell;
             count++;

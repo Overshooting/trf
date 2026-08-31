@@ -14,4 +14,8 @@ public enum SpellInput {
     public int getIndex() {
         return index;
     }
+
+    public String toString() {
+        return index + "";
+    }
 }

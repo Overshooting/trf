@@ -50,6 +50,7 @@ public class PlayerParryingData {
     }
 
     public boolean isParrying() {
+        System.out.println("Parrying: " + this.parryingTicks);
         return parryingTicks > 0;
     }
 

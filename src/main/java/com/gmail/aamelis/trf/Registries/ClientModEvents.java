@@ -7,6 +7,11 @@ import com.gmail.aamelis.trf.ModPlayerData.ModStats.Keybinds.StatKeybinds;
 import com.gmail.aamelis.trf.ModUIRendering.ManaBarRenderer;
 import com.gmail.aamelis.trf.ModUIRendering.SpellCastingUIRenderer;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
+import com.mojang.blaze3d.platform.Window;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -29,6 +34,9 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void clientTick(ClientTickEvent.Post event) {
         KeyInputHandler.onClientTick(event);
+
+        Window window = Minecraft.getInstance().getWindow();
+        window.setTitle("Terra Regis Frigoris");
     }
 
     @SubscribeEvent

@@ -37,13 +37,15 @@ abstract class AbstractMeleeItem extends Item {
         PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
         PlayerParryingData parryingData = player.getData(AttachmentTypesInit.PARRYING_DATA);
 
-        if (data.getPlayerClass() != PlayerSpellData.WARRIOR) return InteractionResult.CONSUME;
+        if (data.getPlayerClass() != PlayerSpellData.WARRIOR) return InteractionResult.FAIL;
 
         boolean isCooldown = serverPlayer.getCooldowns().isOnCooldown(serverPlayer.getItemInHand(hand));
         boolean isParrying = parryingData.isParrying();
 
         if (isCooldown || isParrying) {
-            return InteractionResult.CONSUME;
+            System.out.println("Failing");
+
+            return InteractionResult.FAIL;
         } else {
             System.out.println("Parry initiated!");
 

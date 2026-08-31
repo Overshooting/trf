@@ -52,6 +52,9 @@ public class SpellsInit {
                 throw new IllegalStateException("Duplicate combo for class + " + (classNumber + 1) + " at index: " + index);
             }
 
+            System.out.println("Added spell: " + spell.getDisplayName() +
+                    "\nwith combo: " + combo.get(0).toString() + ", " + combo.get(1).toString() + ", " +  combo.get(2).toString());
+
             SPELLS[classNumber][index] = spell;
             count++;
         }

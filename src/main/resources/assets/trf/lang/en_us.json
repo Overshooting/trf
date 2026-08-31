@@ -36,9 +36,11 @@
   "tooltip.trf.soul_vial_2": "(RESETS YOUR STAT POINTS)",
 
   "key.category.trf.spell_keys": "TRF Spell Casting",
-  "key.category.trf.stat_keys": "TRF Stat Sheet",
+  "key.category.trf.stat_sheet_keys": "TRF Stat Sheet",
 
   "key.trf.spell_c": "Primary Incantation",
-  "key.trf.spell_b": "Secondary Incantation",
-  "key.trf.spell_v": "Tertiary Incantation"
+  "key.trf.spell_v": "Secondary Incantation",
+  "key.trf.spell_b": "Tertiary Incantation",
+
+  "key.trf.toggle_stat_sheet": "Toggle Stat Sheet"
 }

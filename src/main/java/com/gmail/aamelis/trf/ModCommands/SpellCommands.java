@@ -55,6 +55,31 @@ public class SpellCommands {
                             )
                     );
 
+    public static final LiteralArgumentBuilder<CommandSourceStack> GIVE_ALL_SPELLS_COMMAND =
+            Commands.literal("unlockAllSpells")
+                    .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+                    .then(Commands.argument("targets", EntityArgument.players())
+                                    .executes(context -> {
+                                        Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+
+                                        for (ServerPlayer player : targets) {
+                                            PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
+
+                                            data.unlockAllSpells(player);
+                                        }
+
+                                        if (targets.size() == 1) {
+                                            context.getSource().sendSuccess(() -> Component.literal("Unlocked all spells for " +
+                                                    targets.iterator().next().getScoreboardName()), true);
+                                        } else {
+                                            context.getSource().sendSuccess(() -> Component.literal("Unlocked all spells for " +
+                                                    targets.size() + " players"), true);
+                                        }
+
+                                        return targets.size();
+                                    })
+                    );
+
     public static final LiteralArgumentBuilder<CommandSourceStack> REVOKE_SPELL_COMMAND =
             Commands.literal("revokeSpell")
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))

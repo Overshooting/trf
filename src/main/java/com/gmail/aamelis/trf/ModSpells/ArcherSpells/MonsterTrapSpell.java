@@ -14,7 +14,7 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.List;
 
-public class TrapSpell implements ISpell {
+public class MonsterTrapSpell implements ISpell {
     @Override
     public String getId() {
         return "monster_trap";

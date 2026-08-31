@@ -57,6 +57,10 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.QUICK_SHOT_SCROLL_ITEM);
                         output.accept(ItemsInit.CLOAKING_TACTICS_SCROLL_ITEM);
                         output.accept(ItemsInit.MONSTER_TRAP_SCROLL_ITEM);
+                        output.accept(ItemsInit.DUMMY_SHOT_SCROLL_ITEM);
+                        output.accept(ItemsInit.IMBUE_FIRE_SCROLL_ITEM);
+                        output.accept(ItemsInit.IMBUE_POISON_SCROLL_ITEM);
+                        output.accept(ItemsInit.IMBUE_FROST_SCROLL_ITEM);
                         output.accept(ItemsInit.DOUBLE_CUT_SCROLL_ITEM);
 
                     }).build());

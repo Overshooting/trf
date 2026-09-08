@@ -79,16 +79,16 @@ public class SpellsInit {
         return null;
     }
 
-    public static List<String> getAllSpellsForClass(short num) {
+    public static List<String> getAllSpellNamesForClass(short num) {
         if (num < 1 || num > 4) return List.of();
 
         List<String> returned = new ArrayList<>();
 
         for (ISpell spell : SPELLS[num - 1]) {
             if (spell != null) {
-                System.out.println("Found spell: " + spell.getId());
+                System.out.println("Found spell: " + spell.getDisplayName());
 
-                returned.add(spell.getId());
+                returned.add(spell.getDisplayName());
             }
         }
 
@@ -101,7 +101,7 @@ public class SpellsInit {
         for (ISpell[] iSpells : SPELLS) {
             for (ISpell spell : iSpells) {
                 if (spell != null) {
-                    returned.add(spell.getId());
+                    returned.add(spell.getDisplayName());
                 }
             }
         }

@@ -49,7 +49,7 @@ abstract class AbstractMeleeItem extends Item {
         } else {
             System.out.println("Parry initiated!");
 
-            parryingData.setParryingTicks(25, serverPlayer);
+            parryingData.setParryingTicks(10, serverPlayer);
 
             SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId().toString());
 

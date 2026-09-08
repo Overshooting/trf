@@ -15,7 +15,9 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class SpellCommands {
 
@@ -25,7 +27,7 @@ public class SpellCommands {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.argument("spell", StringArgumentType.greedyString())
                                     .suggests(((context, builder) ->
-                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellsForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
+                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellNamesForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
                                     .executes(context -> {
                                         String spellName = StringArgumentType.getString(context, "spell");
                                         if (!SpellsInit.getAllSpellNames().contains(spellName)) {
@@ -86,15 +88,25 @@ public class SpellCommands {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.argument("spell", StringArgumentType.greedyString())
                                     .suggests(((context, builder) ->
-                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellsForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
+                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellNamesForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
                                     .executes(context -> {
                                         String spellName = StringArgumentType.getString(context, "spell");
+                                        ArrayList<ServerPlayer> targets = new ArrayList<>(EntityArgument.getPlayers(context, "targets"));
+
+                                        if (targets.size() > 1) {
+                                            for (int i = 1; i < targets.size(); i++) {
+                                                if (targets.get(i - 1).getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass() != targets.get(i).getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()) {
+                                                    context.getSource().sendFailure(Component.literal("Players are not all the same class!"));
+                                                }
+                                            }
+                                        }
+
                                         if (!SpellsInit.getAllSpellNames().contains(spellName)) {
                                             context.getSource().sendFailure(Component.literal("No spell with the name of " + spellName + " found!"));
                                             return 0;
                                         }
 
-                                        Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
+
                                         String spellId = spellName.replaceAll(" ", "_").toLowerCase();
                                         int revoked = 0;
 
@@ -150,7 +162,7 @@ public class SpellCommands {
                     .then(Commands.argument("targets", EntityArgument.players())
                             .then(Commands.argument("spell", StringArgumentType.greedyString())
                                     .suggests(((context, builder) ->
-                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellsForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
+                                            SharedSuggestionProvider.suggest(SpellsInit.getAllSpellNamesForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
                                     .executes(context -> {
                                         String spellName = StringArgumentType.getString(context, "spell");
 
@@ -160,13 +172,12 @@ public class SpellCommands {
                                         }
 
                                         Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
-                                        String spellId = spellName.replaceAll(" ", "_").toLowerCase();
                                         int successCount = 0, failCount = 0;
 
                                         for (ServerPlayer player : targets) {
                                             PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
 
-                                            boolean added = data.tryActivateSpell(player, spellId);
+                                            boolean added = data.tryActivateSpell(player, spellName);
 
                                             if (added) {
                                                 successCount++;
@@ -189,7 +200,7 @@ public class SpellCommands {
                     );
 
     public static final LiteralArgumentBuilder<CommandSourceStack> DEACTIVATE_ALL_SPELLS_COMMAND =
-            Commands.literal("deactivateAllSpell")
+            Commands.literal("deactivateAllSpells")
                     .requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                     .then(Commands.argument("targets", EntityArgument.players())
                                     .executes(context -> {
@@ -230,13 +241,12 @@ public class SpellCommands {
                                         }
 
                                         Collection<ServerPlayer> targets = EntityArgument.getPlayers(context, "targets");
-                                        String spellId = spellName.replaceAll(" ", "_").toLowerCase();
                                         int revoked = 0;
 
                                         for (ServerPlayer player : targets) {
                                             PlayerSpellData data = player.getData(AttachmentTypesInit.PLAYER_SPELL_DATA);
 
-                                            revoked += data.deactivateSpell(player, spellId) ? 1 : 0;
+                                            revoked += data.deactivateSpell(player, spellName) ? 1 : 0;
                                         }
 
                                         final int printed = revoked;

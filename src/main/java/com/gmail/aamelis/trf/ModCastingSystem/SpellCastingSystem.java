@@ -61,7 +61,7 @@ public class SpellCastingSystem {
         List<Item> validClassItems = CLASS_ITEMS.getOrDefault(spell.getRequiredClass(), Collections.emptyList());
 
         if (playerSpellData.hasSpell(spell.getId()) &&
-                playerSpellData.isActiveSpell(spell.getId()) &&
+                playerSpellData.isActiveSpell(spell.getDisplayName()) &&
                 playerManaData.getCurrentMana() >= spell.getRequiredMana() &&
                 !isOnCooldown(player, spell) &&
                 validClassItems.contains(heldItem.getItem().asItem()))

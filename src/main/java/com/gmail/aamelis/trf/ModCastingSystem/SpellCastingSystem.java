@@ -66,7 +66,6 @@ public class SpellCastingSystem {
                 !isOnCooldown(player, spell) &&
                 validClassItems.contains(heldItem.getItem().asItem()))
         {
-            System.out.println("hello world");
             playerManaData.useMana(player, spell.getRequiredMana());
             spell.cast(player);
             setCooldown(player, spell);

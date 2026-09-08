@@ -1,13 +1,16 @@
 package com.gmail.aamelis.trf.ModPlayerData;
 
 import com.gmail.aamelis.trf.ModCastingSystem.SpellCastingSystem;
+import com.gmail.aamelis.trf.Network.Packets.SpellAnimationPacket;
 import com.gmail.aamelis.trf.Registries.AttachmentTypesInit;
 import com.gmail.aamelis.trf.Registries.ItemsInit;
+import com.gmail.aamelis.trf.TRFFinalRegistry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
@@ -71,6 +75,11 @@ public class PlayerParryingData {
                 player.getCooldowns().addCooldown(new ItemStack(item), 30);
             }
 
+            SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.sword_parry_fail").toString());
+
+            PacketDistributor.sendToPlayer(player, packet);
+            PacketDistributor.sendToPlayersNear(player.level(), player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
+
             setDirty(player);
         } else if (parryingTicks < 0) {
             parryingTicks = 0;
@@ -87,6 +96,11 @@ public class PlayerParryingData {
 
             damaging.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 30, 255));
             damaging.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 30, 255));
+
+            SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.sword_parry_success").toString());
+
+            PacketDistributor.sendToPlayer(player, packet);
+            PacketDistributor.sendToPlayersNear(player.level(), player, player.getX(), player.getY(), player.getZ(), 64.0, packet);
 
             damaging.hurt(damaging.damageSources().playerAttack(player), 0.0f);
 

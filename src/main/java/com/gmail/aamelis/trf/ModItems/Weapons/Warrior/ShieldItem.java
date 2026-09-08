@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 public class ShieldItem extends AbstractMeleeItem {
 
     public static final Supplier<Properties> PROPERTIES = () -> new Item.Properties()
-            .sword(ToolMaterial.COPPER, 0.5f, 2.0f)
+            .sword(ToolMaterial.NETHERITE, 60.0f, 0.2f)
             .stacksTo(1);
 
     public ShieldItem(Properties properties) {

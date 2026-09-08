@@ -101,7 +101,7 @@ public class SpellsInit {
         for (ISpell[] iSpells : SPELLS) {
             for (ISpell spell : iSpells) {
                 if (spell != null) {
-                    returned.add(spell.getDisplayName());
+                    returned.add(spell.getId());
                 }
             }
         }

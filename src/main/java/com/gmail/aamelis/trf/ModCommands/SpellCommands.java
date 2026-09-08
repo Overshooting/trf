@@ -153,6 +153,7 @@ public class SpellCommands {
                                             SharedSuggestionProvider.suggest(SpellsInit.getAllSpellsForClass(context.getSource().getPlayer().getData(AttachmentTypesInit.PLAYER_SPELL_DATA).getPlayerClass()), builder)))
                                     .executes(context -> {
                                         String spellName = StringArgumentType.getString(context, "spell");
+
                                         if (!SpellsInit.getAllSpellNames().contains(spellName)) {
                                             context.getSource().sendFailure(Component.literal("No spell with the name of " + spellName + " found!"));
                                             return 0;

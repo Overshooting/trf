@@ -7,14 +7,14 @@ import net.minecraft.world.item.ToolMaterial;
 
 import java.util.function.Supplier;
 
-public class TinSwordItem extends AbstractMeleeItem {
+public class ShieldItem extends AbstractMeleeItem {
 
     public static final Supplier<Properties> PROPERTIES = () -> new Item.Properties()
-            .sword(ToolMaterial.COPPER, 2.5f, 1.0f)
+            .sword(ToolMaterial.COPPER, 0.5f, 2.0f)
             .stacksTo(1);
 
-    public TinSwordItem(Properties properties) {
-        super(properties, 15);
+    public ShieldItem(Properties properties) {
+        super(properties, 60);
     }
 
     @Override

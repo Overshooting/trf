@@ -26,6 +26,13 @@ import java.util.Collection;
 
 abstract class AbstractMeleeItem extends Item {
 
+    int parryTime;
+
+    public AbstractMeleeItem(Properties properties, int parryTime) {
+        super(properties);
+        this.parryTime = parryTime;
+    }
+
     public AbstractMeleeItem(Properties properties) {
         super(properties);
     }
@@ -49,7 +56,7 @@ abstract class AbstractMeleeItem extends Item {
         } else {
             System.out.println("Parry initiated!");
 
-            parryingData.setParryingTicks(10, serverPlayer);
+            parryingData.setParryingTicks(parryTime, serverPlayer);
 
             SpellAnimationPacket packet = new SpellAnimationPacket(player.getUUID(), animId().toString());
 
@@ -61,4 +68,6 @@ abstract class AbstractMeleeItem extends Item {
     }
 
     abstract ResourceLocation animId();
+
+
 }

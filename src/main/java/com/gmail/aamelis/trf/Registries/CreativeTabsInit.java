@@ -26,6 +26,7 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.SNIPER_BOW_ITEM);
                         output.accept(ItemsInit.COPPER_ARROW_ITEM);
                         output.accept(ItemsInit.TIN_SWORD_ITEM);
+                        output.accept(ItemsInit.SHIELD_ITEM);
 
                     }).build());
 

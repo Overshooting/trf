@@ -7,18 +7,18 @@ import net.minecraft.world.item.ToolMaterial;
 
 import java.util.function.Supplier;
 
-public class TinSwordItem extends AbstractMeleeItem {
+public class TinAxeItem extends AbstractMeleeItem {
 
     public static final Supplier<Properties> PROPERTIES = () -> new Item.Properties()
-            .sword(ToolMaterial.COPPER, 2.5f, 1.0f)
+            .sword(ToolMaterial.COPPER, 3.0f, 1.25f)
             .stacksTo(1);
 
-    public TinSwordItem(Properties properties) {
-        super(properties, 15, SwordType.SWORD_TYPE);
+    public TinAxeItem(Properties properties) {
+        super(properties, 20, SwordType.AXE_TYPE);
     }
 
     @Override
     ResourceLocation animId() {
-        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.sword_parry");
+        return ResourceLocation.fromNamespaceAndPath(TRFFinalRegistry.MODID, "animation.player.axe_parry");
     }
 }

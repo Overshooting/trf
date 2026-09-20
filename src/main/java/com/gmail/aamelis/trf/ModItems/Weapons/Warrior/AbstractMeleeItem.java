@@ -27,14 +27,13 @@ import java.util.Collection;
 abstract class AbstractMeleeItem extends Item {
 
     int parryTime;
+    SwordType type;
 
-    public AbstractMeleeItem(Properties properties, int parryTime) {
+    public AbstractMeleeItem(Properties properties, int parryTime, SwordType type) {
         super(properties);
+
         this.parryTime = parryTime;
-    }
-
-    public AbstractMeleeItem(Properties properties) {
-        super(properties);
+        this.type = type;
     }
 
     @Override

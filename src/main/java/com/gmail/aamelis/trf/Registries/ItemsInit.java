@@ -13,6 +13,7 @@ import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.Arrows.CopperArrowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.SniperBowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Ranger.BasicBowItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Warrior.ShieldItem;
+import com.gmail.aamelis.trf.ModItems.Weapons.Warrior.TinAxeItem;
 import com.gmail.aamelis.trf.ModItems.Weapons.Warrior.TinSwordItem;
 import com.gmail.aamelis.trf.TRFFinalRegistry;
 import net.minecraft.world.item.BlockItem;
@@ -72,6 +73,8 @@ public class ItemsInit {
     public static final DeferredItem<Item> TIN_SWORD_ITEM = ITEMS.registerItem("tin_sword", TinSwordItem::new, TinSwordItem.PROPERTIES);
 
     public static final DeferredItem<Item> SHIELD_ITEM = ITEMS.registerItem("blocking_shield", ShieldItem::new, ShieldItem.PROPERTIES);
+
+    public static final DeferredItem<Item> TIN_AXE_ITEM = ITEMS.registerItem("tin_axe", TinAxeItem::new, TinAxeItem.PROPERTIES);
 
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 

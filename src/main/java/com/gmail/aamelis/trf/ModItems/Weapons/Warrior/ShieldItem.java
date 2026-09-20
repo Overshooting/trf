@@ -14,7 +14,7 @@ public class ShieldItem extends AbstractMeleeItem {
             .stacksTo(1);
 
     public ShieldItem(Properties properties) {
-        super(properties, 60);
+        super(properties, 60, SwordType.SWORD_TYPE);
     }
 
     @Override

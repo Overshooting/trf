@@ -76,6 +76,8 @@ public class ItemsInit {
 
     public static final DeferredItem<Item> TIN_AXE_ITEM = ITEMS.registerItem("tin_axe", TinAxeItem::new, TinAxeItem.PROPERTIES);
 
+    public static final DeferredItem<Item> TIN_DAGGER_ITEM = ITEMS.registerItem("tin_dagger", TinAxeItem::new, TinAxeItem.PROPERTIES);
+
     public static final DeferredItem<BlockItem> LIGHTS_OUT_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("lights_out_block", BlocksInit.LIGHTS_OUT_BLOCK);
 
     public static final DeferredItem<BlockItem> GAME_MASTER_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("game_master_block", BlocksInit.GAME_MASTER_BLOCK);

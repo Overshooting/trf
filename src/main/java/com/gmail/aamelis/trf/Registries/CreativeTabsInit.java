@@ -28,6 +28,7 @@ public class CreativeTabsInit {
                         output.accept(ItemsInit.TIN_SWORD_ITEM);
                         output.accept(ItemsInit.SHIELD_ITEM);
                         output.accept(ItemsInit.TIN_AXE_ITEM);
+                        output.accept(ItemsInit.TIN_DAGGER_ITEM);
 
                     }).build());
 

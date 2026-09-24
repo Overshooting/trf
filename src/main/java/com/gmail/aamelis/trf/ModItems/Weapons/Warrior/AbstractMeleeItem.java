@@ -24,7 +24,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.ArrayList;
 import java.util.Collection;
 
-abstract class AbstractMeleeItem extends Item {
+public abstract class AbstractMeleeItem extends Item {
 
     int parryTime;
     SwordType type;
@@ -67,6 +67,10 @@ abstract class AbstractMeleeItem extends Item {
     }
 
     abstract ResourceLocation animId();
+
+    public SwordType getType() {
+        return type;
+    }
 
 
 }
